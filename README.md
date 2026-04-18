@@ -2,6 +2,14 @@
 
 > **凱基金 MA 面試 Project 3** — 7 分鐘限時微學習，把合規訓練從「成本中心」變成「風險預警資產」。
 
+## 🔗 Live Demo
+
+| | 連結 |
+|---|---|
+| **主 Demo** | https://rayhuang.pythonanywhere.com/ui/ |
+| **商業論述** | https://rayhuang.pythonanywhere.com/ui/brief.html |
+| **資料模型** | https://rayhuang.pythonanywhere.com/ui/architecture-data-model.html |
+
 ## Quick Start
 
 ```bash
