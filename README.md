@@ -1,6 +1,6 @@
-# Sprint Reader 🏃‍♂️📖
+# Sprint Reader
 
-> **凱基金 MA 面試 Project 3** — 7 分鐘限時微學習，把合規訓練從「成本中心」變成「風險預警資產」。
+> 7 分鐘微學習 App — 利用零碎時間複習人身保險考照重點，透過「即將測驗」機制強化主動閱讀與認知留存。
 
 ## 🔗 Live Demo
 
@@ -24,25 +24,42 @@ bash run.sh
 
 | URL | 用途 |
 |---|---|
-| `http://localhost:8000/ui/` | Demo 起點（Pre-Sprint Splash） |
+| `http://localhost:8000/ui/` | Demo 起點（章節選擇） |
 | `http://localhost:8000/ui/brief.html` | 完整商業論述 |
 | `http://localhost:8000/docs` | FastAPI 自動產生的 API 文件 |
 
 ## What it solves
 
-金管會 2025 Q4 對保險業逾 6 成裁罰案來自「業務員未確實閱讀法規／商品說明」。傳統 e-learning 完訓率高、有效吸收率 < 30%。
+傳統保險考照備考方式以大量 PDF 與長時間集中複習為主，但業務員日常難以空出完整時間，導致學習斷斷續續、遺忘率高。
 
-**Sprint Reader 的不同**：
-- ⏱ **7 分鐘限時** — 業務員碎片時間就能完訓
-- 🎯 **「即將測驗」觸發** — 從被動瀏覽轉成主動閱讀（Active Reading Mode）
-- 📊 **行為遙測** — `tab_switch_count`、reading time、completion_status，餵 AI 做個人化推薦
+**Sprint Reader 的設計邏輯**：
+- ⏱ **7 分鐘限時** — 通勤、等候的零碎時間就能完成一章複習
+- 🎯 **「即將測驗」觸發** — 每章閱讀完立即接 3 題 quiz，強迫主動提取記憶（Active Recall）
+- 🔁 **間隔重複推薦** — 根據答錯率與距上次複習天數，推薦優先複習的章節
+- 📊 **行為遙測** — 記錄 `tab_switch_count`、閱讀時間、完成狀態，作為個人弱點分析基礎
+
+## 資料庫設計（SQLite）
+
+共 9 張表，分三個層次：
+
+| 分類 | 資料表 | 用途 |
+|---|---|---|
+| **核心** | `FlashcardPages` | 6 章 × 5 張閱讀卡內容 |
+| **核心** | `SprintSessions` | 每次 7 分鐘閱讀的行為紀錄（timer、tab 切換、完成狀態） |
+| **核心** | `LearningJourney_Map` | 閱讀 session 與 quiz session 的橋接表，記錄最終分數 |
+| **Quiz** | `QuizQuestions` | 6 章 × 3 題，含選項、正解、解釋 |
+| **Quiz** | `QuizResponses` | 每題作答紀錄，可分析使用者盲點 |
+| **推薦** | `ChapterMastery` | 每章答對率 + 距上次複習天數，驅動推薦邏輯 |
+| **推薦** | `ReviewEvents` | 每次間隔重複推薦的觸發紀錄 |
+| **支援** | `MicroModules` | 章節 metadata（標題、卡片數、預估時間） |
+| **支援** | `Agents` | 系統 agent 設定（預留 AI 推薦擴充用） |
 
 ## Tech Stack
 
 | Layer | Choice | Why |
 |---|---|---|
-| Backend | FastAPI | 與 sibling `secure-data-gateway` 對齊；自帶 OpenAPI |
-| DB | SQLite × 1 | demo 易啟動、schema 清晰、4 張表夠用 |
+| Backend | FastAPI | 自帶 OpenAPI 文件；async 架構好擴充 |
+| DB | SQLite | demo 易啟動、schema 清晰、零依賴 |
 | Frontend | Vanilla HTML/CSS/JS | 無 build step、無 framework、快速啟動零摩擦 |
 | Timer | Browser Visibility API + 後端 timestamp | UX 自然 + 防前端竄改 |
 
@@ -50,24 +67,26 @@ bash run.sh
 
 ```
 sprint-reader/
-├── CLAUDE.md                    ← 開發進度紀錄（跨 session 接續用）
-├── README.md                    ← 你正在讀的這份
 ├── run.sh                       ← 一鍵啟動
 ├── requirements.txt
-├── init_db.py                   ← 建表 + seed mock MicroModule
+├── init_db.py                   ← 建表 + seed 6 章內容與題庫
 ├── app/
 │   ├── main.py                  ← FastAPI entry + /ui 靜態掛載
 │   ├── db.py                    ← sqlite3 connection helper
 │   ├── routes/
-│   │   ├── module.py            ← GET /api/module/{id}
+│   │   ├── module.py            ← GET /api/module, GET /api/module/{id}
 │   │   ├── sprint.py            ← POST /api/sprint/{start,telemetry,complete}
-│   │   └── handoff.py           ← POST /api/handoff/to-quiz（mock P2）
+│   │   ├── quiz.py              ← GET /api/quiz/{module_id}, POST /api/quiz/submit, /finalize
+│   │   └── handoff.py           ← POST /api/handoff/to-quiz
 │   └── services/
 │       └── session_manager.py   ← 狀態機 + sprint_id 生成 + tab_switch
 ├── frontend/
-│   ├── index.html               ← Pre-Sprint Splash
+│   ├── index.html               ← 章節選擇 TOC
+│   ├── splash.html              ← Pre-Sprint 說明頁
 │   ├── reader.html              ← 滑卡 + 計時器 + Visibility API
-│   ├── handoff.html             ← Time's Up 交接畫面
+│   ├── handoff.html             ← 閱讀完成過場
+│   ├── quiz.html                ← 3 題即時測驗
+│   ├── result.html              ← 分數 + 逐題檢討
 │   ├── brief.html               ← 商業論述頁
 │   └── assets/
 │       ├── style.css
@@ -78,44 +97,25 @@ sprint-reader/
     └── schema.md                ← ER 圖 + 設計決策
 ```
 
-## 3 分鐘現場 Demo Script
-
-| 步驟 | 操作 | 講點 |
-|---|---|---|
-| ① | 開 `/ui/` Splash | 「7 分鐘 / 5 卡 / 3 題 quiz — 設計時就告訴使用者規則，觸發 Active Reading」 |
-| ② | 點「開始 7 分鐘 Sprint」 | 「Server 端產生 sprint_id（UUID）並蓋 start_timestamp」 |
-| ③ | 滑兩張卡 | 「mobile-first，CSS scroll-snap，無 framework」 |
-| ④ | **切到別的 tab，停 5 秒** | 「Visibility API 觸發 — timer 暫停、tab_switch_count POST 到後端。這是核心遙測訊號」 |
-| ⑤ | 切回，看 timer 從原處接續 | 「業務員的真實使用情境就是會被 Line 打斷，我們不該懲罰他，但要記錄」 |
-| ⑥ | 點「下一張」直到末卡 | 「滑到末卡 → 自動 complete」 |
-| ⑦ | Handoff 頁顯示 sprint_id + quiz_session_id | 「LearningJourney_Map 現在有一筆 record，未來 P2 quiz 結果可以 join 回來」 |
-| ⑧ | 開 `/ui/brief.html` | 「跨部門價值、Roadmap、技術亮點」 |
-
 ## End-to-end 驗證
 
 ```bash
-# 1. 看三張表都建立
+# 看所有表是否建立
 sqlite3 data/sprint.db ".tables"
 
-# 2. 看 seed 資料
+# 看章節清單
 sqlite3 data/sprint.db "SELECT module_id, title FROM MicroModules;"
 
-# 3. 跑完一個 sprint 後，看橋接表
+# 跑完一個 sprint 後，看橋接表
 sqlite3 data/sprint.db "SELECT * FROM LearningJourney_Map;"
 
-# 4. 看 tab 切換次數
+# 看 tab 切換次數與完成狀態
 sqlite3 data/sprint.db "SELECT sprint_id, tab_switch_count, completion_status FROM SprintSessions;"
+
+# 看各章掌握度
+sqlite3 data/sprint.db "SELECT * FROM ChapterMastery;"
 ```
-
-## 與 sibling `secure-data-gateway` 的關係
-
-兩個專案完全獨立（不同 DB、不同 venv、不共用模組），但敘事上互補：
-
-- **secure-data-gateway**：保證使用者敏感資訊在 LLM 流程中被 tokenization、不外洩
-- **sprint-reader**（本專案）：在 identity-safe 前提下，收集員工學習行為，為 AI 個人化推薦鋪路
-
-詳細論述見 `frontend/brief.html`。
 
 ---
 
-開發進度與接手指引：見 [`CLAUDE.md`](CLAUDE.md)
+Ray Huang · Project 3 of 3
