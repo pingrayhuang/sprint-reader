@@ -303,10 +303,10 @@
       </div>
 
       <div class="callout" style="margin-top: 14px;">
-        <b>💡 面試現場話術：</b>
-        「Sprint Reader 主專案蓋所有原始資料（含 agent_id 與名字）在自己的 DB；
-        當要送分析資料給集中式 Analytics 時，會先經過 sibling 的 Secure Data Gateway 做 PII 剝除 + tokenization。
-        兩個專案完全獨立，但欄位命名與 schema 設計刻意對齊，未來接入只要加一個 <code>POST /api/v1/submit_sprint</code> forwarder 服務，不用改資料模型。」
+        <b>💡 設計說明：</b>
+        Sprint Reader 主專案保存所有原始資料（含 agent_id 與名字）在自己的 DB；
+        送分析資料給集中式 Analytics 時，會先經過 Secure Data Gateway 做 PII 剝除 + tokenization。
+        兩個專案完全獨立，但欄位命名與 schema 設計刻意對齊，未來接入只要加一個 <code>POST /api/v1/submit_sprint</code> forwarder 服務，不用改資料模型。
       </div>
     </div>
 
@@ -320,7 +320,7 @@
           <b style="color: #86EFAC;">🟢 綠色 · SPEC（規格表）</b>
           <div style="font-size: 12.5px; color: var(--fg-mute); margin-top: 6px; line-height: 1.6;">
             Project 3 規格書「Database Design」段落<b>明文定義必做</b>的表。表名、欄位名、PK/FK 都照規格書原文。<br/>
-            <b>意義</b>：面試官打開 docx 對照欄位時，綠色表必須 100% 吻合。
+            <b>意義</b>：規格書要求的必做項目，表名、欄位名、PK/FK 皆照規格原文實作。
           </div>
           <div style="margin-top: 8px; font-size: 11px; color: var(--fg-dim); font-family: ui-monospace, monospace;">
             FlashcardPages · SprintSessions · LearningJourney_Map
@@ -340,7 +340,7 @@
           <b style="color: #C4B5FD;">🟣 紫色 · SUPPORT（配套表）</b>
           <div style="font-size: 12.5px; color: var(--fg-mute); margin-top: 6px; line-height: 1.6;">
             Mocking Project 1（內容生成）和 Project 2（測驗引擎）的本地化代用表。規格書說 P1/P2 「你不用擔心」，但為了 demo end-to-end 我自建了最小版本。<br/>
-            <b>意義</b>：當被問「那 P1/P2 的東西怎麼辦？」→ 答「這裡先 mock 一份，實際上線會換成真的 P1/P2 API，schema 完全不需要動。」
+            <b>意義</b>：先以最小版本 mock P1/P2，實際上線換成真實 API 後 schema 完全不需要動。
           </div>
           <div style="margin-top: 8px; font-size: 11px; color: var(--fg-dim); font-family: ui-monospace, monospace;">
             MicroModules · QuizQuestions · QuizResponses
@@ -494,7 +494,7 @@
     <!-- ========== LearningJourney_Map DEEP DIVE ========== -->
     <div class="sec">
       <div class="sec-title">🔗 1.5. 重點拆解：LearningJourney_Map 那三個規格欄位</div>
-      <div class="sec-sub">這張表是 Project 3 的靈魂。面試官 99% 會問「為什麼要這張表」。</div>
+      <div class="sec-sub">這張表是 Project 3 的靈魂，把閱讀與測驗兩個系統串成完整學習旅程。</div>
 
       <div class="wrap-box" style="background: rgba(34,197,94,0.04);">
         <b style="color: #86EFAC;">📌 一句話：這張表把「閱讀」和「測驗」綁成同一條學習旅程</b>
@@ -527,11 +527,11 @@
       </table>
 
       <div class="callout" style="margin-top: 14px;">
-        <b>🎯 面試答題範本</b><br/>
-        <b>Q：「為什麼需要 LearningJourney_Map 這張表？直接在 QuizResponses 加一個 sprint_id 欄位不就好了？」</b><br/>
-        A：「因為 P3 和 P2 是兩個<b>獨立 service</b>，規格書明講 P2 是另一個專案。如果把 sprint_id 塞進 P2 的 QuizResponses，等於讓 P2 耦合到 P3 的 schema。
+        <b>🎯 設計決策</b><br/>
+        <b>為什麼需要 LearningJourney_Map，而不是直接在 QuizResponses 加一個 sprint_id？</b><br/>
+        P3 和 P2 是兩個<b>獨立 service</b>，規格書明講 P2 是另一個專案。如果把 sprint_id 塞進 P2 的 QuizResponses，等於讓 P2 耦合到 P3 的 schema。
         用 Journey_Map 當橋樑，兩邊都只管自己的 PK，橋樑屬於共同的 analytics 層，未來要換掉任一邊都不會斷。
-        這張表是資料庫版本的 <b>anti-corruption layer</b>。」
+        這張表是資料庫版本的 <b>anti-corruption layer</b>。
       </div>
 
       <!-- concrete SQL example -->
@@ -628,7 +628,7 @@
     <div class="sec">
       <div class="sec-title">④ 測試矩陣 A · Project 3 規格符合度</div>
       <div class="sec-sub">逐條比對規格書（Project 3_The 7-Minute Sprint Reader 文件）每一項要求。<br/>
-      <b style="color: var(--accent);">怎麼讀：</b>每一列 = 規格書上的一條要求。「驗證方法」欄告訴你 <b>怎麼親自驗證這件事有做到</b>（可以跑 SQL、可以開某頁、可以看程式碼）；「結果」欄是面試前 Claude 已幫你跑過一次。</div>
+      <b style="color: var(--accent);">怎麼讀：</b>每一列 = 規格書上的一條要求。「驗證方法」欄說明如何親自驗證（可跑 SQL、可開某頁、可看程式碼）；「結果」欄為已驗證結果。</div>
       <div class="wrap-box">
         <table class="mtx">
           <tr><th>ID</th><th>規格項目（來源段落）</th><th>驗證方法</th><th>預期</th><th>結果</th></tr>
@@ -655,7 +655,7 @@
     <div class="sec">
       <div class="sec-title">⑤ 測試矩陣 B · 新功能驗證</div>
       <div class="sec-sub">規格外新增的功能及其情境測試。<br/>
-      <b style="color: var(--accent);">怎麼讀：</b>規格書沒要求、但我們為了 demo 質感 / MA 論述加上的功能。面試官問「這個 timeout modal / swipe 動畫是規格要的嗎？」→ 看這張表就知道哪些是加值、哪些是自己設計的功能。</div>
+      <b style="color: var(--accent);">怎麼讀：</b>規格書沒要求、但為了 demo 質感與 MA 論述額外新增的功能，清楚區分哪些是加值設計。</div>
       <div class="wrap-box">
         <table class="mtx">
           <tr><th>ID</th><th>新功能</th><th>情境</th><th>預期</th><th>結果</th></tr>
@@ -678,7 +678,7 @@
     <div class="sec">
       <div class="sec-title">⑥ 測試矩陣 C · 資料科學家分析能力</div>
       <div class="sec-sub">驗證資料模型足以支持這些分析 query。<br/>
-      <b style="color: var(--accent);">怎麼讀：</b>面試官若問「資料部門拿到這個 DB 能做什麼分析？」→ 這張表列 9 種真實分析情境，每條附 SQL。你可以拿其中任一條回答「我們在 schema 設計階段就考慮到這個 query 能直接跑，不用資料工程再清洗」。</div>
+      <b style="color: var(--accent);">怎麼讀：</b>列出 9 種真實分析情境，每條附 SQL，驗證 schema 設計階段就考慮到這些 query 能直接跑，不需資料工程額外清洗。</div>
       <div class="wrap-box">
         <table class="mtx">
           <tr><th>ID</th><th>分析需求</th><th>SQL</th><th>可行？</th></tr>
@@ -695,33 +695,8 @@
       </div>
     </div>
 
-    <!-- ================= SECTION 7: How to verify ================= -->
-    <div class="sec">
-      <div class="sec-title">⑦ 面試現場快速驗證指令</div>
-      <div class="sec-sub">可直接複製貼上，面試官若要求「你怎麼知道這些都真的有寫入」的時候。</div>
-      <div class="sql-sample">
-<span class="c"># 1. 9 張表都在</span>
-sqlite3 data/sprint.db <span class="kw">".tables"</span>
-
-<span class="c"># 2. SprintSessions 欄位一致規格</span>
-sqlite3 data/sprint.db <span class="kw">"PRAGMA table_info(SprintSessions);"</span>
-
-<span class="c"># 3. 看 completion_status 分布</span>
-sqlite3 data/sprint.db <span class="kw">"SELECT completion_status, COUNT(*) FROM SprintSessions GROUP BY 1;"</span>
-
-<span class="c"># 4. 看葉悟員在每章的遺忘曲線狀態</span>
-sqlite3 data/sprint.db <span class="kw">"SELECT m.title, cm.best_score_pct, cm.ease_factor, cm.next_review_at, cm.status
-FROM ChapterMastery cm JOIN MicroModules m ON cm.module_id=m.module_id
-WHERE cm.agent_id='demo-agent-001' ORDER BY next_review_at;"</span>
-
-<span class="c"># 5. Replay 任一使用者的完整學習時間軸</span>
-sqlite3 data/sprint.db <span class="kw">"SELECT event_timestamp, event_type, score_pct, tab_switch_count
-FROM ReviewEvents WHERE agent_id='demo-agent-001' ORDER BY event_timestamp;"</span>
-      </div>
-    </div>
-
     <div class="callout">
-      <b>🎯 一句話對面試官</b>：「我們沒動規格書列的欄位，但我們在旁邊加了三張表（Agents + ChapterMastery + ReviewEvents），讓資料科學家拿到 DB 的那一天就能直接跑 SM-2 遺忘曲線、分心 × 答對率相關性、timeout 風險分級，不用等資料工程再清洗一輪。」
+      <b>🎯 設計亮點</b>：規格書的欄位完整保留，額外加了三張表（Agents + ChapterMastery + ReviewEvents），讓資料科學家拿到 DB 的第一天就能直接跑 SM-2 遺忘曲線、分心 × 答對率相關性、timeout 風險分級，不需資料工程另行清洗。
     </div>
 
   </div>
