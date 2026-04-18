@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sprint Reader — Business Brief（給面試官）</title>
+  <link rel="stylesheet" href="assets/style.css" />
+  <style>
+    body { background: #0d1117; }
+    .brief { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
+    .brief h1 { font-size: 38px; line-height: 1.2; background: var(--story-grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .brief h2 { margin-top: 56px; font-size: 22px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+    .brief h3 { margin-top: 28px; font-size: 17px; color: var(--accent); }
+    .brief p { margin-top: 12px; font-size: 15px; line-height: 1.75; color: var(--fg); }
+    .brief ul, .brief ol { margin: 12px 0 0 24px; }
+    .brief li { padding: 4px 0; font-size: 15px; line-height: 1.7; }
+    .meta { color: var(--fg-dim); font-size: 13px; margin-top: 8px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px; }
+    @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
+    .box { background: var(--bg-elev); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; }
+    .box h4 { font-size: 14px; color: var(--accent-warm); margin-bottom: 8px; }
+    .box p { font-size: 14px; margin-top: 4px; color: var(--fg); }
+    .kpi { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 20px; }
+    @media (max-width: 640px) { .kpi { grid-template-columns: 1fr; } }
+    .kpi-card { background: var(--bg-elev); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; text-align: center; }
+    .kpi-card .num { font-size: 32px; font-weight: 800; background: var(--story-grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .kpi-card .lbl { font-size: 12px; color: var(--fg-dim); margin-top: 4px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 14px; }
+    th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+    th { color: var(--fg-dim); font-weight: 600; font-size: 12px; letter-spacing: 0.05em; text-transform: uppercase; }
+    code { background: var(--bg-elev); padding: 2px 6px; border-radius: 4px; font-size: 13px; color: var(--accent); }
+    .pill { display: inline-block; background: rgba(88, 166, 255, 0.15); color: var(--accent); padding: 2px 8px; border-radius: 999px; font-size: 12px; margin-right: 6px; }
+    .quote { border-left: 3px solid var(--accent-warm); padding: 12px 16px; background: rgba(240, 136, 62, 0.06); margin-top: 16px; font-size: 15px; color: var(--fg); border-radius: 0 8px 8px 0; }
+    .nav-back { color: var(--fg-dim); font-size: 13px; }
+    @media (max-width: 640px) {
+      .brief { padding: 20px 14px 64px; }
+      h1 { font-size: 22px !important; }
+      h2 { font-size: 17px !important; }
+      table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 12.5px; }
+      th, td { padding: 8px 10px; white-space: nowrap; }
+      .quote { font-size: 13px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="brief">
+    <a class="nav-back" href="index.html">← 回 demo</a>
+
+    <div style="margin-top: 32px;">
+      <span class="pill">Project 3 of 3</span>
+      <span class="pill">凱基金 MA Interview</span>
+      <span class="pill">2026 Spring</span>
+    </div>
+    <h1>用「遺忘曲線」的邏輯，<br/>幫金融從業員留住該記住的知識。</h1>
+    <p class="meta">Project 3 · 7-Minute Sprint Reader × 間隔重複 × 弱項追蹤</p>
+
+    <h2>1. 為什麼要做這個？（The Why）</h2>
+    <p>凱基金同仁每天要吸收的資訊量驚人：金管會變動的法規、壽險跨售框架、內部數位工具更新。但傳統的 60 分鐘線上課 + 50 頁法遵 PDF 已經失靈 — 它忽略了成年人「實際學習與遺忘」的本質。</p>
+    <div class="kpi">
+      <div class="kpi-card"><div class="num">80%</div><div class="lbl">遺忘曲線實證：<br/>週一學的資訊，若未主動提取，<br/>週五就忘掉 80%</div></div>
+      <div class="kpi-card"><div class="num">零碎時間</div><div class="lbl">業務員無法連續專心兩小時，<br/>但通勤 15 min、等候 10 min<br/>的片段每天都有</div></div>
+      <div class="kpi-card"><div class="num">7 min</div><div class="lbl">一個模組剛好擷取<br/>「切換空檔」的認知容量</div></div>
+    </div>
+    <div class="quote">「我們投入數百萬在教育訓練，卻只能眼睜睜看投資報酬率在幾天內蒸發，因為系統中的回饋迴圈根本是斷掉的。」— 專案初始論述（The Forgetting Curve, 2026）</div>
+
+    <h2>2. 解法：從「目的地式學習」轉向「心流式學習」</h2>
+    <div class="grid">
+      <div class="box">
+        <h4>① 章節化衝刺（Flow-state Learning）</h4>
+        <p>把 110 頁《人身保險》筆記切成 6 章 × 7 分鐘包，讓學習融入每日習慣，而不是季度義務。</p>
+      </div>
+      <div class="box">
+        <h4>② Tinder-style 滑卡 UI</h4>
+        <p>左滑下一張、右滑上一張。符合年輕世代 mobile-first 的滑動慣性，降低認知阻力。</p>
+      </div>
+      <div class="box">
+        <h4>③ 間隔重複（Spaced Repetition）</h4>
+        <p>每次做完 quiz，系統根據「答錯率 × 距離天數」算出下一個推薦章節。Day 3 / Day 10 主動推播複習，強迫認知提取。</p>
+      </div>
+      <div class="box">
+        <h4>④ 行為遙測（資料護城河）</h4>
+        <p>記錄 <code>tab_switch_count</code>、<code>reading_time</code>、每題正誤，組成使用者「弱點圖譜」— 未來 RL 演算法的訓練資料。</p>
+      </div>
+    </div>
+
+    <h2>3. 技術亮點（給工程主管聽）</h2>
+
+    <h3>Browser Visibility API：偵測「業務員切到 Line」</h3>
+    <p>監聽 <code>document.visibilityState</code>，切走時 timer 暫停、伺服器 <code>tab_switch_count++</code>，切回後恢復。<b>不只是 UX 設計，更是行為數據</b>：tab 切換次數高的業務員，未來測驗錯誤率顯著升高，可作為「需個別輔導」的早期訊號。</p>
+
+    <h3>嚴格狀態機：Server-authoritative timing</h3>
+    <p>所有 timestamp 由後端 <code>session_manager.py</code> 蓋章，前端只負責顯示。即使業務員改瀏覽器時間或 JS，紀錄仍正確。狀態機：<code>pre_sprint → reading → handoff</code>，每個 transition 都寫入 <code>SprintSessions</code>。</p>
+
+    <h3>Schema 設計：三表分離 = 三種使用者</h3>
+    <table>
+      <tr><th>表</th><th>誰會用</th><th>用來做什麼</th></tr>
+      <tr><td><code>FlashcardPages</code></td><td>教育訓練部</td><td>內容版本控管</td></tr>
+      <tr><td><code>SprintSessions</code></td><td>法遵部</td><td>合規完訓證明、稽核軌跡</td></tr>
+      <tr><td><code>LearningJourney_Map</code></td><td>資料部</td><td>串聯 P3 行為 + P2 測驗 → 餵 AI</td></tr>
+    </table>
+
+    <h2>4. MA 跨部門價值（給 HR 聽）</h2>
+    <p>這個專案的設計，刻意涵蓋 MA 輪調會接觸的四個 function，每個面向都對應到實際對話對象：</p>
+    <table>
+      <tr><th>Function</th><th>對話內容</th><th>本專案的角色</th></tr>
+      <tr><td>人資 / 教育訓練部</td><td>「新人考照通過率要怎麼拉高？」</td><td>6 章結構化複習、弱點圖譜</td></tr>
+      <tr><td>業務管理部</td><td>「哪些新人要額外輔導？」</td><td>答錯率 + tab 切換次數 → 風險分級</td></tr>
+      <tr><td>資料部 / AI</td><td>「行為數據能幹嘛？」</td><td>LearningJourney_Map → 個人化推薦、自動出題</td></tr>
+      <tr><td>數金部 / IT</td><td>「上線複雜度多高？」</td><td>FastAPI + SQLite，零依賴一鍵啟動</td></tr>
+    </table>
+    <p>上線後延伸：考完照後可轉成「在職續訓工具」— 新法規一出，立刻切成 7 分鐘包推播給所有業務員，取代冗長的年度回訓。</p>
+
+    <h2>5. 與 Project 10 Secure Data Gateway 的關係</h2>
+    <p>本專案（Project 3, The Forgetting Curve）與同系列的 Project 10 屬於同一個產品藍圖：</p>
+    <ul>
+      <li><b>Project 10 Secure Data Gateway</b>（資安）— 保證使用者敏感資訊在 LLM 流程中被 tokenization、不外洩</li>
+      <li><b>Project 3 The Forgetting Curve</b>（學習，本專案）— 在 identity-safe 前提下收集行為遙測，為個人化 RL 推薦鋪路</li>
+    </ul>
+    <p>兩專案資料 schema 不重疊、模組獨立，<b>但敘事連貫</b>：個資安全 + 行為資料化，是金融機構導入 AI 必須同時解決的兩個問題。</p>
+
+    <h2>6. Roadmap（如果這成為凱基的真實產品）</h2>
+    <ol>
+      <li><b>Phase 1（已完成）</b>：MVP — 7 分鐘滑卡 + 隨機 3 題 quiz + 規則式間隔推薦</li>
+      <li><b>Phase 2（3 個月）</b>：接入凱基真實合規文件與訓練教材，用 LLM 自動把長文切成 7 分鐘 sprint 包</li>
+      <li><b>Phase 3（6 個月）</b>：把 <code>wrong_rate × days_since</code> 的規則式推薦升級為 <b>強化學習（RL）</b>，動態預測每位員工「即將遺忘」的時點，在最佳複習時機推播</li>
+      <li><b>Phase 4（12 個月）</b>：行為訊號接入「業務員風險評分」，提早預警違規高風險個案；與 Project 10 Secure Data Gateway 串接 identity-safe 資料面板</li>
+    </ol>
+
+    <h2>7. 我從這個專案學到什麼</h2>
+    <ul>
+      <li><b>產品思維</b>：設計時主動把「資料如何被下游用」想進去，而不是只做眼前的 feature</li>
+      <li><b>跨部門語言</b>：同一個產品，能對教育訓練、法遵、資料、IT 講出對方關心的 KPI</li>
+      <li><b>商業洞察</b>：把「合規」這個看似 cost center 的工作，重新框架成「風險預警資產」</li>
+      <li><b>技術選型</b>：用最小成本（無 framework、無 build step）做出可 demo 的完整流程</li>
+    </ul>
+
+    <p class="meta" style="margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--border);">
+      Ray Huang · 凱基金 MA 面試 · Project 3 of 3<br/>
+      Source code 與架構說明：見 <code>CLAUDE.md</code>
+    </p>
+  </div>
+</body>
+</html>

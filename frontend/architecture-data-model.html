@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sprint Reader — 資料模型 + 規格驗證</title>
+  <link rel="stylesheet" href="assets/style.css" />
+  <style>
+    body { background: #0A1428; padding: 28px 18px 64px; }
+    .page { max-width: 1280px; margin: 0 auto; color: var(--fg); }
+    .back-link { display: inline-block; color: var(--fg-dim); font-size: 13px; text-decoration: none; margin-bottom: 14px; }
+    .back-link:hover { color: var(--accent); }
+    .hero { margin-bottom: 26px; }
+    .kicker { color: var(--accent); font-size: 12px; letter-spacing: 0.14em; font-weight: 700; text-transform: uppercase; }
+    .title { font-size: 28px; font-weight: 800; margin-top: 6px; line-height: 1.25; }
+    .lead { color: var(--fg-mute); font-size: 14px; margin-top: 10px; max-width: 860px; line-height: 1.65; }
+    .lead b { color: var(--fg); }
+
+    .sec { margin-top: 36px; }
+    .sec-title { font-size: 19px; font-weight: 800; margin-bottom: 6px; }
+    .sec-sub { font-size: 12.5px; color: var(--fg-mute); margin-bottom: 14px; }
+
+    /* ER Diagram */
+    .er {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+    }
+    .table-box {
+      padding: 16px; border-radius: 12px;
+      background: var(--glass-bg); border: 1px solid var(--glass-border);
+    }
+    .table-box.spec    { border-left: 3px solid #22C55E; }
+    .table-box.new     { border-left: 3px solid var(--kgi); }
+    .table-box.support { border-left: 3px solid #A78BFA; }
+    .table-box h4 {
+      font-size: 13.5px; font-weight: 800; margin-bottom: 8px;
+      font-family: ui-monospace, monospace;
+      display: flex; justify-content: space-between; align-items: baseline;
+    }
+    .spec h4 { color: #86EFAC; }
+    .new h4 { color: var(--kgi-light); }
+    .support h4 { color: #C4B5FD; }
+    .tag-pill {
+      font-size: 9.5px; font-weight: 700; padding: 2px 7px; border-radius: 999px;
+      letter-spacing: 0.04em; text-transform: uppercase;
+    }
+    .tag-pill.spec    { background: rgba(34,197,94,0.15);  color: #86EFAC; }
+    .tag-pill.new     { background: rgba(240,90,40,0.15);  color: var(--kgi-light); }
+    .tag-pill.support { background: rgba(167,139,250,0.15); color: #C4B5FD; }
+    .table-box ul { list-style: none; padding: 0; margin: 0; }
+    .table-box li {
+      font-size: 11.5px; padding: 5px 8px;
+      border-bottom: 1px dashed rgba(255,255,255,0.06);
+      font-family: ui-monospace, monospace; color: var(--fg-mute);
+      display: grid; grid-template-columns: 1fr auto; gap: 8px;
+      border-radius: 4px;
+    }
+    .table-box li:last-child { border: 0; }
+    .table-box li .col { color: var(--fg); }
+    .table-box li .type { color: var(--fg-dim); font-size: 10.5px; }
+    /* PK highlight (yellow) */
+    .table-box li.pk {
+      background: rgba(253, 230, 138, 0.08);
+      border-left: 3px solid #FDE68A;
+      padding-left: 6px;
+    }
+    .table-box li.pk .col { color: #FDE68A; font-weight: 700; }
+    /* Spec field (green) — regulated by Project 3 spec */
+    .table-box li.spec-field {
+      background: rgba(34, 197, 94, 0.06);
+      border-left: 3px solid #22C55E;
+      padding-left: 6px;
+    }
+    .table-box li.spec-field .col { color: #86EFAC; }
+    /* New field (orange) — self-added */
+    .table-box li.new-field {
+      background: rgba(240, 90, 40, 0.06);
+      border-left: 3px solid var(--kgi);
+      padding-left: 6px;
+    }
+    .table-box li.new-field .col { color: var(--kgi-light); }
+    .table-box li.fk .col { color: #93C5FD; }
+    .table-box .desc { font-size: 11.5px; color: var(--fg-dim); margin-top: 8px; line-height: 1.55; font-style: italic; }
+
+    /* Test matrix table */
+    .mtx { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+    .mtx th, .mtx td {
+      padding: 9px 10px; text-align: left;
+      border-bottom: 1px solid var(--glass-border);
+      vertical-align: top;
+    }
+    .mtx th { color: var(--fg-dim); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+    .mtx td.id { font-family: ui-monospace, monospace; font-size: 11px; color: var(--accent); font-weight: 700; width: 54px; }
+    .mtx code { font-family: ui-monospace, monospace; font-size: 11.5px; color: #FDE68A; }
+    .mtx tr:hover td { background: rgba(96,165,250,0.04); }
+    .pass { color: #22C55E; font-weight: 700; }
+    .pend { color: var(--fg-dim); }
+    .warn { color: var(--gold); font-weight: 700; }
+
+    .wrap-box {
+      padding: 16px 18px; border-radius: 12px;
+      background: var(--glass-bg); border: 1px solid var(--glass-border);
+    }
+
+    /* Forgetting curve visual */
+    .fc {
+      padding: 18px; border-radius: 14px;
+      background: linear-gradient(180deg, rgba(240,90,40,0.06), rgba(240,90,40,0.02));
+      border: 1px solid rgba(240,90,40,0.22);
+    }
+    .fc svg { width: 100%; height: auto; max-height: 220px; }
+    .fc-caption { font-size: 12px; color: var(--fg-dim); margin-top: 8px; line-height: 1.6; }
+
+    .callout {
+      margin-top: 18px;
+      padding: 14px 18px; border-radius: 12px;
+      background: rgba(34,197,94,0.08);
+      border-left: 3px solid #22C55E;
+      font-size: 13px; color: var(--fg-mute); line-height: 1.7;
+    }
+    .callout.warn { background: rgba(245,158,11,0.08); border-left-color: var(--warn); }
+    .callout.danger { background: rgba(239,68,68,0.08); border-left-color: var(--danger); }
+
+    .sql-sample {
+      margin-top: 10px; padding: 12px 14px;
+      background: #0F1E3A; border-radius: 8px;
+      font-family: ui-monospace, monospace; font-size: 11.5px;
+      color: #E5E7EB; line-height: 1.55; overflow-x: auto;
+      border: 1px solid var(--glass-border);
+    }
+    .sql-sample .kw { color: #93C5FD; }
+    .sql-sample .fn { color: #FDE68A; }
+    .sql-sample .c { color: var(--fg-dim); }
+
+    .legend-row {
+      margin-top: 16px;
+      display: flex; gap: 14px; flex-wrap: wrap;
+      font-size: 12px; color: var(--fg-dim);
+    }
+    .legend-row .dot { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: middle; }
+
+    /* ===== MOBILE ===== */
+    @media (max-width: 640px) {
+      body { padding: 16px 12px 56px; }
+      .title { font-size: 20px; }
+      .lead { font-size: 13px; }
+      .sec-title { font-size: 16px; }
+
+      /* Tables: wrap in scroll container */
+      .wrap-box { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      .mtx { font-size: 11.5px; min-width: 460px; }
+      .mtx th, .mtx td { padding: 7px 8px; }
+
+      /* ER cards: single column */
+      .er { grid-template-columns: 1fr; }
+
+      /* wrap-box inner grids forced to single column */
+      .wrap-box[style*="grid-template-columns"] { display: block !important; }
+      .wrap-box > div[style*="grid-template-columns"] { display: block !important; }
+
+      /* SQL block: readable scroll */
+      .sql-sample { font-size: 11px; }
+
+      /* Callout shrink */
+      .callout { font-size: 12px; padding: 12px 14px; }
+
+      /* Table box inside ER */
+      .table-box { padding: 12px; }
+      .table-box li { font-size: 11px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <a class="back-link" href="index.html">← 回 demo</a>
+    <div class="hero">
+      <div class="kicker">Sprint Reader · 資料模型 + Project 3 規格驗證</div>
+      <h1 class="title">為遺忘曲線分析而設計的資料庫</h1>
+      <p class="lead">
+        本頁回答四件事：<br/>
+        <b>①</b> Project 3 規格書定義了哪些必備欄位 → 我們實作是否一致；<br/>
+        <b>②</b> 為了讓資料科學家能做 <b>Ebbinghaus 遺忘曲線分析</b>，額外新增了哪些表 / 欄位；<br/>
+        <b>③</b> 7 分鐘 timeout 的 session 為何「不納入紀錄」—— 技術與商業邏輯；<br/>
+        <b>④</b> 規格符合度 + 新功能 + 分析能力三套測試矩陣，每一條都附 SQL 或 API 驗證指令。
+      </p>
+    </div>
+
+    <!-- ====== PLAIN-LANGUAGE PRIMER ====== -->
+    <div class="sec">
+      <div class="sec-title">📖 0. 先讀這個：資料庫在存什麼？（白話版）</div>
+      <div class="sec-sub">如果你看不懂下面的 schema 表，先看這節。</div>
+
+      <div class="wrap-box" style="display: grid; grid-template-columns: 1fr; gap: 12px;">
+        <div style="padding: 14px 16px; background: rgba(96,165,250,0.08); border-left: 3px solid var(--accent); border-radius: 8px;">
+          <b style="color: var(--accent);">一句話版本</b><br/>
+          「<b>使用者（葉悟員）</b>每次開一個章節來讀 7 分鐘，系統會把他<b>讀多久、切去看 Line 幾次、有沒有讀完、有沒有通過 quiz</b>記下來，
+          並用<b>遺忘曲線演算法</b>自動算出「他下次該什麼時候回來複習這章」。所有紀錄都標好時間戳，未來資料科學家可以拿去做預測模型。」
+        </div>
+
+        <div style="padding: 14px 16px; background: rgba(240,90,40,0.06); border-left: 3px solid var(--kgi); border-radius: 8px;">
+          <b style="color: var(--kgi-light);">每張表在做什麼？（用人話）</b>
+          <table class="mtx" style="margin-top: 10px;">
+            <tr><th style="width: 30%;">表名</th><th>它存的是</th></tr>
+            <tr><td><code>Agents</code></td><td>🧑 <b>誰是這個使用者</b>（葉悟員、員工編號、部門）。未來接 SSO 後會有很多人。</td></tr>
+            <tr><td><code>MicroModules</code></td><td>📚 <b>有哪些章節</b>（6 章保險考照重點）。</td></tr>
+            <tr><td><code>FlashcardPages</code></td><td>📄 <b>每章有哪 5 張卡片</b>（卡片內容）。</td></tr>
+            <tr><td><code>QuizQuestions</code></td><td>❓ <b>每章的題庫</b>（題目、選項、正解、解釋）。</td></tr>
+            <tr><td><code>SprintSessions</code> ⭐</td><td>⏱️ <b>每一次 7 分鐘閱讀的紀錄</b>（誰讀的、讀哪章、幾點開始、分心幾次、有沒有讀完）。本專案的核心行為資料。</td></tr>
+            <tr><td><code>QuizResponses</code></td><td>📝 <b>每次答題的紀錄</b>（選了哪個、對錯）。</td></tr>
+            <tr><td><code>LearningJourney_Map</code> ⭐</td><td>🔗 <b>把「閱讀」和「測驗」綁在一起的橋樑</b>。同一個人讀完同一章的 quiz，透過這張表串起來算分。</td></tr>
+            <tr><td><code>ChapterMastery</code> 🆕</td><td>🎯 <b>每人每章的「學會程度」總表</b>。存目前的遺忘曲線狀態、下次該複習的時間、是否已精熟。</td></tr>
+            <tr><td><code>ReviewEvents</code> 🆕</td><td>📜 <b>時間軸日誌</b>（像監視器錄影）。每次有動作就多一筆，資料科學家可以 replay 任何時間點。</td></tr>
+          </table>
+        </div>
+
+        <div style="padding: 14px 16px; background: rgba(34,197,94,0.06); border-left: 3px solid #22C55E; border-radius: 8px;">
+          <b style="color: #86EFAC;">關係怎麼串起來？</b>
+          <div style="margin-top: 8px; font-family: ui-monospace, monospace; font-size: 12px; color: var(--fg-mute); line-height: 1.7;">
+            Agents（一個人）<br/>
+            &nbsp;&nbsp;└─ SprintSessions（他的每次閱讀）&nbsp;&nbsp;← 寫進 ChapterMastery（更新他每章的學會程度）<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;└─ LearningJourney_Map（連到 quiz）<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─ QuizResponses（答題紀錄）<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;<br/>
+            每一步動作都會多寫一筆 ReviewEvents，所以有完整時間序列。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== AGENT IDENTITY + GATEWAY MAPPING ====== -->
+    <div class="sec">
+      <div class="sec-title">🔐 0.5. 你的 Agent 身份 + Secure Data Gateway 串接</div>
+      <div class="sec-sub">這節解釋「葉悟員」是誰、資料會怎麼送到 sibling 的 Secure Data Gateway 做 tokenization。</div>
+
+      <div class="wrap-box" style="margin-bottom: 14px;">
+        <b style="color: var(--kgi-light);">目前 Agents 表裡你的資料（seed 值）：</b>
+        <table class="mtx" style="margin-top: 10px;">
+          <tr><th style="width: 28%;">欄位</th><th>值</th><th>用途</th></tr>
+          <tr><td><code>agent_id</code></td><td><code>demo-agent-001</code></td><td>內部 surrogate key，所有 FK 都指這個。不對外暴露。</td></tr>
+          <tr><td><code>employee_code</code></td><td><code>KGI-MA-2026-042</code></td><td>業務面 ID：凱基 - MA 訓練生 - 2026 年第 42 號。<b>這是會送到 Gateway 的欄位</b>，Gateway 會把它 tokenize 成 UUID。</td></tr>
+          <tr><td><code>display_name</code></td><td>葉悟員</td><td>UI 顯示用（index.html 的 reminder modal 開頭 "回來啦，葉悟員"）。<b>不應該送到 Gateway</b>。</td></tr>
+          <tr><td><code>email</code></td><td>yewuyuan@kgifh.internal</td><td>PII。Gateway 會偵測並剝除。</td></tr>
+          <tr><td><code>team</code></td><td>個人金融事業群 · 數位金融</td><td>部門歸屬。資料科學可用於分群分析（哪個部門通過率較高）。</td></tr>
+          <tr><td><code>role</code></td><td>MA 管理培訓生</td><td>職位。可與 team 合用做群組。</td></tr>
+        </table>
+      </div>
+
+      <div class="wrap-box">
+        <b style="color: var(--accent);">Sprint Reader → Secure Data Gateway 欄位對應</b>
+        <div class="sec-sub" style="margin-top: 6px;">Gateway 的 <code>POST /api/v1/submit_sprint</code> 期待下列欄位。送過去後 Gateway 會偵測 PII、tokenize agent_id、存到 <code>TelemetryLogs</code>（完全無 agent_id）+ <code>ApiTrafficLogs</code>（稽核）+ <code>IdentityVault</code>（加密反查）。</div>
+
+        <table class="mtx" style="margin-top: 10px;">
+          <tr>
+            <th>Sprint Reader 欄位</th>
+            <th>Gateway 期待欄位</th>
+            <th>Gateway TelemetryLogs 最終存的</th>
+            <th>備註</th>
+          </tr>
+          <tr>
+            <td><code>Agents.employee_code</code><br/>例：KGI-MA-2026-042</td>
+            <td><code>agent_id</code> (request body)</td>
+            <td><code>token_id</code>（UUID）</td>
+            <td>Gateway tokenize：同人永遠同 token，可跨時間追蹤但無法反查身份。</td>
+          </tr>
+          <tr>
+            <td><code>Agents.display_name</code><br/>葉悟員</td>
+            <td><code>agent_name</code> (request body)</td>
+            <td>（不存）</td>
+            <td>Gateway Interceptor 偵測到 <code>name_field</code> → 直接剝除，從不落地。</td>
+          </tr>
+          <tr>
+            <td><code>SprintSessions.module_id</code><br/>INTEGER 例：3</td>
+            <td><code>module_id</code> (TEXT)</td>
+            <td><code>module_id</code> (TEXT)</td>
+            <td>需 int → str 轉換。Gateway schema 是 TEXT。</td>
+          </tr>
+          <tr>
+            <td><code>LearningJourney_Map.score / total_questions</code><br/>計算 score_pct = score/total</td>
+            <td><code>score</code> (REAL)</td>
+            <td><code>score</code> (REAL)</td>
+            <td>傳百分比（0–100）或比例（0–1），依 Gateway 慣例。</td>
+          </tr>
+          <tr>
+            <td><code>SprintSessions.end_timestamp − start_timestamp</code></td>
+            <td><code>time_spent_sec</code> (INTEGER)</td>
+            <td><code>time_spent_sec</code> (INTEGER)</td>
+            <td>秒數。只送 valid session（finished_early）。</td>
+          </tr>
+          <tr>
+            <td><code>QuizResponses</code> 陣列</td>
+            <td><code>answers_json</code> (TEXT)</td>
+            <td><code>answers_json</code> (TEXT)</td>
+            <td>序列化為 JSON string，包含每題 question_id / chosen_index / is_correct。</td>
+          </tr>
+          <tr>
+            <td>自動（now）</td>
+            <td>—</td>
+            <td><code>created_at</code> (TEXT ISO)</td>
+            <td>Gateway 蓋章，不由前端送。</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="callout" style="margin-top: 14px;">
+        <b>💡 面試現場話術：</b>
+        「Sprint Reader 主專案蓋所有原始資料（含 agent_id 與名字）在自己的 DB；
+        當要送分析資料給集中式 Analytics 時，會先經過 sibling 的 Secure Data Gateway 做 PII 剝除 + tokenization。
+        兩個專案完全獨立，但欄位命名與 schema 設計刻意對齊，未來接入只要加一個 <code>POST /api/v1/submit_sprint</code> forwarder 服務，不用改資料模型。」
+      </div>
+    </div>
+
+    <!-- ================= SECTION 1 ================= -->
+    <div class="sec">
+      <div class="sec-title">① 資料表分類 · 三種來源（顏色圖例）</div>
+      <div class="sec-sub">三個顏色代表這張表「為什麼存在」：</div>
+
+      <div class="wrap-box" style="margin-bottom: 14px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px;">
+        <div style="padding: 14px; border-left: 3px solid #22C55E; background: rgba(34,197,94,0.06); border-radius: 8px;">
+          <b style="color: #86EFAC;">🟢 綠色 · SPEC（規格表）</b>
+          <div style="font-size: 12.5px; color: var(--fg-mute); margin-top: 6px; line-height: 1.6;">
+            Project 3 規格書「Database Design」段落<b>明文定義必做</b>的表。表名、欄位名、PK/FK 都照規格書原文。<br/>
+            <b>意義</b>：面試官打開 docx 對照欄位時，綠色表必須 100% 吻合。
+          </div>
+          <div style="margin-top: 8px; font-size: 11px; color: var(--fg-dim); font-family: ui-monospace, monospace;">
+            FlashcardPages · SprintSessions · LearningJourney_Map
+          </div>
+        </div>
+        <div style="padding: 14px; border-left: 3px solid var(--kgi); background: rgba(240,90,40,0.06); border-radius: 8px;">
+          <b style="color: var(--kgi-light);">🟠 橘色 · NEW（加值表）</b>
+          <div style="font-size: 12.5px; color: var(--fg-mute); margin-top: 6px; line-height: 1.6;">
+            規格書<b>沒有要求</b>，但為了支援「遺忘曲線分析 + Gateway 串接 + 多使用者」額外新增的表。<br/>
+            <b>意義</b>：展現我在規格之外主動補齊了資料科學家會需要的骨架，是 MA 附加價值。
+          </div>
+          <div style="margin-top: 8px; font-size: 11px; color: var(--fg-dim); font-family: ui-monospace, monospace;">
+            Agents · ChapterMastery · ReviewEvents
+          </div>
+        </div>
+        <div style="padding: 14px; border-left: 3px solid #A78BFA; background: rgba(167,139,250,0.06); border-radius: 8px;">
+          <b style="color: #C4B5FD;">🟣 紫色 · SUPPORT（配套表）</b>
+          <div style="font-size: 12.5px; color: var(--fg-mute); margin-top: 6px; line-height: 1.6;">
+            Mocking Project 1（內容生成）和 Project 2（測驗引擎）的本地化代用表。規格書說 P1/P2 「你不用擔心」，但為了 demo end-to-end 我自建了最小版本。<br/>
+            <b>意義</b>：當被問「那 P1/P2 的東西怎麼辦？」→ 答「這裡先 mock 一份，實際上線會換成真的 P1/P2 API，schema 完全不需要動。」
+          </div>
+          <div style="margin-top: 8px; font-size: 11px; color: var(--fg-dim); font-family: ui-monospace, monospace;">
+            MicroModules · QuizQuestions · QuizResponses
+          </div>
+        </div>
+      </div>
+
+      <!-- Per-field legend -->
+      <div class="wrap-box" style="margin-bottom: 14px; background: rgba(255,255,255,0.02);">
+        <b style="color: var(--fg);">每張表內欄位也有分色：</b>
+        <div style="margin-top: 8px; font-size: 12px; color: var(--fg-mute); line-height: 1.7;">
+          <span style="display: inline-block; width: 8px; height: 8px; border-radius: 2px; background: #22C55E; margin-right: 6px; vertical-align: middle;"></span>
+          <b style="color: #86EFAC;">綠底欄位</b> = 規格書原文列出的欄位（不能改名、不能刪）<br/>
+          <span style="display: inline-block; width: 8px; height: 8px; border-radius: 2px; background: var(--kgi); margin-right: 6px; vertical-align: middle;"></span>
+          <b style="color: var(--kgi-light);">橘底欄位</b> = 我自己補上的欄位（規格沒要求，但為 UI / 分析 / Gateway 串接而加）<br/>
+          <span style="display: inline-block; width: 8px; height: 8px; border-radius: 2px; background: #FDE68A; margin-right: 6px; vertical-align: middle;"></span>
+          <b style="color: #FDE68A;">黃底欄位</b> = Primary Key 標記
+        </div>
+      </div>
+      <div class="er">
+
+        <!-- Spec-mandated tables -->
+        <div class="table-box spec">
+          <h4>FlashcardPages <span class="tag-pill spec">SPEC</span></h4>
+          <ul>
+            <li class="pk"><span class="col">page_id</span><span class="type">INTEGER PK</span></li>
+            <li class="spec-field fk"><span class="col">module_id</span><span class="type">FK → spec</span></li>
+            <li class="spec-field"><span class="col">sequence_number</span><span class="type">INTEGER · spec</span></li>
+            <li class="spec-field"><span class="col">page_content_json</span><span class="type">TEXT · spec</span></li>
+          </ul>
+          <div class="desc">規格書：「Content Segments」。4 個欄位全部是規格原文列出，無自訂。</div>
+        </div>
+
+        <div class="table-box spec">
+          <h4>SprintSessions <span class="tag-pill spec">SPEC</span></h4>
+          <ul>
+            <li class="pk"><span class="col">sprint_id</span><span class="type">TEXT PK · spec</span></li>
+            <li class="spec-field"><span class="col">agent_id</span><span class="type">TEXT · spec</span></li>
+            <li class="spec-field fk"><span class="col">module_id</span><span class="type">FK · spec</span></li>
+            <li class="spec-field"><span class="col">start_timestamp</span><span class="type">TEXT · spec</span></li>
+            <li class="spec-field"><span class="col">end_timestamp</span><span class="type">TEXT · spec</span></li>
+            <li class="spec-field"><span class="col">tab_switch_count</span><span class="type">INTEGER · spec</span></li>
+            <li class="spec-field"><span class="col">completion_status</span><span class="type">TEXT enum · spec</span></li>
+          </ul>
+          <div class="desc">
+            規格書：「Reading Behavior」。7 個欄位全部是規格原文列出，無自訂。
+            completion_status 規格明列三值：
+            <code>finished_early</code> / <code>timed_out</code> / <code>abandoned</code>。
+          </div>
+        </div>
+
+        <div class="table-box spec">
+          <h4>LearningJourney_Map <span class="tag-pill spec">SPEC</span></h4>
+          <ul>
+            <li class="pk"><span class="col">journey_id</span><span class="type">INTEGER PK · spec</span></li>
+            <li class="spec-field fk"><span class="col">sprint_id</span><span class="type">FK → P3 · spec</span></li>
+            <li class="spec-field fk"><span class="col">quiz_session_id</span><span class="type">FK → P2 · spec</span></li>
+            <li class="new-field"><span class="col">created_at</span><span class="type">TEXT · new</span></li>
+            <li class="new-field"><span class="col">score</span><span class="type">INTEGER · new</span></li>
+            <li class="new-field"><span class="col">total_questions</span><span class="type">INTEGER · new</span></li>
+          </ul>
+          <div class="desc">規格書：「Connective Tissue」。3 個 spec 欄位 + 3 個自訂欄位，下方專區詳解。</div>
+        </div>
+
+        <!-- NEW tables — every field is orange (self-added) -->
+        <div class="table-box new">
+          <h4>Agents <span class="tag-pill new">NEW</span></h4>
+          <ul>
+            <li class="pk"><span class="col">agent_id</span><span class="type">TEXT PK</span></li>
+            <li class="new-field"><span class="col">employee_code</span><span class="type">TEXT · new</span></li>
+            <li class="new-field"><span class="col">display_name</span><span class="type">TEXT · new</span></li>
+            <li class="new-field"><span class="col">email</span><span class="type">TEXT · new</span></li>
+            <li class="new-field"><span class="col">team</span><span class="type">TEXT · new</span></li>
+            <li class="new-field"><span class="col">role</span><span class="type">TEXT · new</span></li>
+            <li class="new-field"><span class="col">created_at</span><span class="type">TEXT · new</span></li>
+          </ul>
+          <div class="desc">整張表都是自訂（規格書 SprintSessions 只有 agent_id 欄位，沒定義 agent 實體）。補全「這個 ID 是誰」的資訊（葉悟員等）。</div>
+        </div>
+
+        <div class="table-box new">
+          <h4>ChapterMastery <span class="tag-pill new">NEW</span></h4>
+          <ul>
+            <li class="pk"><span class="col">mastery_id</span><span class="type">INTEGER PK</span></li>
+            <li class="new-field fk"><span class="col">agent_id + module_id</span><span class="type">UNIQUE · new</span></li>
+            <li class="new-field"><span class="col">first_read_at / last_read_at</span><span class="type">TEXT · new</span></li>
+            <li class="new-field"><span class="col">total_valid_sprints</span><span class="type">INTEGER · new</span></li>
+            <li class="new-field"><span class="col">total_timed_out / abandoned</span><span class="type">INTEGER · new</span></li>
+            <li class="new-field"><span class="col">best_score_pct / last_score_pct</span><span class="type">REAL · new</span></li>
+            <li class="new-field"><span class="col">avg_tab_switches</span><span class="type">REAL · new</span></li>
+            <li class="new-field"><span class="col">ease_factor</span><span class="type">REAL (SM-2) · new</span></li>
+            <li class="new-field"><span class="col">current_interval_days</span><span class="type">REAL · new</span></li>
+            <li class="new-field"><span class="col">next_review_at</span><span class="type">TEXT · new</span></li>
+            <li class="new-field"><span class="col">retention_estimate</span><span class="type">REAL 0-1 · new</span></li>
+            <li class="new-field"><span class="col">status</span><span class="type">enum · new</span></li>
+            <li class="new-field"><span class="col">updated_at</span><span class="type">TEXT · new</span></li>
+          </ul>
+          <div class="desc">
+            整張表都是自訂。每個 agent × 每章 一筆。SM-2 演算法派生欄位（ease_factor + interval + next_review_at）讓資料科學家不用自己算遺忘曲線，直接 query。
+          </div>
+        </div>
+
+        <div class="table-box new">
+          <h4>ReviewEvents <span class="tag-pill new">NEW</span></h4>
+          <ul>
+            <li class="pk"><span class="col">event_id</span><span class="type">INTEGER PK</span></li>
+            <li class="new-field fk"><span class="col">agent_id / module_id</span><span class="type">FK · new</span></li>
+            <li class="new-field"><span class="col">event_type</span><span class="type">TEXT enum · new</span></li>
+            <li class="new-field"><span class="col">sprint_id</span><span class="type">TEXT · new</span></li>
+            <li class="new-field"><span class="col">quiz_session_id</span><span class="type">TEXT · new</span></li>
+            <li class="new-field"><span class="col">score_pct</span><span class="type">REAL · new</span></li>
+            <li class="new-field"><span class="col">reading_seconds</span><span class="type">INTEGER · new</span></li>
+            <li class="new-field"><span class="col">tab_switch_count</span><span class="type">INTEGER · new</span></li>
+            <li class="new-field"><span class="col">recall_quality</span><span class="type">INTEGER 0-5 · new</span></li>
+            <li class="new-field"><span class="col">event_timestamp</span><span class="type">TEXT · new</span></li>
+          </ul>
+          <div class="desc">整張表都是自訂。<b>Append-only 事件流</b>（不 UPDATE / DELETE）。給資料科學家完整時間序列，可 replay 任何時間點。</div>
+        </div>
+
+        <!-- Support tables -->
+        <div class="table-box support">
+          <h4>MicroModules <span class="tag-pill support">SUPPORT</span></h4>
+          <ul>
+            <li class="pk"><span class="col">module_id</span><span class="type">INTEGER PK</span></li>
+            <li><span class="col">title / description</span><span class="type">TEXT</span></li>
+            <li><span class="col">source_doc</span><span class="type">TEXT</span></li>
+            <li><span class="col">domain_tags</span><span class="type">TEXT JSON</span></li>
+            <li><span class="col">duration_sec / page_count / quiz_count</span><span class="type">INTEGER</span></li>
+          </ul>
+          <div class="desc">Mock P1 輸出。規格書要 Metadata Fetching → 即 source_doc + domain_tags。</div>
+        </div>
+
+        <div class="table-box support">
+          <h4>QuizQuestions / QuizResponses <span class="tag-pill support">SUPPORT</span></h4>
+          <ul>
+            <li><span class="col">QuizQuestions</span><span class="type">stem + options + correct</span></li>
+            <li><span class="col">QuizResponses</span><span class="type">chosen_index + is_correct</span></li>
+          </ul>
+          <div class="desc">Mock P2 輸出。規格書明說 P2 handoff 後才介入，這裡一併建立方便 demo end-to-end。</div>
+        </div>
+
+      </div>
+
+      <div class="legend-row">
+        <span><span class="dot" style="background:#FDE68A"></span>Primary Key</span>
+        <span><span class="dot" style="background:#93C5FD"></span>Foreign Key</span>
+        <span><span class="dot" style="background:#22C55E"></span>規格欄位</span>
+        <span><span class="dot" style="background:var(--kgi)"></span>自訂欄位</span>
+      </div>
+    </div>
+
+    <!-- ========== LearningJourney_Map DEEP DIVE ========== -->
+    <div class="sec">
+      <div class="sec-title">🔗 1.5. 重點拆解：LearningJourney_Map 那三個規格欄位</div>
+      <div class="sec-sub">這張表是 Project 3 的靈魂。面試官 99% 會問「為什麼要這張表」。</div>
+
+      <div class="wrap-box" style="background: rgba(34,197,94,0.04);">
+        <b style="color: #86EFAC;">📌 一句話：這張表把「閱讀」和「測驗」綁成同一條學習旅程</b>
+        <div style="margin-top: 10px; font-size: 13px; color: var(--fg-mute); line-height: 1.7;">
+          沒有這張表，<code>SprintSessions</code>（閱讀紀錄）和 <code>QuizResponses</code>（答題紀錄）就是兩個孤島，
+          沒人知道「<b>今天答錯這題的人，是哪一次閱讀完就來考的</b>」。規格書講的「Connective Tissue」就是這個概念——結締組織，把兩塊肉連起來。
+        </div>
+      </div>
+
+      <table class="mtx" style="margin-top: 14px;">
+        <tr><th style="width: 180px;">欄位</th><th style="width: 90px;">型別</th><th>意義（白話）</th><th>為什麼重要</th></tr>
+        <tr>
+          <td style="background: rgba(253,230,138,0.08);"><code style="color: #FDE68A; font-weight: 700;">journey_id</code> 🔑</td>
+          <td>INTEGER PK</td>
+          <td>「這條學習旅程」的獨立編號，每一次閱讀 + 測驗組合都有一個。</td>
+          <td>讓資料科學家可以說「第 37 號 journey 是誰的」，而不用每次 JOIN 兩張表。</td>
+        </tr>
+        <tr>
+          <td style="background: rgba(34,197,94,0.08);"><code style="color: #86EFAC; font-weight: 700;">sprint_id</code></td>
+          <td>TEXT FK</td>
+          <td>指向 <code>SprintSessions.sprint_id</code>——「是哪一次 7 分鐘閱讀」。</td>
+          <td>JOIN 回去就能查「這次讀花多久、分心幾次、讀哪章」。沒這個，考完試不知道這人到底有沒有先讀。</td>
+        </tr>
+        <tr>
+          <td style="background: rgba(34,197,94,0.08);"><code style="color: #86EFAC; font-weight: 700;">quiz_session_id</code></td>
+          <td>TEXT FK</td>
+          <td>指向 P2 的 <code>QuizResponses.quiz_session_id</code>——「是哪一次測驗」。</td>
+          <td>JOIN 回去就能查「這次考了幾題、對幾題、哪題錯」。跨 P3 / P2 兩個系統的唯一橋樑。</td>
+        </tr>
+      </table>
+
+      <div class="callout" style="margin-top: 14px;">
+        <b>🎯 面試答題範本</b><br/>
+        <b>Q：「為什麼需要 LearningJourney_Map 這張表？直接在 QuizResponses 加一個 sprint_id 欄位不就好了？」</b><br/>
+        A：「因為 P3 和 P2 是兩個<b>獨立 service</b>，規格書明講 P2 是另一個專案。如果把 sprint_id 塞進 P2 的 QuizResponses，等於讓 P2 耦合到 P3 的 schema。
+        用 Journey_Map 當橋樑，兩邊都只管自己的 PK，橋樑屬於共同的 analytics 層，未來要換掉任一邊都不會斷。
+        這張表是資料庫版本的 <b>anti-corruption layer</b>。」
+      </div>
+
+      <!-- concrete SQL example -->
+      <div class="sql-sample">
+<span class="c"># 實戰範例：想查「葉悟員每次 7 分鐘閱讀花多久 + 該次測驗分數」：</span>
+<span class="kw">SELECT</span>
+  s.sprint_id,
+  s.module_id,
+  s.tab_switch_count               <span class="c">-- 那次分心幾次</span>,
+  (julianday(s.end_timestamp) - julianday(s.start_timestamp)) * 86400
+                                   <span class="c">AS reading_sec</span>,
+  lm.score,                        <span class="c">-- 自訂欄位：該次考對幾題</span>
+  lm.total_questions
+<span class="kw">FROM</span> SprintSessions s
+<span class="kw">JOIN</span> LearningJourney_Map lm <span class="kw">ON</span> lm.sprint_id = s.sprint_id
+<span class="kw">WHERE</span> s.agent_id = <span class="fn">'demo-agent-001'</span>
+<span class="kw">ORDER BY</span> s.start_timestamp <span class="kw">DESC</span>;
+
+<span class="c"># 注意：score / total_questions 是我加的（橘色欄位），</span>
+<span class="c"># 規格書只要求 journey_id / sprint_id / quiz_session_id（綠色）。</span>
+<span class="c"># 我加這兩欄是為了 stats 頁不用再去 QuizResponses JOIN 算分，效能更好。</span>
+      </div>
+    </div>
+
+    <!-- ================= SECTION 2: Forgetting curve logic ================= -->
+    <div class="sec">
+      <div class="sec-title">② 遺忘曲線計算邏輯（SM-2 lite）</div>
+      <div class="sec-sub">每次 quiz 完成 → <code>ChapterMastery</code> 重算 → <code>next_review_at</code> 更新。</div>
+
+      <div class="fc">
+        <svg viewBox="0 0 800 200" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="fcg" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="rgba(240,90,40,0.4)"/>
+              <stop offset="100%" stop-color="rgba(240,90,40,0)"/>
+            </linearGradient>
+          </defs>
+          <!-- Axes -->
+          <line x1="40" y1="180" x2="780" y2="180" stroke="rgba(255,255,255,0.2)"/>
+          <line x1="40" y1="20" x2="40" y2="180" stroke="rgba(255,255,255,0.2)"/>
+          <!-- Curve: y=100*e^(-t/S), S grows after each review -->
+          <path d="M 40 30 C 120 40, 200 140, 300 160 L 300 180 L 40 180 Z" fill="url(#fcg)"/>
+          <path d="M 40 30 C 120 40, 200 140, 300 160" stroke="#F05A28" stroke-width="2" fill="none"/>
+          <!-- Review point -->
+          <circle cx="300" cy="160" r="5" fill="#F05A28"/>
+          <text x="310" y="163" fill="#FDE68A" font-size="11">1st review (interval=1d)</text>
+          <!-- Second curve -->
+          <path d="M 300 80 C 400 100, 500 150, 550 155" stroke="#22C55E" stroke-width="2" fill="none" stroke-dasharray="4 3"/>
+          <circle cx="550" cy="155" r="5" fill="#22C55E"/>
+          <text x="560" y="158" fill="#86EFAC" font-size="11">2nd (6d)</text>
+          <!-- Third -->
+          <path d="M 550 70 C 650 90, 730 140, 770 150" stroke="#60A5FA" stroke-width="2" fill="none" stroke-dasharray="4 3"/>
+          <circle cx="770" cy="150" r="5" fill="#60A5FA"/>
+          <text x="600" y="128" fill="#93C5FD" font-size="11">3rd (~15d · ef × prev)</text>
+          <!-- Labels -->
+          <text x="45" y="15" fill="var(--fg-dim)" font-size="10">retention 100%</text>
+          <text x="740" y="195" fill="var(--fg-dim)" font-size="10">time (days)</text>
+        </svg>
+        <div class="fc-caption">
+          每次複習後，<code>ease_factor</code> 依 <b>recall_quality</b>（由 quiz 分數映射 0–5）上下調整；下次最佳複習時間 = 今天 + <code>current_interval_days</code>。分數愈高 → interval 愈長；分數低 → interval 重設為 1 天。
+        </div>
+      </div>
+
+      <div class="sql-sample">
+<span class="c"># 映射規則（app/services/mastery.py）：</span>
+<span class="c">#   score_pct &gt;= 100 → quality 5 (完美)</span>
+<span class="c">#   score_pct &gt;= 85  → quality 4</span>
+<span class="c">#   score_pct &gt;= 70  → quality 3 (通過門檻)</span>
+<span class="c">#   score_pct &gt;= 50  → quality 2 (需重讀)</span>
+<span class="c">#   quality &lt; 3      → interval 重設為 1 天</span></div>
+    </div>
+
+    <!-- ================= SECTION 3: Timed out handling ================= -->
+    <div class="sec">
+      <div class="sec-title">③ 7 分鐘 timeout 的處理邏輯</div>
+      <div class="sec-sub">規格書規定 completion_status 要能區分 <code>timed_out</code>。UI 端加上提示 + 不納入進度。</div>
+
+      <div class="wrap-box">
+        <b>使用者路徑：</b><br/>
+        1. 倒數 7:00 → 0:00 ——<code>tick()</code> 呼叫 <code>handleTimeout()</code><br/>
+        2. <code>POST /api/sprint/complete</code> with <code>status="timed_out"</code> → SprintSessions.completion_status 寫入 <code>timed_out</code><br/>
+        3. <code>session_manager.complete_sprint()</code> 檢測到 status ∈ {timed_out, abandoned} → 呼叫 <code>mastery.record_invalid_sprint()</code> → 更新 ChapterMastery.total_timed_out +1 + 新增 ReviewEvent<br/>
+        4. 前端彈出 modal：「偵測到你已超過 7 分鐘尚未完成閱讀…本次紀錄將不納入學習進度」<br/>
+        5. 使用者點「返回首頁」→ <code>location.href = "index.html"</code>
+      </div>
+
+      <div class="callout warn">
+        <b>為何 timed_out 不算？</b>
+        規格書 Business Context 強調「active reading mode」—— 倒數壓迫使用者主動讀完。如果 timed out session 也計入完成章節，會破壞這個行為激勵機制。stats 層用 <code>WHERE completion_status = 'finished_early'</code> 明確排除。但這些 session <b>仍保留在 DB</b>（不是刪除），資料科學家可以分析「哪些人常 timeout / 哪章最容易 timeout」。
+      </div>
+    </div>
+
+    <!-- ================= SECTION 4: Test Matrix A ================= -->
+    <div class="sec">
+      <div class="sec-title">④ 測試矩陣 A · Project 3 規格符合度</div>
+      <div class="sec-sub">逐條比對規格書（Project 3_The 7-Minute Sprint Reader 文件）每一項要求。<br/>
+      <b style="color: var(--accent);">怎麼讀：</b>每一列 = 規格書上的一條要求。「驗證方法」欄告訴你 <b>怎麼親自驗證這件事有做到</b>（可以跑 SQL、可以開某頁、可以看程式碼）；「結果」欄是面試前 Claude 已幫你跑過一次。</div>
+      <div class="wrap-box">
+        <table class="mtx">
+          <tr><th>ID</th><th>規格項目（來源段落）</th><th>驗證方法</th><th>預期</th><th>結果</th></tr>
+          <tr><td class="id">S1</td><td>Metadata Fetching：前端可取回 source_doc + domain_tags</td><td><code>curl /api/module/1</code></td><td>回傳包含這兩個欄位</td><td class="pass">✓ PASS</td></tr>
+          <tr><td class="id">S2</td><td>Tab Switch 計數（Visibility API 綁定）</td><td>切 tab → SprintSessions.tab_switch_count +1</td><td>+1 且計時暫停</td><td class="pass">✓ PASS</td></tr>
+          <tr><td class="id">S3</td><td>Seamless Handoff：瞬時生 quiz_session_id</td><td><code>POST /api/handoff/to-quiz</code></td><td>回傳 uuid</td><td class="pass">✓ PASS</td></tr>
+          <tr><td class="id">S4</td><td>FlashcardPages PK = page_id</td><td><code>PRAGMA table_info</code></td><td>pk=1</td><td class="pass">✓ PASS</td></tr>
+          <tr><td class="id">S5</td><td>FlashcardPages.module_id FK → MicroModules</td><td>schema</td><td>FK constraint</td><td class="pass">✓ PASS</td></tr>
+          <tr><td class="id">S6</td><td>FlashcardPages.sequence_number 存在</td><td>schema</td><td>INTEGER NOT NULL</td><td class="pass">✓ PASS</td></tr>
+          <tr><td class="id">S7</td><td>FlashcardPages.page_content_json 存在</td><td>schema</td><td>TEXT NOT NULL</td><td class="pass">✓ PASS</td></tr>
+          <tr><td class="id">S8</td><td>SprintSessions 7 欄位齊全（sprint_id, agent_id, module_id, start_timestamp, end_timestamp, tab_switch_count, completion_status）</td><td>PRAGMA</td><td>全部存在</td><td class="pass">✓ PASS</td></tr>
+          <tr><td class="id">S9</td><td>completion_status 接受 3 個值</td><td>VALID_END_STATUS set</td><td>{finished_early, timed_out, abandoned}</td><td class="pass">✓ PASS</td></tr>
+          <tr><td class="id">S10</td><td>LearningJourney_Map 有 journey_id / sprint_id / quiz_session_id</td><td>PRAGMA</td><td>三欄齊備</td><td class="pass">✓ PASS</td></tr>
+          <tr><td class="id">S11</td><td>Pre-Sprint Splash 顯示：Title + Domain Tags + 「7 分 5 卡 + 3 題 quiz」警告</td><td>開 splash.html?module_id=1</td><td>三者皆顯</td><td class="pass">✓ PASS</td></tr>
+          <tr><td class="id">S12</td><td>Reader UI 為 mobile-first story 風格（全螢幕單卡）</td><td>Safari dev responsive 375px</td><td>單卡佔滿</td><td class="pass">✓ PASS</td></tr>
+          <tr><td class="id">S13</td><td>Top Bar 有 progress + domain tag + countdown</td><td>reader.html</td><td>三元件齊</td><td class="pass">✓ PASS</td></tr>
+          <tr><td class="id">S14</td><td>倒數完顯示 Sprint Complete 類畫面（lock overlay）</td><td>自然 timeout</td><td>出現 modal</td><td class="pass">✓ PASS</td></tr>
+          <tr><td class="id">S15</td><td>Server-authoritative timestamps（防前端改 timer）</td><td>session_manager.py 用 <code>datetime.now()</code> 蓋章</td><td>後端主導</td><td class="pass">✓ PASS</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- ================= SECTION 5: Test Matrix B ================= -->
+    <div class="sec">
+      <div class="sec-title">⑤ 測試矩陣 B · 新功能驗證</div>
+      <div class="sec-sub">規格外新增的功能及其情境測試。<br/>
+      <b style="color: var(--accent);">怎麼讀：</b>規格書沒要求、但我們為了 demo 質感 / MA 論述加上的功能。面試官問「這個 timeout modal / swipe 動畫是規格要的嗎？」→ 看這張表就知道哪些是加值、哪些是自己設計的功能。</div>
+      <div class="wrap-box">
+        <table class="mtx">
+          <tr><th>ID</th><th>新功能</th><th>情境</th><th>預期</th><th>結果</th></tr>
+          <tr><td class="id">N1</td><td>7 分鐘 timeout modal</td><td>故意讓倒數到 0</td><td>彈出橘色 modal + 返回首頁按鈕</td><td class="pass">✓ PASS</td></tr>
+          <tr><td class="id">N2</td><td>timed_out session 自動寫入</td><td>倒數結束</td><td>SprintSessions.completion_status = 'timed_out'</td><td class="pass">✓ PASS</td></tr>
+          <tr><td class="id">N3</td><td>timed_out 不計入章節完成</td><td>回首頁看 ring</td><td>completion_pct 不增加</td><td class="pass">✓ PASS</td></tr>
+          <tr><td class="id">N4</td><td>使用者名稱 vs agent_id</td><td>首頁 reminder modal</td><td>顯示「葉悟員」（從 Agents.display_name）</td><td class="warn">⚠ 目前仍硬編碼，待接 Agents 表</td></tr>
+          <tr><td class="id">N5</td><td>ChapterMastery 每次 finalize 自動更新</td><td>完成任一章 quiz</td><td>對應列 total_valid_sprints +1，best_score 更新</td><td class="pass">✓ PASS</td></tr>
+          <tr><td class="id">N6</td><td>ease_factor 隨分數調整</td><td>100% vs 30%</td><td>100% → ef 上升；30% → interval 重設 1 天</td><td class="pass">✓ PASS</td></tr>
+          <tr><td class="id">N7</td><td>ReviewEvents append-only</td><td>每次 sprint/quiz/timeout</td><td>INSERT 一列，無 UPDATE/DELETE 程式路徑</td><td class="pass">✓ PASS</td></tr>
+          <tr><td class="id">N8</td><td>Tinder-style swipe（橘 tint + 白 stamp / 藍 tint + 藍 stamp）</td><td>reader 左右拖</td><td>顏色對應 + intensity 漸變</td><td class="pass">✓ PASS</td></tr>
+          <tr><td class="id">N9</td><td>關閉網站提醒</td><td>刷新 reader 頁</td><td>beforeunload 觸發瀏覽器確認 dialog</td><td class="pass">✓ PASS</td></tr>
+          <tr><td class="id">N10</td><td>Quiz 答對率用實際題數（非全章）</td><td>quiz 抽 3 題答對 3</td><td>顯示 100%（不是 3/18）</td><td class="pass">✓ PASS</td></tr>
+          <tr><td class="id">N11</td><td>invalid sprint 記錄在 ChapterMastery</td><td>timeout 一次</td><td>total_timed_out +1 + ReviewEvent 寫入</td><td class="pass">✓ PASS</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- ================= SECTION 6: Test Matrix C ================= -->
+    <div class="sec">
+      <div class="sec-title">⑥ 測試矩陣 C · 資料科學家分析能力</div>
+      <div class="sec-sub">驗證資料模型足以支持這些分析 query。<br/>
+      <b style="color: var(--accent);">怎麼讀：</b>面試官若問「資料部門拿到這個 DB 能做什麼分析？」→ 這張表列 9 種真實分析情境，每條附 SQL。你可以拿其中任一條回答「我們在 schema 設計階段就考慮到這個 query 能直接跑，不用資料工程再清洗」。</div>
+      <div class="wrap-box">
+        <table class="mtx">
+          <tr><th>ID</th><th>分析需求</th><th>SQL</th><th>可行？</th></tr>
+          <tr><td class="id">DS1</td><td>每人每章 valid 閱讀次數</td><td><code>SELECT agent_id, module_id, COUNT(*) FROM SprintSessions WHERE completion_status='finished_early' GROUP BY 1,2</code></td><td class="pass">✓</td></tr>
+          <tr><td class="id">DS2</td><td>專注度指標（分心 / 秒）</td><td><code>tab_switch_count / ((julianday(end_timestamp)-julianday(start_timestamp))*86400)</code></td><td class="pass">✓</td></tr>
+          <tr><td class="id">DS3</td><td>章節遺忘曲線：誰該複習</td><td><code>SELECT * FROM ChapterMastery WHERE next_review_at &lt; datetime('now')</code></td><td class="pass">✓</td></tr>
+          <tr><td class="id">DS4</td><td>錯題知識點分布</td><td><code>QuizResponses JOIN QuizQuestions WHERE is_correct=0 GROUP BY source_page_seq</code></td><td class="pass">✓</td></tr>
+          <tr><td class="id">DS5</td><td>最佳複習時間序列</td><td><code>SELECT agent_id, module_id, next_review_at FROM ChapterMastery ORDER BY next_review_at</code></td><td class="pass">✓</td></tr>
+          <tr><td class="id">DS6</td><td>個人學習軌跡（時間序列）</td><td><code>SELECT * FROM ReviewEvents WHERE agent_id=? ORDER BY event_timestamp</code></td><td class="pass">✓</td></tr>
+          <tr><td class="id">DS7</td><td>timeout 率（風險指標）</td><td><code>total_timed_out / (total_valid_sprints + total_timed_out + total_abandoned)</code> from ChapterMastery</td><td class="pass">✓</td></tr>
+          <tr><td class="id">DS8</td><td>分心次數 vs 答對率相關性（預測模型用）</td><td>JOIN ReviewEvents → 抽 tab_switch_count 與 score_pct 做相關</td><td class="pass">✓</td></tr>
+          <tr><td class="id">DS9</td><td>新人 onboarding 漏斗（誰讀了但沒通過）</td><td><code>LEFT JOIN ChapterMastery ... WHERE best_score_pct &lt; 70</code></td><td class="pass">✓</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- ================= SECTION 7: How to verify ================= -->
+    <div class="sec">
+      <div class="sec-title">⑦ 面試現場快速驗證指令</div>
+      <div class="sec-sub">可直接複製貼上，面試官若要求「你怎麼知道這些都真的有寫入」的時候。</div>
+      <div class="sql-sample">
+<span class="c"># 1. 9 張表都在</span>
+sqlite3 data/sprint.db <span class="kw">".tables"</span>
+
+<span class="c"># 2. SprintSessions 欄位一致規格</span>
+sqlite3 data/sprint.db <span class="kw">"PRAGMA table_info(SprintSessions);"</span>
+
+<span class="c"># 3. 看 completion_status 分布</span>
+sqlite3 data/sprint.db <span class="kw">"SELECT completion_status, COUNT(*) FROM SprintSessions GROUP BY 1;"</span>
+
+<span class="c"># 4. 看葉悟員在每章的遺忘曲線狀態</span>
+sqlite3 data/sprint.db <span class="kw">"SELECT m.title, cm.best_score_pct, cm.ease_factor, cm.next_review_at, cm.status
+FROM ChapterMastery cm JOIN MicroModules m ON cm.module_id=m.module_id
+WHERE cm.agent_id='demo-agent-001' ORDER BY next_review_at;"</span>
+
+<span class="c"># 5. Replay 任一使用者的完整學習時間軸</span>
+sqlite3 data/sprint.db <span class="kw">"SELECT event_timestamp, event_type, score_pct, tab_switch_count
+FROM ReviewEvents WHERE agent_id='demo-agent-001' ORDER BY event_timestamp;"</span>
+      </div>
+    </div>
+
+    <div class="callout">
+      <b>🎯 一句話對面試官</b>：「我們沒動規格書列的欄位，但我們在旁邊加了三張表（Agents + ChapterMastery + ReviewEvents），讓資料科學家拿到 DB 的那一天就能直接跑 SM-2 遺忘曲線、分心 × 答對率相關性、timeout 風險分級，不用等資料工程再清洗一輪。」
+    </div>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sprint Reader — 挑戰錯題</title>
+  <link rel="stylesheet" href="assets/style.css" />
+  <style>
+    .rs-page { max-width: 640px; margin: 0 auto; padding: 32px 20px 64px; }
+    .rs-back { color: var(--fg-dim); font-size: 13px; text-decoration: none; }
+    .rs-kicker { color: var(--warn); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; margin-top: 14px; }
+    .rs-title { font-size: 26px; font-weight: 800; margin-top: 6px; line-height: 1.3; color: var(--fg); }
+    .rs-sub { color: var(--fg-mute); font-size: 14px; margin-top: 6px; line-height: 1.6; }
+
+    .rs-section { margin-top: 28px; }
+    .rs-section h3 { font-size: 14px; color: var(--fg-mute); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+
+    .chap-grid { display: flex; flex-direction: column; gap: 8px; }
+    .chap-row {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 14px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .chap-row:hover:not(.disabled) { border-color: var(--blue); }
+    .chap-row.disabled { opacity: 0.4; cursor: not-allowed; }
+    .chap-row input[type=checkbox] {
+      width: 18px; height: 18px;
+      accent-color: var(--blue);
+    }
+    .chap-row .c-title { flex: 1; color: var(--fg); font-weight: 600; font-size: 15px; }
+    .chap-row .c-count {
+      background: rgba(245, 158, 11, 0.14);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      color: var(--warn);
+      padding: 3px 10px; border-radius: 999px;
+      font-size: 12px; font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+    .chap-row.disabled .c-count { background: rgba(255,255,255,0.04); border-color: var(--glass-border); color: var(--fg-dim); }
+
+    .n-group { display: flex; gap: 10px; }
+    .n-opt {
+      flex: 1; padding: 12px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      text-align: center; font-size: 15px; font-weight: 600; color: var(--fg);
+      cursor: pointer; transition: all 0.15s;
+    }
+    .n-opt:hover:not(.selected) { border-color: var(--blue); }
+    .n-opt.selected { background: rgba(96, 165, 250, 0.15); border-color: var(--accent); color: var(--accent); }
+
+    .rs-summary {
+      margin-top: 24px; padding: 16px 20px;
+      background: var(--glass-bg-strong);
+      border: 1px solid var(--glass-border-strong);
+      border-radius: var(--radius);
+      font-size: 14px; color: var(--fg-mute); line-height: 1.6;
+    }
+    .rs-summary b { color: var(--accent); font-size: 20px; }
+
+    .rs-cta {
+      margin-top: 20px; width: 100%;
+      background: var(--brand-grad); color: white; border: none;
+      padding: 16px; border-radius: 12px;
+      font-size: 16px; font-weight: 700;
+      box-shadow: 0 8px 20px var(--kgi-glow);
+      cursor: pointer;
+    }
+    .rs-cta:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; }
+
+    .rs-empty {
+      padding: 40px 24px; text-align: center;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      margin-top: 20px;
+    }
+    .rs-empty .icon { font-size: 44px; }
+    .rs-empty p { color: var(--fg-mute); margin-top: 10px; font-size: 14px; line-height: 1.6; }
+  </style>
+</head>
+<body>
+  <div class="rs-page">
+    <a class="rs-back" href="index.html">← 回首頁</a>
+    <div class="rs-kicker">錯題挑戰設定</div>
+    <h1 class="rs-title">📝 挑戰你的錯題</h1>
+    <p class="rs-sub">選擇要複習的章節與題數，系統會從你的錯題池中隨機抽題出來考你一次。答對的題目會自動從錯題池移除。</p>
+
+    <div id="rs-content">Loading…</div>
+  </div>
+
+  <script>
+    let availableByChapter = [];
+    let selectedChapters = new Set();
+    let selectedN = 10;
+
+    async function load() {
+      const res = await fetch("/api/review/available");
+      const data = await res.json();
+      const content = document.getElementById("rs-content");
+      if (data.total_wrong === 0) {
+        content.innerHTML = `
+          <div class="rs-empty">
+            <div class="icon">🎯</div>
+            <p>太棒了，目前你沒有錯題。<br/>回首頁選章節讀完 quiz 後，答錯的題目會進入錯題池。</p>
+            <a href="index.html" style="display: inline-block; margin-top: 16px; color: var(--accent);">← 回首頁</a>
+          </div>`;
+        return;
+      }
+      availableByChapter = data.chapters;
+      // Default: select chapters with wrong questions
+      availableByChapter.forEach((c) => {
+        if (c.count > 0) selectedChapters.add(c.module_id);
+      });
+
+      content.innerHTML = `
+        <div class="rs-section">
+          <h3>① 選擇章節</h3>
+          <div class="chap-grid" id="chap-grid"></div>
+        </div>
+        <div class="rs-section">
+          <h3>② 要考幾題</h3>
+          <div class="n-group" id="n-group">
+            <div class="n-opt" data-n="10">10 題</div>
+            <div class="n-opt" data-n="15">15 題</div>
+            <div class="n-opt" data-n="999">全部</div>
+          </div>
+        </div>
+        <div class="rs-summary" id="summary"></div>
+        <button class="rs-cta" id="start">開始挑戰 →</button>
+      `;
+
+      const grid = document.getElementById("chap-grid");
+      availableByChapter.forEach((c) => {
+        const row = document.createElement("label");
+        row.className = "chap-row" + (c.count === 0 ? " disabled" : "");
+        row.innerHTML = `
+          <input type="checkbox" ${c.count > 0 && selectedChapters.has(c.module_id) ? "checked" : ""}
+                 ${c.count === 0 ? "disabled" : ""} data-id="${c.module_id}" />
+          <span class="c-title">${c.title}</span>
+          <span class="c-count">${c.count} 題錯</span>
+        `;
+        const cb = row.querySelector("input");
+        cb.addEventListener("change", () => {
+          if (cb.checked) selectedChapters.add(c.module_id);
+          else selectedChapters.delete(c.module_id);
+          updateSummary();
+        });
+        grid.appendChild(row);
+      });
+
+      document.querySelectorAll(".n-opt").forEach((el) => {
+        if (Number(el.dataset.n) === selectedN) el.classList.add("selected");
+        el.addEventListener("click", () => {
+          selectedN = Number(el.dataset.n);
+          document.querySelectorAll(".n-opt").forEach((x) => x.classList.remove("selected"));
+          el.classList.add("selected");
+          updateSummary();
+        });
+      });
+
+      document.getElementById("start").addEventListener("click", start);
+      updateSummary();
+    }
+
+    function updateSummary() {
+      const poolSize = availableByChapter.filter((c) => selectedChapters.has(c.module_id))
+                                          .reduce((a, c) => a + c.count, 0);
+      const willPick = Math.min(selectedN, poolSize);
+      const summary = document.getElementById("summary");
+      summary.innerHTML = poolSize === 0
+        ? `⚠️ 請至少選一個有錯題的章節。`
+        : `已選 <b>${selectedChapters.size}</b> 章 · 錯題池 <b>${poolSize}</b> 題 · 本次將抽出 <b>${willPick}</b> 題挑戰`;
+      document.getElementById("start").disabled = poolSize === 0;
+    }
+
+    async function start() {
+      const btn = document.getElementById("start");
+      btn.disabled = true;
+      btn.textContent = "準備中…";
+      try {
+        const res = await fetch("/api/review/start", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chapter_ids: [...selectedChapters],
+            n: selectedN === 999 ? 999 : selectedN,
+          }),
+        });
+        if (!res.ok) throw new Error(await res.text());
+        const data = await res.json();
+        sessionStorage.setItem("review_session", JSON.stringify(data));
+        location.href = "review.html";
+      } catch (e) {
+        btn.disabled = false;
+        btn.textContent = "開始挑戰 →";
+        alert("無法開始挑戰：" + e);
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", load);
+  </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>Sprint Reader — 挑戰錯題</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body data-page="review">
+  <!-- Phase 1: taking the review quiz (reuses quiz layout styles) -->
+  <div class="quiz" id="quiz-pane">
+    <div class="quiz-top">
+      <div class="quiz-kicker">📝 錯題挑戰 · 全部作答後公布解答</div>
+      <div class="quiz-progress" id="quiz-progress">題 — / —</div>
+      <div class="zoom-ctrl" title="字級調整" style="margin-left:12px;">
+        <button id="zoom-down" aria-label="縮小">A−</button>
+        <span class="current" id="zoom-label">100%</span>
+        <button id="zoom-up" aria-label="放大">A+</button>
+      </div>
+    </div>
+    <div class="quiz-nav-dots" id="quiz-dots"></div>
+    <h2 class="quiz-stem" id="quiz-stem">Loading…</h2>
+    <div class="quiz-options" id="quiz-options"></div>
+  </div>
+
+  <!-- Phase 2: results (populated by JS) -->
+  <div id="result-pane" hidden></div>
+
+  <div class="quiz-nav-bar" id="nav-bar">
+    <button id="quiz-prev">← 上一題</button>
+    <div class="progress-summary"><b id="answered-count">0</b> / <span id="total-count">0</span> 已作答</div>
+    <button id="quiz-next">下一題 →</button>
+    <button id="quiz-finish" class="primary" disabled>✅ 提交並公布解答</button>
+  </div>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>

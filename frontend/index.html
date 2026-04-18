@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>衝刺閱讀器 — 選擇章節</title>
+  <link rel="stylesheet" href="assets/style.css" />
+  <style>
+    .page { max-width: 1280px; margin: 0 auto; padding: 28px 24px 64px; }
+    .page-head { margin-bottom: 20px; }
+    .page-kicker { color: var(--fg-dim); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; }
+    .page-title { font-size: 28px; font-weight: 800; margin-top: 8px; line-height: 1.3; color: var(--fg); }
+    .page-sub { color: var(--fg-mute); font-size: 14px; margin-top: 6px; }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+    @media (min-width: 1024px) {
+      .layout { grid-template-columns: 300px 1fr; gap: 24px; }
+      .sidebar { position: sticky; top: 24px; }
+    }
+
+    .sidebar { display: flex; flex-direction: column; gap: 16px; }
+    .sbcard {
+      padding: 18px 20px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px) saturate(160%);
+      -webkit-backdrop-filter: blur(20px) saturate(160%);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      box-shadow: var(--glass-shadow);
+    }
+
+    /* Ring card */
+    .ring-card { text-align: center; padding: 24px 20px; }
+    .overall-ring { position: relative; width: 140px; height: 140px; margin: 0 auto 8px; }
+    .overall-ring svg { transform: rotate(-90deg); }
+    .overall-ring .ring-bg { fill: none; stroke: rgba(147, 197, 253, 0.08); }
+    .overall-ring .ring-fg { fill: none; stroke: url(#overallGrad); stroke-linecap: round; transition: stroke-dashoffset 0.6s; }
+    .ring-text {
+      position: absolute; inset: 0; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+    }
+    .ring-pct { font-size: 32px; font-weight: 800; color: var(--accent); font-variant-numeric: tabular-nums; }
+    .ring-lbl { font-size: 11px; color: var(--fg-dim); margin-top: 2px; letter-spacing: 0.05em; }
+    .ring-sub { color: var(--fg-mute); font-size: 13px; margin-top: 4px; }
+
+    .mini-stats {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+      margin-top: 14px; padding-top: 14px;
+      border-top: 1px solid var(--glass-border);
+    }
+    .mini-stat { text-align: center; }
+    .mini-stat-v { font-size: 17px; font-weight: 700; color: var(--fg); font-variant-numeric: tabular-nums; }
+    .mini-stat-l { font-size: 10px; color: var(--fg-dim); margin-top: 2px; }
+    .mini-stat-v .flame { color: var(--gold); }
+
+    /* Recommend card */
+    .reco-kicker { font-size: 11px; color: var(--accent); font-weight: 700; letter-spacing: 0.1em; }
+    .reco-title { font-size: 17px; font-weight: 700; margin-top: 6px; color: var(--fg); line-height: 1.35; }
+    .reco-reason { font-size: 12px; color: var(--fg-mute); margin-top: 8px; line-height: 1.55; }
+    .reco-btn {
+      display: block; text-align: center; margin-top: 14px;
+      padding: 11px 16px; border-radius: 10px;
+      background: var(--brand-grad); color: white; font-weight: 600; font-size: 14px;
+      text-decoration: none; box-shadow: 0 6px 16px var(--kgi-glow);
+      transition: transform 0.12s;
+    }
+    .reco-btn:active { transform: scale(0.98); }
+
+    /* Review card */
+    .rv-kicker { font-size: 11px; color: var(--warn); font-weight: 700; letter-spacing: 0.1em; }
+    .rv-title { font-size: 17px; font-weight: 700; margin-top: 6px; color: var(--fg); }
+    .rv-count { margin-top: 8px; font-size: 13px; color: var(--fg-mute); line-height: 1.5; }
+    .rv-count b { color: var(--warn); font-size: 18px; font-variant-numeric: tabular-nums; }
+    .rv-btn {
+      display: block; text-align: center; margin-top: 14px;
+      padding: 11px 16px; border-radius: 10px;
+      background: transparent; border: 1px solid var(--warn);
+      color: var(--warn); font-weight: 600; font-size: 14px; text-decoration: none;
+      transition: background 0.15s;
+    }
+    .rv-btn:hover { background: rgba(245, 158, 11, 0.1); }
+    .rv-btn.disabled { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
+
+    /* Rhythm bar chart */
+    .rhythm-head { display: flex; justify-content: space-between; align-items: baseline; }
+    .rhythm-title { font-size: 13px; font-weight: 700; color: var(--fg); }
+    .rhythm-sub { font-size: 11px; color: var(--fg-dim); }
+    .rhythm-chart { display: flex; gap: 4px; margin-top: 12px; height: 56px; align-items: flex-end; }
+    .rhythm-bar {
+      flex: 1; min-width: 0;
+      background: rgba(96, 165, 250, 0.15);
+      border-radius: 3px 3px 0 0;
+      transition: background 0.15s;
+      cursor: default;
+      position: relative;
+    }
+    .rhythm-bar.has { background: var(--blue); }
+    .rhythm-bar.has.hot { background: var(--accent); box-shadow: 0 0 6px rgba(96,165,250,0.5); }
+    .rhythm-bar:hover { filter: brightness(1.15); }
+    .rhythm-axis { display: flex; justify-content: space-between; margin-top: 6px; font-size: 10px; color: var(--fg-dim); }
+
+    /* Main section */
+    .main-section-head {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 14px;
+    }
+    .main-section-head h2 { font-size: 18px; font-weight: 700; color: var(--fg); }
+    .main-section-head .legend { font-size: 12px; color: var(--fg-dim); }
+
+    .chapter-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    @media (min-width: 640px) {
+      .chapter-list { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 1280px) {
+      .chapter-list { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .chapter-item {
+      display: block;
+      padding: 20px;
+      text-decoration: none;
+      color: var(--fg);
+      transition: transform 0.12s, border-color 0.15s;
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      box-shadow: var(--glass-shadow);
+    }
+    .chapter-item:hover { transform: translateY(-2px); border-color: var(--blue); }
+    .chapter-idx { font-size: 11px; color: var(--accent); font-weight: 700; letter-spacing: 0.08em; }
+    .chapter-item.is-recommended { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent), 0 8px 24px rgba(96, 165, 250, 0.15); }
+    .chapter-item.is-recommended .chapter-idx::after {
+      content: "· 今日推薦"; margin-left: 6px; color: var(--accent);
+    }
+    .chapter-title { font-size: 17px; font-weight: 700; margin-top: 6px; line-height: 1.35; color: var(--fg); }
+    .chapter-desc { font-size: 13px; color: var(--fg-mute); margin-top: 8px; line-height: 1.55; }
+    .chapter-progress {
+      margin-top: 14px;
+      display: flex; align-items: center; gap: 10px;
+      font-size: 12px; color: var(--fg-dim);
+    }
+    .cp-bar { flex: 1; height: 5px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
+    .cp-bar-fill { height: 100%; background: var(--brand-grad); border-radius: 3px; transition: width 0.6s; }
+    .cp-pct { font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; min-width: 36px; text-align: right; }
+    .cp-status {
+      padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 600;
+      background: rgba(147, 197, 253, 0.08); color: var(--fg-dim);
+    }
+    .cp-status.done { background: rgba(34, 197, 94, 0.14); color: var(--success); }
+    .chapter-meta { font-size: 11px; color: var(--fg-dim); margin-top: 10px; display: flex; gap: 10px; flex-wrap: wrap; }
+
+    .brief-link {
+      display: block; text-align: center;
+      color: var(--fg-dim); font-size: 13px;
+      margin-top: 32px; text-decoration: underline;
+    }
+
+    /* Reminder modal (on-load dialog) */
+    .reminder-modal {
+      position: fixed; inset: 0; z-index: 250;
+      background: rgba(5, 15, 35, 0.75);
+      backdrop-filter: blur(10px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px;
+      animation: fadeIn 0.25s ease-out;
+    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .reminder-modal[hidden] { display: none; }
+    .reminder-card {
+      background: var(--bg-raised);
+      border: 1px solid var(--glass-border-strong);
+      border-radius: var(--radius-lg);
+      padding: 28px 26px 22px;
+      max-width: 440px; width: 100%;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
+      animation: slideUp 0.3s ease-out;
+    }
+    @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    .reminder-greeting { font-size: 14px; color: var(--accent); font-weight: 600; }
+    .reminder-headline { font-size: 22px; font-weight: 800; margin-top: 10px; line-height: 1.35; color: var(--fg); }
+    .reminder-body { margin-top: 14px; font-size: 14px; line-height: 1.7; color: var(--fg-mute); }
+    .reminder-body b { color: var(--fg); }
+    .reminder-chip {
+      display: inline-block; padding: 3px 10px; margin: 4px 6px 0 0;
+      background: rgba(96, 165, 250, 0.12); border: 1px solid rgba(96, 165, 250, 0.3);
+      color: var(--accent); border-radius: 999px; font-size: 12px; font-weight: 600;
+    }
+    .reminder-actions { display: flex; gap: 10px; margin-top: 20px; }
+    .reminder-actions button, .reminder-actions a {
+      flex: 1; padding: 11px; border-radius: 10px; font-size: 14px; font-weight: 600;
+      text-align: center; text-decoration: none; transition: background 0.15s;
+    }
+    .reminder-primary {
+      background: var(--brand-grad); color: white; border: none;
+      box-shadow: 0 6px 16px var(--kgi-glow);
+    }
+    .reminder-secondary {
+      background: transparent; border: 1px solid var(--glass-border-strong); color: var(--fg-mute);
+    }
+    .reminder-secondary:hover { background: var(--glass-bg); color: var(--fg); }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="page-head">
+      <div class="page-kicker">SPRINT READER · 人身保險業務員</div>
+      <h1 class="page-title">7 分鐘考照重點複習</h1>
+      <p class="page-sub" id="source-doc">Loading…</p>
+    </div>
+
+    <div class="layout">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="sbcard ring-card">
+          <div class="overall-ring">
+            <svg width="140" height="140" viewBox="0 0 140 140">
+              <defs>
+                <linearGradient id="overallGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#2563EB" />
+                  <stop offset="100%" stop-color="#60A5FA" />
+                </linearGradient>
+              </defs>
+              <circle class="ring-bg" cx="70" cy="70" r="58" stroke-width="10" />
+              <circle class="ring-fg" id="ring-fg" cx="70" cy="70" r="58" stroke-width="10"
+                      stroke-dasharray="364.4" stroke-dashoffset="364.4" />
+            </svg>
+            <div class="ring-text">
+              <div class="ring-pct" id="overall-pct">0%</div>
+              <div class="ring-lbl">整體完成度</div>
+            </div>
+          </div>
+          <div class="ring-sub" id="ring-sub">— / 6 章完成</div>
+          <div class="mini-stats">
+            <div class="mini-stat"><div class="mini-stat-v"><span class="flame">🔥</span> <span id="stat-streak">—</span></div><div class="mini-stat-l">連續天數</div></div>
+            <div class="mini-stat"><div class="mini-stat-v" id="stat-total">—</div><div class="mini-stat-l">總 Sprint</div></div>
+            <div class="mini-stat"><div class="mini-stat-v" id="stat-accuracy">—</div><div class="mini-stat-l">答對率</div></div>
+          </div>
+        </div>
+
+        <div class="sbcard" id="reco-card" hidden>
+          <div class="reco-kicker">⚡ 今日推薦</div>
+          <div class="reco-title" id="reco-title">—</div>
+          <div class="reco-reason" id="reco-reason">—</div>
+          <a class="reco-btn" id="reco-btn" href="#">立即開始</a>
+        </div>
+
+        <div class="sbcard" id="rv-card">
+          <div class="rv-kicker">📝 錯題複習</div>
+          <div class="rv-title">挑戰你的錯題</div>
+          <div class="rv-count">目前有 <b id="rv-count">0</b> 題可複習</div>
+          <a class="rv-btn" id="rv-btn" href="review-setup.html">開始挑戰 →</a>
+        </div>
+
+        <div class="sbcard">
+          <div class="rhythm-head">
+            <span class="rhythm-title">📈 最近 14 天節奏</span>
+            <span class="rhythm-sub" id="rhythm-window">—</span>
+          </div>
+          <div class="rhythm-chart" id="rhythm-chart"></div>
+          <div class="rhythm-axis" id="rhythm-axis"></div>
+        </div>
+      </aside>
+
+      <!-- MAIN -->
+      <main>
+        <div class="main-section-head">
+          <h2>選擇章節開始 7 分鐘衝刺</h2>
+          <span class="legend">每章 5 張卡 + 3 題 quiz</span>
+        </div>
+        <div class="chapter-list" id="chapter-list"></div>
+        <a class="brief-link" href="brief.html">→ 看這個產品的商業論述（給面試官）</a>
+      </main>
+    </div>
+  </div>
+
+  <div class="float-tip" id="tip" hidden></div>
+
+  <!-- Reminder modal -->
+  <div class="reminder-modal" id="reminder-modal" hidden>
+    <div class="reminder-card">
+      <div class="reminder-greeting">👋 回來啦，葉悟員</div>
+      <h2 class="reminder-headline" id="rm-headline">—</h2>
+      <div class="reminder-body" id="rm-body">—</div>
+      <div class="reminder-actions">
+        <button class="reminder-secondary" id="rm-dismiss">先看看再說</button>
+        <a class="reminder-primary" id="rm-go" href="#">立即開始</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const SS_REMINDER_KEY = "reminder_shown_" + new Date().toISOString().slice(0, 10);
+
+    async function loadAll() {
+      const [modRes, progRes, chapRes, recRes, rvRes] = await Promise.all([
+        fetch("/api/module"),
+        fetch("/api/stats/progress"),
+        fetch("/api/stats/chapters"),
+        fetch("/api/stats/recommend"),
+        fetch("/api/review/available"),
+      ]);
+      if (!modRes.ok) {
+        document.getElementById("source-doc").textContent = "後端尚未啟動，請先執行 bash run.sh";
+        return;
+      }
+      const data = await modRes.json();
+      const prog = await progRes.json();
+      const chap = await chapRes.json();
+      const rec = await recRes.json();
+      const rv = await rvRes.json();
+
+      document.getElementById("source-doc").textContent = "Source: " + data.source_doc;
+
+      // Ring
+      const circ = 2 * Math.PI * 58;
+      const pct = chap.overall_completion_pct;
+      document.getElementById("ring-fg").setAttribute("stroke-dashoffset", circ * (1 - pct / 100));
+      document.getElementById("overall-pct").textContent = Math.round(pct) + "%";
+      document.getElementById("ring-sub").textContent = `${chap.completed_chapters} / ${chap.total_chapters} 章完成`;
+
+      // Mini stats
+      document.getElementById("stat-streak").textContent = prog.current_streak + " 天";
+      document.getElementById("stat-total").textContent = prog.total_sprints;
+      document.getElementById("stat-accuracy").textContent = rec.avg_accuracy_pct + "%";
+
+      // Rhythm bars (last 14 days of prog.days)
+      const days = prog.days.slice(-14);
+      const maxCount = Math.max(1, ...days.map((d) => d.count));
+      const chart = document.getElementById("rhythm-chart");
+      chart.innerHTML = "";
+      const tip = document.getElementById("tip");
+      days.forEach((d) => {
+        const bar = document.createElement("div");
+        bar.className = "rhythm-bar" + (d.count > 0 ? " has" : "") + (d.count >= 2 ? " hot" : "");
+        bar.style.height = d.count > 0 ? (20 + (d.count / maxCount) * 36) + "px" : "6px";
+        bar.addEventListener("mouseenter", (e) => {
+          const dt = new Date(d.date);
+          const wk = ["週日","週一","週二","週三","週四","週五","週六"][dt.getDay()];
+          tip.innerHTML = `
+            <div class="tip-title">${d.date}（${wk}）</div>
+            <div class="tip-row">${d.count === 0 ? "沒有 Sprint" : `<b style="color:#fff">${d.count}</b> 次 Sprint`}</div>
+            ${d.minutes ? `<div class="tip-row"><b style="color:#fff">${Math.round(d.minutes)}</b> 分鐘</div>` : ""}
+          `;
+          tip.hidden = false;
+        });
+        bar.addEventListener("mousemove", (e) => {
+          tip.style.left = Math.min(e.clientX + 14, window.innerWidth - 220) + "px";
+          tip.style.top = Math.min(e.clientY + 14, window.innerHeight - 80) + "px";
+        });
+        bar.addEventListener("mouseleave", () => { tip.hidden = true; });
+        chart.appendChild(bar);
+      });
+      const ax = document.getElementById("rhythm-axis");
+      ax.innerHTML = `<span>${days[0].date.slice(5)}</span><span>${days[days.length-1].date.slice(5)}</span>`;
+      document.getElementById("rhythm-window").textContent = "每格＝一天";
+
+      // Recommend card (sidebar) — only show if recommendation exists and user has read something
+      if (rec.recommended_chapter && !rec.mastered) {
+        const r = rec.recommended_chapter;
+        document.getElementById("reco-card").hidden = false;
+        document.getElementById("reco-title").textContent = r.title;
+        document.getElementById("reco-reason").textContent = r.reason;
+        document.getElementById("reco-btn").href = `splash.html?module_id=${r.module_id}`;
+      }
+
+      // Review CTA
+      document.getElementById("rv-count").textContent = rv.total_wrong;
+      if (rv.total_wrong === 0) {
+        const btn = document.getElementById("rv-btn");
+        btn.classList.add("disabled");
+        btn.textContent = "沒有錯題";
+      }
+
+      // Chapter cards (mark recommended)
+      const chapMap = {};
+      chap.chapters.forEach((c) => { chapMap[c.module_id] = c; });
+      const recommendedId = rec.recommended_chapter ? rec.recommended_chapter.module_id : null;
+      const list = document.getElementById("chapter-list");
+      list.innerHTML = "";
+      data.modules.forEach((m, i) => {
+        const c = chapMap[m.module_id] || { sprints: 0, best_score_pct: 0, completed: false };
+        const a = document.createElement("a");
+        a.className = "chapter-item" + (m.module_id === recommendedId ? " is-recommended" : "");
+        a.href = `splash.html?module_id=${m.module_id}`;
+        a.innerHTML = `
+          <div class="chapter-idx">CHAPTER ${String(i + 1).padStart(2, "0")}</div>
+          <div class="chapter-title">${m.title}</div>
+          <div class="chapter-desc">${m.description}</div>
+          <div class="chapter-progress">
+            <div class="cp-bar"><div class="cp-bar-fill" style="width: ${c.best_score_pct}%"></div></div>
+            <span class="cp-pct">${c.best_score_pct}%</span>
+            <span class="cp-status ${c.completed ? 'done' : ''}">${c.completed ? '✓ 已讀' : '未讀'}</span>
+          </div>
+          <div class="chapter-meta">
+            <span>⏱ ${Math.floor(m.duration_sec / 60)} 分鐘</span>
+            <span>·</span>
+            <span>📖 ${m.page_count} 卡</span>
+            <span>·</span>
+            <span>✅ ${m.quiz_count} 題</span>
+            ${c.sprints > 0 ? `<span>·</span><span>🔁 ${c.sprints} 次</span>` : ""}
+          </div>
+        `;
+        list.appendChild(a);
+      });
+
+      // Reminder modal — show once per day
+      if (!sessionStorage.getItem(SS_REMINDER_KEY) && !localStorage.getItem(SS_REMINDER_KEY)) {
+        showReminder(rec);
+      }
+    }
+
+    function showReminder(rec) {
+      const modal = document.getElementById("reminder-modal");
+      const headline = document.getElementById("rm-headline");
+      const body = document.getElementById("rm-body");
+      const go = document.getElementById("rm-go");
+
+      if (rec.mastered) {
+        headline.textContent = "🎉 六章都掌握很熟了！";
+        body.innerHTML = `
+          整體答對率 <b>${rec.avg_accuracy_pct}%</b>，你已經具備上考場的實力。<br/>
+          想再保險起見，可以針對錯題再練一輪。
+        `;
+        go.textContent = "挑戰錯題";
+        go.href = "review-setup.html";
+      } else if (!rec.recommended_chapter) {
+        modal.hidden = true;
+        return;
+      } else {
+        const r = rec.recommended_chapter;
+        if (r.n_sprints === 0) {
+          headline.textContent = `📚 從這章開始吧：${r.title}`;
+          body.innerHTML = `
+            你還沒讀過任何章節。建議從第 <b>${r.module_id}</b> 章起步，只要 7 分鐘。
+          `;
+        } else {
+          headline.textContent = `今日建議複習：${r.title}`;
+          body.innerHTML = `
+            你上次讀這章是 <b>${r.days_since ?? 0} 天前</b>。<br/>
+            當時答對率 <span class="reminder-chip">${r.last_pct ?? "?"}%</span>
+            ${r.wrong_count > 0 ? `還有 <b>${r.wrong_count}</b> 題沒答對` : ""}
+            <br/><br/>
+            距離愈久 + 錯得愈多 = 最該優先回頭鞏固的一章。
+          `;
+        }
+        go.textContent = "立即開始 →";
+        go.href = `splash.html?module_id=${rec.recommended_chapter.module_id}`;
+      }
+      modal.hidden = false;
+      document.getElementById("rm-dismiss").addEventListener("click", () => {
+        modal.hidden = true;
+        localStorage.setItem(SS_REMINDER_KEY, "1");
+      });
+      go.addEventListener("click", () => {
+        localStorage.setItem(SS_REMINDER_KEY, "1");
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", loadAll);
+  </script>
+</body>
+</html>

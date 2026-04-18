@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sprint Reader — 系統介紹（業務版）</title>
+  <link rel="stylesheet" href="assets/style.css" />
+  <style>
+    body { background: #0A1428; padding: 32px 20px 64px; }
+    .page { max-width: 1180px; margin: 0 auto; color: var(--fg); }
+
+    .back-link { display: inline-block; color: var(--fg-dim); font-size: 13px; text-decoration: none; margin-bottom: 16px; }
+    .back-link:hover { color: var(--accent); }
+
+    .hero { margin-bottom: 28px; }
+    .kicker { color: var(--accent); font-size: 12px; letter-spacing: 0.14em; font-weight: 700; text-transform: uppercase; }
+    .title { font-size: 32px; font-weight: 800; margin-top: 8px; line-height: 1.25; }
+    .lead { color: var(--fg-mute); font-size: 15px; margin-top: 10px; max-width: 720px; line-height: 1.65; }
+    .lead b { color: var(--fg); }
+
+    /* Section */
+    .sec { margin-top: 40px; }
+    .sec-title { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+    .sec-sub { font-size: 13px; color: var(--fg-mute); margin-bottom: 18px; }
+
+    /* Journey — vertical story cards */
+    .journey { display: grid; gap: 14px; }
+    .step {
+      display: grid; grid-template-columns: 70px 1fr;
+      gap: 18px; padding: 18px 20px;
+      background: var(--glass-bg); border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      position: relative;
+    }
+    .step-num {
+      width: 50px; height: 50px; border-radius: 50%;
+      background: var(--brand-grad); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; font-weight: 800;
+      box-shadow: 0 6px 20px var(--kgi-glow);
+    }
+    .step-body .step-title { font-size: 17px; font-weight: 800; color: var(--fg); }
+    .step-body .step-what { font-size: 13px; color: var(--fg-mute); margin-top: 6px; line-height: 1.6; }
+
+    .step-data {
+      margin-top: 12px; padding: 10px 14px;
+      background: rgba(96, 165, 250, 0.08);
+      border-left: 3px solid var(--accent);
+      border-radius: 6px;
+      font-size: 12px; color: var(--fg);
+    }
+    .step-data b { color: var(--accent); }
+
+    .arrow-v { text-align: center; font-size: 20px; color: var(--fg-dim); margin: -4px 0; }
+
+    /* Value quadrant */
+    .quad {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+    }
+    .quad-card {
+      padding: 18px 20px; border-radius: 14px;
+      background: var(--glass-bg); border: 1px solid var(--glass-border);
+    }
+    .quad-card .q-icon { font-size: 26px; }
+    .quad-card .q-dept { font-size: 13px; font-weight: 800; color: var(--accent); margin-top: 6px; }
+    .quad-card .q-q { font-size: 14px; color: var(--fg); margin-top: 8px; font-weight: 600; line-height: 1.4; }
+    .quad-card .q-a { font-size: 12px; color: var(--fg-mute); margin-top: 6px; line-height: 1.55; }
+
+    /* Data asset visual */
+    .data-flow {
+      padding: 22px; border-radius: 16px;
+      background: linear-gradient(180deg, rgba(240, 90, 40, 0.08), rgba(240, 90, 40, 0.02));
+      border: 1px solid rgba(240, 90, 40, 0.25);
+      display: grid; grid-template-columns: 1fr auto 1fr auto 1fr;
+      gap: 14px; align-items: center;
+    }
+    .df-box {
+      padding: 16px 14px; text-align: center;
+      background: #0F1E3A; border: 1px solid var(--glass-border); border-radius: 12px;
+    }
+    .df-box .i { font-size: 28px; }
+    .df-box .h { font-size: 14px; font-weight: 800; margin-top: 6px; color: var(--fg); }
+    .df-box .s { font-size: 11px; color: var(--fg-dim); margin-top: 4px; line-height: 1.5; }
+    .df-arrow { color: var(--kgi-light); font-weight: 900; font-size: 20px; text-align: center; }
+    @media (max-width: 720px) {
+      .data-flow { grid-template-columns: 1fr; }
+      .df-arrow { transform: rotate(90deg); }
+    }
+
+    /* FAQ-ish callout */
+    .callout {
+      margin-top: 28px;
+      padding: 18px 22px; border-radius: 14px;
+      background: rgba(34, 197, 94, 0.08);
+      border-left: 3px solid #22C55E;
+    }
+    .callout h4 { font-size: 14px; color: #22C55E; font-weight: 800; margin-bottom: 6px; }
+    .callout p { font-size: 13px; color: var(--fg-mute); line-height: 1.7; }
+
+    /* Metric row */
+    .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin-top: 16px; }
+    .metric {
+      padding: 16px; border-radius: 12px; text-align: center;
+      background: var(--glass-bg); border: 1px solid var(--glass-border);
+    }
+    .metric .v { font-size: 26px; font-weight: 800; color: var(--accent); font-variant-numeric: tabular-nums; }
+    .metric .l { font-size: 12px; color: var(--fg-dim); margin-top: 4px; }
+    @media (max-width: 640px) {
+      body { padding: 16px 12px 56px; }
+      .page h1 { font-size: 22px !important; }
+      .lead { font-size: 13px; }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .metric .v { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <a class="back-link" href="index.html">← 回 demo</a>
+
+    <div class="hero">
+      <div class="kicker">給非技術同仁看 · Sprint Reader 系統介紹</div>
+      <h1 class="title">7 分鐘考照微學習 App —<br/>它在做什麼、產出什麼資料</h1>
+      <p class="lead">
+        這個 App 做一件事：讓新人業務員在 <b>7 分鐘</b>的碎片時間，<b>真的把內容讀進去</b>，然後立刻考 3 題驗證。
+        更重要的是，<b>它把「閱讀行為」變成可以分析的資料</b>，這就是凱基金 MA 輪調跨部門的資料基礎。
+      </p>
+    </div>
+
+    <!-- Section 1: 使用者旅程 -->
+    <div class="sec">
+      <div class="sec-title">① 一個業務員 7 分鐘做了什麼？</div>
+      <div class="sec-sub">以下是使用者旅程（User Journey），每一步系統都會自動記錄資料。</div>
+
+      <div class="journey">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title">📚 選章節</div>
+            <div class="step-what">登入後看到 6 個章節（保險契約、六大原則、稅務…）。系統會根據他的歷史表現，<b>推薦「最該回頭複習」的那一章</b>。</div>
+            <div class="step-data">🗂 系統記錄：<b>他挑了哪章</b>、距離上次複習多久</div>
+          </div>
+        </div>
+        <div class="arrow-v">▼</div>
+
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title">⏱ 倒數 7 分鐘 · 滑卡閱讀</div>
+            <div class="step-what">5 張重點卡，可以左右滑。倒數計時給壓迫感，讓他「真的讀」而不是放著當背景音。</div>
+            <div class="step-data">🗂 系統記錄：<b>開始時間</b>（後端蓋章，不能作弊）</div>
+          </div>
+        </div>
+        <div class="arrow-v">▼</div>
+
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title">📱 偵測分心（最重要的創新點）</div>
+            <div class="step-what">業務員很忙，常常讀到一半切去看 Line、LINE Pay、股票帳戶。系統<b>自動偵測到他切走</b>，計時暫停並記錄一次分心。</div>
+            <div class="step-data">🗂 系統記錄：<b>分心次數</b> · 切去哪裡不知道，但知道他分心了</div>
+          </div>
+        </div>
+        <div class="arrow-v">▼</div>
+
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-title">✅ 讀完 → 立即考 3 題</div>
+            <div class="step-what">不是讀完就算完成。<b>必須通過測驗才算真的學會。</b>全部答完才公布答案和解釋。</div>
+            <div class="step-data">🗂 系統記錄：<b>答對率</b>、哪一題答錯、選了哪個錯誤選項</div>
+          </div>
+        </div>
+        <div class="arrow-v">▼</div>
+
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-body">
+            <div class="step-title">📊 結果頁：閱讀行為 + 分數 + 逐題檢討</div>
+            <div class="step-what">不只給分數，還給<b>「你讀這章花了多久 + 分心幾次 + 錯了哪幾題」</b>。錯題可以點回原文卡片重看。</div>
+            <div class="step-data">🗂 這裡產生了本次學習的完整「行為 panel」，可匯出給人資 / 風控 / AI 使用</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: Data asset -->
+    <div class="sec">
+      <div class="sec-title">② 為什麼這個 App 值錢？—— 產出「行為資料資產」</div>
+      <div class="sec-sub">傳統 e-learning 只看「有沒有點進去」；這個 App 看 4 種行為訊號。</div>
+
+      <div class="data-flow">
+        <div class="df-box">
+          <div class="i">👤</div>
+          <div class="h">業務員</div>
+          <div class="s">讀卡 + 答題</div>
+        </div>
+        <div class="df-arrow">→</div>
+        <div class="df-box">
+          <div class="i">📊</div>
+          <div class="h">4 種行為訊號</div>
+          <div class="s">閱讀時間 · 分心次數 · 答對率 · 錯題類型</div>
+        </div>
+        <div class="df-arrow">→</div>
+        <div class="df-box">
+          <div class="i">🎯</div>
+          <div class="h">風險分級 / 個人化推薦</div>
+          <div class="s">誰需要加強輔導？哪章該重複推？</div>
+        </div>
+      </div>
+
+      <div class="callout">
+        <h4>💡 MA 面試一句話總結</h4>
+        <p>「這個專案把<b>合規訓練</b>從『成本中心』變成『<b>風險預警資產</b>』—— 誰讀得心不在焉、誰老是錯同一類題，早在他出錯賣錯商品之前，我們就知道了。」</p>
+      </div>
+    </div>
+
+    <!-- Section 3: Cross-department value -->
+    <div class="sec">
+      <div class="sec-title">③ 這份資料能讓哪些部門受惠？（MA 輪調視角）</div>
+      <div class="sec-sub">一份 demo，同時對四個部門產生價值，正是 MA Program 需要展示的跨部門思維。</div>
+
+      <div class="quad">
+        <div class="quad-card">
+          <div class="q-icon">🎓</div>
+          <div class="q-dept">教育訓練部</div>
+          <div class="q-q">「哪章內容要重寫？」</div>
+          <div class="q-a">看哪章「讀得快、但錯最多」→ 內容沒講清楚。哪章「大家都分心」→ 太無聊要改寫。</div>
+        </div>
+        <div class="quad-card">
+          <div class="q-icon">⚖️</div>
+          <div class="q-dept">法遵部</div>
+          <div class="q-q">「哪些人還沒過關？」</div>
+          <div class="q-a">金管會稽查時要證明「業務員真的有受訓」，這裡有完整時間戳記 + 分數紀錄。</div>
+        </div>
+        <div class="quad-card">
+          <div class="q-icon">📈</div>
+          <div class="q-dept">資料科學 / AI</div>
+          <div class="q-q">「行為數據能幹嘛？」</div>
+          <div class="q-a">串聯閱讀行為 + 測驗結果，可以訓練模型預測「這個人會不會賣錯商品」。</div>
+        </div>
+        <div class="quad-card">
+          <div class="q-icon">🏢</div>
+          <div class="q-dept">業務管理部</div>
+          <div class="q-q">「哪些新人要額外輔導？」</div>
+          <div class="q-a">分心次數高 + 答錯率高 → 列入 watchlist。提前介入，降低客訴與重大裁罰風險。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 4: Demo numbers -->
+    <div class="sec">
+      <div class="sec-title">④ Demo 現狀</div>
+      <div class="sec-sub">以下是目前系統內的實際數字。面試現場可直接打開 <a href="index.html" style="color: var(--accent);">/ui/</a> 驗證。</div>
+      <div class="metrics">
+        <div class="metric"><div class="v">6</div><div class="l">章節</div></div>
+        <div class="metric"><div class="v">30</div><div class="l">重點卡</div></div>
+        <div class="metric"><div class="v">18+</div><div class="l">測驗題（真題庫）</div></div>
+        <div class="metric"><div class="v">7 min</div><div class="l">單章學習時間</div></div>
+        <div class="metric"><div class="v">4 種</div><div class="l">行為訊號</div></div>
+      </div>
+
+      <div class="callout" style="background: rgba(240, 90, 40, 0.08); border-left-color: var(--kgi);">
+        <h4 style="color: var(--kgi-light);">👉 看完這頁後，如果想知道「工程上怎麼實現的」</h4>
+        <p>請看 <a href="architecture-tech.html" style="color: var(--accent); font-weight: 700;">架構圖（技術版）→</a>，裡面有完整的 API 串接流程、資料庫 schema、錯誤處理邏輯。</p>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

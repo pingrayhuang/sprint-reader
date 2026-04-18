@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sprint Reader — 系統架構（技術版）</title>
+  <link rel="stylesheet" href="assets/style.css" />
+  <style>
+    body { background: #0A1428; padding: 28px 18px 60px; font-variant-numeric: tabular-nums; }
+    .page { max-width: 1320px; margin: 0 auto; color: var(--fg); }
+    .back-link { display: inline-block; color: var(--fg-dim); font-size: 13px; text-decoration: none; margin-bottom: 14px; }
+    .back-link:hover { color: var(--accent); }
+    .hero { margin-bottom: 26px; }
+    .kicker { color: var(--accent); font-size: 12px; letter-spacing: 0.14em; font-weight: 700; text-transform: uppercase; }
+    .title { font-size: 28px; font-weight: 800; margin-top: 6px; line-height: 1.25; }
+    .lead { color: var(--fg-mute); font-size: 14px; margin-top: 10px; max-width: 800px; line-height: 1.6; }
+
+    .sec { margin-top: 36px; }
+    .sec-title { font-size: 18px; font-weight: 800; margin-bottom: 6px; }
+    .sec-sub { font-size: 12px; color: var(--fg-mute); margin-bottom: 14px; }
+
+    /* ===== Sequence diagram (swim lanes) ===== */
+    .seq-wrap {
+      padding: 20px 16px;
+      background: var(--glass-bg); border: 1px solid var(--glass-border);
+      border-radius: 14px; overflow-x: auto;
+    }
+    .seq {
+      display: grid;
+      grid-template-columns: 200px 260px 240px 240px;
+      min-width: 960px;
+      gap: 0;
+      font-size: 13px;
+      position: relative;
+    }
+    .lane-head {
+      padding: 10px 12px; text-align: center; font-weight: 800;
+      border-bottom: 2px solid var(--glass-border-strong);
+      position: sticky; top: 0; background: #0F1E3A; z-index: 2;
+    }
+    .lane-head.l1 { color: #60A5FA; }
+    .lane-head.l2 { color: #22C55E; }
+    .lane-head.l3 { color: #A78BFA; }
+    .lane-head.l4 { color: var(--kgi-light); }
+
+    .seq-row {
+      display: contents;
+    }
+    .seq-row > div {
+      padding: 14px 10px;
+      border-bottom: 1px dashed rgba(255,255,255,0.06);
+      min-height: 56px;
+      font-family: ui-monospace, Menlo, Consolas, monospace;
+      font-size: 12px;
+      position: relative;
+    }
+    .seq-row > div.user-action { color: var(--fg); font-family: inherit; font-size: 13px; }
+    .seq-row > div.api {
+      background: rgba(34, 197, 94, 0.06);
+      border-left: 2px solid rgba(34, 197, 94, 0.3);
+    }
+    .seq-row > div.svc {
+      background: rgba(167, 139, 250, 0.05);
+      border-left: 2px solid rgba(167, 139, 250, 0.3);
+    }
+    .seq-row > div.db {
+      background: rgba(240, 90, 40, 0.06);
+      border-left: 2px solid rgba(240, 90, 40, 0.3);
+    }
+    .method {
+      display: inline-block; font-weight: 800; font-size: 10px;
+      padding: 1px 6px; border-radius: 4px; margin-right: 6px;
+      font-family: inherit; letter-spacing: 0.02em;
+    }
+    .method.get { background: #1E3A8A; color: #93C5FD; }
+    .method.post { background: #14532D; color: #86EFAC; }
+    .ep { color: #FDE68A; font-size: 11.5px; }
+    .ret { color: var(--fg-dim); font-size: 11px; margin-top: 4px; display: block; }
+    .ret b { color: var(--accent); }
+    .note { color: var(--fg-dim); font-size: 10.5px; margin-top: 4px; font-family: system-ui, sans-serif; font-style: italic; }
+
+    .step-label {
+      font-weight: 800; color: #FBBF24; font-size: 12px; letter-spacing: 0.06em;
+      display: block; margin-bottom: 4px;
+    }
+
+    /* ===== ER-lite diagram ===== */
+    .er {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+    }
+    .table-box {
+      padding: 14px 16px; border-radius: 12px;
+      background: var(--glass-bg); border: 1px solid var(--glass-border);
+    }
+    .table-box.central { border: 1.5px solid var(--kgi); box-shadow: 0 0 0 1px rgba(240, 90, 40, 0.15); }
+    .table-box h4 {
+      font-size: 14px; font-weight: 800; margin-bottom: 8px;
+      color: var(--kgi-light); font-family: ui-monospace, monospace;
+    }
+    .table-box ul { list-style: none; padding: 0; margin: 0; }
+    .table-box li {
+      font-size: 11.5px; padding: 3px 0;
+      border-bottom: 1px dashed rgba(255,255,255,0.05);
+      font-family: ui-monospace, monospace; color: var(--fg-mute);
+    }
+    .table-box li:last-child { border: 0; }
+    .table-box li.pk { color: #FDE68A; font-weight: 700; }
+    .table-box li.fk { color: #93C5FD; }
+    .table-box .desc { font-size: 11px; color: var(--fg-dim); margin-top: 8px; line-height: 1.5; font-style: italic; }
+
+    /* ===== State machine ===== */
+    .sm {
+      display: flex; gap: 8px; padding: 20px; overflow-x: auto;
+      background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 14px;
+    }
+    .sm-state {
+      flex: 0 0 auto; padding: 14px 18px; border-radius: 10px;
+      background: #0F1E3A; border: 1.5px solid var(--accent);
+      text-align: center; min-width: 150px;
+    }
+    .sm-state .n { font-size: 13px; font-weight: 800; color: var(--accent); font-family: ui-monospace, monospace; }
+    .sm-state .w { font-size: 10.5px; color: var(--fg-dim); margin-top: 4px; }
+    .sm-arrow {
+      flex: 0 0 auto; align-self: center; color: var(--kgi-light);
+      padding: 0 4px; font-weight: 900;
+    }
+    .sm-arrow small { display: block; font-size: 10px; color: var(--fg-dim); font-weight: 600; margin-top: 2px; font-family: ui-monospace, monospace; }
+
+    /* ===== Endpoint table ===== */
+    .ep-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .ep-table th, .ep-table td {
+      padding: 8px 10px; text-align: left;
+      border-bottom: 1px solid var(--glass-border);
+    }
+    .ep-table th { color: var(--fg-dim); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+    .ep-table code { font-family: ui-monospace, monospace; font-size: 11.5px; color: #FDE68A; }
+    .ep-table tr:hover td { background: rgba(96, 165, 250, 0.04); }
+
+    .cross-ref {
+      margin-top: 24px;
+      padding: 14px 18px; border-radius: 12px;
+      background: rgba(34, 197, 94, 0.08);
+      border-left: 3px solid #22C55E;
+      font-size: 13px; color: var(--fg-mute); line-height: 1.7;
+    }
+    @media (max-width: 640px) {
+      body { padding: 16px 12px 56px; }
+      .page h1 { font-size: 22px !important; }
+      .lead { font-size: 13px; }
+      /* Tech stack grid: 2 col on mobile */
+      .stack-grid { grid-template-columns: repeat(2, 1fr) !important; }
+      /* Tables: scroll */
+      table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      /* ER boxes: single column */
+      .er, .table-grid { grid-template-columns: 1fr !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <a class="back-link" href="index.html">← 回 demo</a>
+    <div class="hero">
+      <div class="kicker">For 工程主管 · API Sequence + Schema</div>
+      <h1 class="title">Sprint Reader 系統架構（技術版）</h1>
+      <p class="lead">
+        單體 FastAPI + SQLite。下方三張圖：<b>① 完整 API 呼叫序列</b>（swim lane）、<b>② DB schema</b>、<b>③ Sprint 狀態機</b>。
+        每個欄位 / endpoint / 表名都與原始碼完全一致。
+      </p>
+    </div>
+
+    <!-- ===== ① Sequence diagram ===== -->
+    <div class="sec">
+      <div class="sec-title">① 完整 API 串接序列（單次 Sprint + Quiz）</div>
+      <div class="sec-sub">每一列 = 一個使用者動作觸發的完整 request/response + DB 寫入。</div>
+      <div class="seq-wrap">
+        <div class="seq">
+          <div class="lane-head l1">Browser（frontend/*.html）</div>
+          <div class="lane-head l2">FastAPI Router（routes/*.py）</div>
+          <div class="lane-head l3">Service（services/session_manager.py）</div>
+          <div class="lane-head l4">SQLite（data/sprint.db）</div>
+
+          <!-- Row 1 -->
+          <div class="seq-row">
+            <div class="user-action"><span class="step-label">STEP 1</span>index.html 載入<br/><span class="note">顯示 TOC + ring + 今日推薦</span></div>
+            <div class="api"><span class="method get">GET</span><span class="ep">/api/module</span><span class="ret">→ <b>modules[]</b>: id, title, duration_sec, page_count, quiz_count</span>
+              <span class="method get">GET</span><span class="ep">/api/stats/progress</span>
+              <span class="method get">GET</span><span class="ep">/api/stats/chapters</span>
+              <span class="method get">GET</span><span class="ep">/api/stats/recommend</span>
+            </div>
+            <div class="svc"><span class="note">（純查詢，無狀態變更）</span></div>
+            <div class="db">SELECT × MicroModules、SprintSessions、LearningJourney_Map</div>
+          </div>
+
+          <!-- Row 2 -->
+          <div class="seq-row">
+            <div class="user-action"><span class="step-label">STEP 2</span>splash.html → 點「開始」</div>
+            <div class="api"><span class="method post">POST</span><span class="ep">/api/sprint/start</span><br/>
+              <span class="ret">body: { agent_id, module_id }</span>
+              <span class="ret">→ <b>sprint_id</b> (uuid4)</span>
+            </div>
+            <div class="svc">session_manager.start_sprint()<br/><span class="note">生 uuid、tab_switch_count=0、status=<b>reading</b></span></div>
+            <div class="db">INSERT SprintSessions<br/>(sprint_id, agent_id, module_id, start_timestamp, completion_status='reading')</div>
+          </div>
+
+          <!-- Row 3 -->
+          <div class="seq-row">
+            <div class="user-action"><span class="step-label">STEP 3</span>reader.html：取本章卡片渲染</div>
+            <div class="api"><span class="method get">GET</span><span class="ep">/api/module/{module_id}</span><span class="ret">→ pages[]: sequence_number, title, body, highlight</span></div>
+            <div class="svc"><span class="note">-</span></div>
+            <div class="db">SELECT × FlashcardPages WHERE module_id=?</div>
+          </div>
+
+          <!-- Row 4 -->
+          <div class="seq-row">
+            <div class="user-action"><span class="step-label">STEP 4</span>使用者切到 Line（Visibility API）<br/><span class="note">document.hidden = true</span></div>
+            <div class="api"><span class="method post">POST</span><span class="ep">/api/sprint/telemetry</span><br/>
+              <span class="ret">body: { sprint_id, event: "tab_switch" }</span>
+              <span class="ret">→ { tab_switch_count }</span>
+            </div>
+            <div class="svc">session_manager.record_tab_switch()<br/><span class="note">原子遞增（DB-level UPDATE ... +1）</span></div>
+            <div class="db">UPDATE SprintSessions SET tab_switch_count = tab_switch_count + 1</div>
+          </div>
+
+          <!-- Row 5 -->
+          <div class="seq-row">
+            <div class="user-action"><span class="step-label">STEP 5</span>點「✅ 進入測驗」或倒數完<br/><span class="note">（目前倒數 0 不自動觸發，由使用者主動點）</span></div>
+            <div class="api">
+              <span class="method post">POST</span><span class="ep">/api/sprint/complete</span><br/>
+              <span class="ret">body: { sprint_id, status: "finished_early" }</span>
+              <br/>
+              <span class="method post">POST</span><span class="ep">/api/handoff/to-quiz</span><br/>
+              <span class="ret">→ { quiz_session_id }</span>
+            </div>
+            <div class="svc">complete_sprint()：設 end_timestamp<br/>create_quiz_handoff()：生 quiz_session_id</div>
+            <div class="db">UPDATE SprintSessions SET end_timestamp, completion_status='handoff'<br/>INSERT LearningJourney_Map(sprint_id, quiz_session_id)</div>
+          </div>
+
+          <!-- Row 6 -->
+          <div class="seq-row">
+            <div class="user-action"><span class="step-label">STEP 6</span>handoff.html → quiz.html</div>
+            <div class="api"><span class="method get">GET</span><span class="ep">/api/quiz/{module_id}</span><span class="ret">→ questions[]（不含 correct_index）</span></div>
+            <div class="svc"><span class="note">-</span></div>
+            <div class="db">SELECT × QuizQuestions WHERE module_id=? ORDER BY sequence_number</div>
+          </div>
+
+          <!-- Row 7 -->
+          <div class="seq-row">
+            <div class="user-action"><span class="step-label">STEP 7</span>使用者全部答完 → 按提交</div>
+            <div class="api"><span class="method post">POST</span><span class="ep">/api/quiz/submit-batch</span><br/>
+              <span class="ret">body: { quiz_session_id, answers: [{question_id, chosen_index}] }</span>
+              <br/>
+              <span class="method post">POST</span><span class="ep">/api/quiz/finalize</span><br/>
+              <span class="ret">→ score, total, responses[] (含 correct_index + explanation)</span>
+            </div>
+            <div class="svc"><span class="note">judge each: chosen == correct</span><br/>total = len(responses)（bug fix 0415）</div>
+            <div class="db">INSERT × QuizResponses<br/>UPDATE LearningJourney_Map SET score, total_questions</div>
+          </div>
+
+          <!-- Row 8 -->
+          <div class="seq-row">
+            <div class="user-action"><span class="step-label">STEP 8</span>result.html 顯示答對率 + 逐題檢討</div>
+            <div class="api"><span class="note">結果直接由 finalize 回傳，無額外 API</span></div>
+            <div class="svc"><span class="note">-</span></div>
+            <div class="db"><span class="note">（僅讀 sessionStorage.result）</span></div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="cross-ref">
+        ⓘ <b>關鍵 race-safe 設計</b>：STEP 4 的 <code>tab_switch_count</code> 用 DB-level UPDATE 遞增，不是先 SELECT 再 UPDATE，避免使用者快速切換造成漏計。
+        STEP 5 的 <code>end_timestamp</code> 由伺服器蓋章，前端改 JS 時鐘無效。
+      </div>
+    </div>
+
+    <!-- ===== ② ER diagram ===== -->
+    <div class="sec">
+      <div class="sec-title">② 資料層 · 6 張 SQLite 表</div>
+      <div class="sec-sub"><code>init_db.py</code> 建表 + seed。中央表 <code>LearningJourney_Map</code> 是 P2/P3 橋接點。</div>
+      <div class="er">
+
+        <div class="table-box">
+          <h4>MicroModules</h4>
+          <ul>
+            <li class="pk">module_id (PK)</li>
+            <li>title</li>
+            <li>description</li>
+            <li>duration_sec · page_count · quiz_count</li>
+            <li>source_doc · domain_tags · sort_order</li>
+          </ul>
+          <div class="desc">6 章 metadata</div>
+        </div>
+
+        <div class="table-box">
+          <h4>FlashcardPages</h4>
+          <ul>
+            <li class="pk">page_id (PK)</li>
+            <li class="fk">module_id (FK)</li>
+            <li>sequence_number · title · body · highlight</li>
+          </ul>
+          <div class="desc">30 張卡（5×6 章）</div>
+        </div>
+
+        <div class="table-box">
+          <h4>QuizQuestions</h4>
+          <ul>
+            <li class="pk">question_id (PK)</li>
+            <li class="fk">module_id (FK)</li>
+            <li>sequence_number · stem · options_json</li>
+            <li>correct_index · explanation · source_page_seq</li>
+          </ul>
+          <div class="desc">每章 ≥ 3 題，真題庫</div>
+        </div>
+
+        <div class="table-box">
+          <h4>SprintSessions ★</h4>
+          <ul>
+            <li class="pk">sprint_id (PK, uuid)</li>
+            <li>agent_id · module_id</li>
+            <li>start_timestamp · end_timestamp</li>
+            <li>tab_switch_count</li>
+            <li>completion_status</li>
+          </ul>
+          <div class="desc">本專案核心：一次閱讀 = 一筆</div>
+        </div>
+
+        <div class="table-box">
+          <h4>QuizResponses</h4>
+          <ul>
+            <li class="pk">response_id (PK)</li>
+            <li class="fk">quiz_session_id · question_id</li>
+            <li>chosen_index · is_correct · answered_at</li>
+          </ul>
+          <div class="desc">每題一筆，錯題分析用</div>
+        </div>
+
+        <div class="table-box central">
+          <h4>LearningJourney_Map ★</h4>
+          <ul>
+            <li class="pk">journey_id (PK)</li>
+            <li class="fk">sprint_id · quiz_session_id</li>
+            <li>score · total_questions</li>
+            <li>created_at</li>
+          </ul>
+          <div class="desc">橋接表：P3 閱讀 ⟷ P2 測驗 ⟷ 分數。未來 AI 餵料源。</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ===== ③ State machine ===== -->
+    <div class="sec">
+      <div class="sec-title">③ SprintSessions.completion_status 狀態機</div>
+      <div class="sec-sub"><code>session_manager.py</code> 保證每個 transition 都是 DB-level 原子寫入，前端無法繞過。</div>
+
+      <div class="sm">
+        <div class="sm-state"><div class="n">pre_sprint</div><div class="w">POST /start 建立時</div></div>
+        <div class="sm-arrow">→<small>insert</small></div>
+        <div class="sm-state"><div class="n">reading</div><div class="w">讀卡中（可被 tab_switch 累計）</div></div>
+        <div class="sm-arrow">→<small>/complete</small></div>
+        <div class="sm-state"><div class="n">handoff</div><div class="w">/handoff/to-quiz 已發 quiz_session_id</div></div>
+        <div class="sm-arrow">→<small>/quiz/finalize</small></div>
+        <div class="sm-state"><div class="n">finished_early<br/>/ timed_out<br/>/ abandoned</div><div class="w">end_timestamp 寫入</div></div>
+      </div>
+    </div>
+
+    <!-- ===== ④ Endpoint inventory ===== -->
+    <div class="sec">
+      <div class="sec-title">④ 完整 Endpoint 清單（13 個）</div>
+      <div class="sec-sub">對照 <code>app/routes/</code> 底下 6 個檔案。</div>
+      <div style="padding: 16px; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 12px;">
+        <table class="ep-table">
+          <tr><th>Method</th><th>Path</th><th>Router 檔</th><th>用途</th></tr>
+          <tr><td><span class="method get">GET</span></td><td><code>/api/module</code></td><td>module.py</td><td>章節清單（TOC）</td></tr>
+          <tr><td><span class="method get">GET</span></td><td><code>/api/module/{id}</code></td><td>module.py</td><td>單章詳細 + flashcards</td></tr>
+          <tr><td><span class="method post">POST</span></td><td><code>/api/sprint/start</code></td><td>sprint.py</td><td>建立 SprintSession</td></tr>
+          <tr><td><span class="method post">POST</span></td><td><code>/api/sprint/telemetry</code></td><td>sprint.py</td><td>分心事件累計</td></tr>
+          <tr><td><span class="method post">POST</span></td><td><code>/api/sprint/complete</code></td><td>sprint.py</td><td>結束 + 蓋 end_timestamp</td></tr>
+          <tr><td><span class="method post">POST</span></td><td><code>/api/handoff/to-quiz</code></td><td>handoff.py</td><td>建立 LearningJourney_Map 一列</td></tr>
+          <tr><td><span class="method get">GET</span></td><td><code>/api/quiz/{module_id}</code></td><td>quiz.py</td><td>抽題（不含答案）</td></tr>
+          <tr><td><span class="method post">POST</span></td><td><code>/api/quiz/submit-batch</code></td><td>quiz.py</td><td>批次寫 QuizResponses</td></tr>
+          <tr><td><span class="method post">POST</span></td><td><code>/api/quiz/finalize</code></td><td>quiz.py</td><td>算分 + 回傳逐題檢討</td></tr>
+          <tr><td><span class="method get">GET</span></td><td><code>/api/review/available</code></td><td>review.py</td><td>取得錯題池</td></tr>
+          <tr><td><span class="method post">POST</span></td><td><code>/api/review/submit-batch</code></td><td>review.py</td><td>錯題重答</td></tr>
+          <tr><td><span class="method post">POST</span></td><td><code>/api/review/finalize</code></td><td>review.py</td><td>錯題挑戰結算</td></tr>
+          <tr><td><span class="method get">GET</span></td><td><code>/api/stats/progress · /chapters · /recommend</code></td><td>stats.py</td><td>首頁統計（ring / 推薦 / 節奏）</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="cross-ref">
+      想看更 high-level 的圖嗎？ → <a href="architecture-business.html" style="color: var(--accent); font-weight: 700;">業務版架構圖</a>（給非技術同仁 / 教育訓練部看）
+    </div>
+
+  </div>
+</body>
+</html>

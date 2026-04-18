@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>Sprint Reader — Result</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body data-page="result">
+  <div class="result">
+    <div class="result-hero">
+      <div class="result-kicker">SPRINT COMPLETE</div>
+      <div class="result-score-wrap">
+        <div class="result-pct" id="result-pct">—</div>
+        <div class="result-score" id="result-score" style="font-size: 14px; color: var(--fg-dim); margin-top: 4px;">答對率</div>
+      </div>
+    </div>
+
+    <div class="result-stats">
+      <div class="stat"><div class="stat-label">閱讀時間</div><div class="stat-value" id="result-reading">—</div></div>
+      <div class="stat"><div class="stat-label">分心次數</div><div class="stat-value" id="result-tabs">—</div></div>
+      <div class="stat"><div class="stat-label">狀態</div><div class="stat-value" id="result-status">—</div></div>
+    </div>
+
+    <h3 class="section-title">逐題檢討</h3>
+    <div class="result-breakdown" id="result-breakdown"></div>
+
+    <details class="dev-info">
+      <summary>🔧 開發者資訊（Session IDs · 給工程面試官看）</summary>
+      <p class="dev-hint">這兩個 ID 把本次「閱讀行為」與「測驗結果」在資料庫層綁定，是未來 AI 個人化推薦的資料基礎。</p>
+      <div class="handoff-card show" id="result-ids"></div>
+    </details>
+
+    <div class="result-foot">
+      <a href="index.html" class="btn-primary" style="text-decoration: none; display: inline-block; padding: 14px 28px; width: auto;">↻ 選其他章節</a>
+      <br/><br/>
+      <a href="brief.html" style="color: var(--accent);">📊 看商業論述 (brief.html)</a>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="card-modal" hidden>
+    <div class="modal-card">
+      <button class="modal-close" id="modal-close" aria-label="close">×</button>
+      <div class="modal-kicker" id="modal-kicker"></div>
+      <h2 class="modal-title" id="modal-title"></h2>
+      <p class="modal-body" id="modal-body"></p>
+      <div class="modal-highlight" id="modal-highlight"></div>
+    </div>
+  </div>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>

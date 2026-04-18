@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sprint Reader — 資料庫即時檢視</title>
+  <link rel="stylesheet" href="assets/style.css" />
+  <style>
+    body { background: #0A1428; padding: 24px 16px 64px; }
+    .page { max-width: 1320px; margin: 0 auto; color: var(--fg); }
+    .back-link { display: inline-block; color: var(--fg-dim); font-size: 13px; text-decoration: none; margin-bottom: 12px; }
+    .back-link:hover { color: var(--accent); }
+    .kicker { color: var(--accent); font-size: 12px; letter-spacing: 0.14em; font-weight: 700; text-transform: uppercase; }
+    .title { font-size: 26px; font-weight: 800; margin-top: 6px; line-height: 1.25; }
+    .lead { color: var(--fg-mute); font-size: 13px; margin-top: 8px; max-width: 780px; line-height: 1.6; }
+
+    .layout {
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 18px;
+    }
+    @media (max-width: 840px) {
+      .layout { grid-template-columns: 1fr; }
+    }
+
+    .sidebar {
+      padding: 12px;
+      background: var(--glass-bg); border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      position: sticky; top: 16px;
+      align-self: flex-start;
+      max-height: calc(100vh - 40px); overflow-y: auto;
+    }
+    .sidebar h3 { font-size: 12px; color: var(--fg-dim); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
+    .table-btn {
+      display: block; width: 100%;
+      padding: 10px 12px; margin-bottom: 4px;
+      background: transparent; border: 1px solid transparent;
+      border-radius: 8px; color: var(--fg);
+      text-align: left; font-size: 13px;
+      cursor: pointer; transition: background 0.12s, border-color 0.12s;
+      font-family: ui-monospace, Menlo, monospace;
+    }
+    .table-btn:hover { background: rgba(96,165,250,0.08); }
+    .table-btn.active { background: var(--brand-grad); color: #fff; border-color: transparent; font-weight: 800; }
+    .table-btn .count {
+      float: right; font-size: 11px; opacity: 0.7;
+      font-family: ui-monospace, monospace;
+    }
+    .tag-spec { font-size: 9px; padding: 1px 5px; border-radius: 999px; background: rgba(34,197,94,0.2); color: #86EFAC; margin-left: 6px; font-family: system-ui; }
+    .tag-new  { font-size: 9px; padding: 1px 5px; border-radius: 999px; background: rgba(240,90,40,0.2); color: var(--kgi-light); margin-left: 6px; font-family: system-ui; }
+    .tag-sup  { font-size: 9px; padding: 1px 5px; border-radius: 999px; background: rgba(167,139,250,0.2); color: #C4B5FD; margin-left: 6px; font-family: system-ui; }
+
+    .main {
+      padding: 18px;
+      background: var(--glass-bg); border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      min-height: 400px;
+    }
+    .main-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; }
+    .main-title { font-size: 20px; font-weight: 800; font-family: ui-monospace, monospace; color: var(--accent); }
+    .main-sub { font-size: 12px; color: var(--fg-dim); }
+    .refresh-btn {
+      background: rgba(96,165,250,0.1); color: var(--accent);
+      border: 1px solid rgba(96,165,250,0.3);
+      border-radius: 8px; padding: 6px 12px; font-size: 12px; cursor: pointer;
+    }
+    .refresh-btn:hover { background: rgba(96,165,250,0.2); }
+
+    .schema-box {
+      padding: 12px 14px; background: rgba(0,0,0,0.2);
+      border-radius: 8px; border: 1px solid var(--glass-border);
+      margin-bottom: 14px;
+    }
+    .schema-box h4 { font-size: 12px; color: var(--fg-dim); margin-bottom: 8px; letter-spacing: 0.08em; }
+    .schema-table { width: 100%; border-collapse: collapse; font-size: 11.5px; font-family: ui-monospace, monospace; }
+    .schema-table th, .schema-table td { padding: 4px 8px; text-align: left; border-bottom: 1px dashed rgba(255,255,255,0.06); }
+    .schema-table th { color: var(--fg-dim); font-size: 10.5px; text-transform: uppercase; font-family: system-ui; letter-spacing: 0.04em; font-weight: 700; }
+    .schema-table td.pk { color: #FDE68A; font-weight: 700; }
+    .schema-table td.null { color: var(--fg-dim); font-style: italic; }
+
+    .data-wrap {
+      overflow-x: auto;
+      max-height: 560px;
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+    }
+    .data-table {
+      width: 100%; border-collapse: collapse; font-size: 12px;
+      font-family: ui-monospace, Menlo, monospace;
+    }
+    .data-table thead {
+      position: sticky; top: 0;
+      background: #0F1E3A;
+      z-index: 2;
+    }
+    .data-table th {
+      padding: 8px 10px; text-align: left; color: #FDE68A;
+      font-weight: 700; border-bottom: 2px solid var(--glass-border-strong);
+      white-space: nowrap;
+    }
+    .data-table td {
+      padding: 7px 10px; border-bottom: 1px solid rgba(255,255,255,0.05);
+      color: var(--fg); max-width: 300px;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .data-table tr:hover td { background: rgba(96,165,250,0.04); }
+    .data-table td .null { color: var(--fg-dim); font-style: italic; }
+    .data-table td .truncate { cursor: help; }
+
+    .empty-hint {
+      padding: 24px; text-align: center;
+      color: var(--fg-dim); font-size: 13px;
+    }
+    .empty-hint b { color: var(--fg); }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <a class="back-link" href="index.html">← 回 demo</a>
+    <div class="kicker">Sprint Reader · Live DB Inspector</div>
+    <h1 class="title">資料庫即時檢視</h1>
+    <p class="lead">
+      左側 9 張表全部來自 <code>data/sprint.db</code>。點任一張 → 右側顯示 <b>schema</b>（欄位定義）+ <b>最新 50 筆資料</b>。
+      這頁是 read-only，可以安全開給面試官看你的資料真的在寫入。
+    </p>
+
+    <div class="layout">
+      <aside class="sidebar">
+        <h3>🗄️ 資料表</h3>
+        <div id="table-list"></div>
+      </aside>
+
+      <main class="main">
+        <div class="main-head">
+          <div>
+            <div class="main-title" id="main-title">— 選一張表 —</div>
+            <div class="main-sub" id="main-sub"></div>
+          </div>
+          <button class="refresh-btn" id="refresh-btn" hidden>↻ Refresh</button>
+        </div>
+
+        <div id="schema-container" hidden>
+          <div class="schema-box">
+            <h4>Schema · 欄位定義</h4>
+            <table class="schema-table">
+              <thead>
+                <tr><th>#</th><th>欄位</th><th>型別</th><th>NOT NULL</th><th>Default</th><th>PK</th></tr>
+              </thead>
+              <tbody id="schema-body"></tbody>
+            </table>
+          </div>
+
+          <div class="data-wrap">
+            <table class="data-table" id="data-table"></table>
+          </div>
+        </div>
+
+        <div class="empty-hint" id="empty-hint">
+          <b>👈 左側選一張表</b><br/>
+          例如：點 <code>SprintSessions</code> 看最近 50 次 7 分鐘閱讀紀錄，或點 <code>ChapterMastery</code> 看葉悟員的遺忘曲線狀態。
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    // Semantic tagging — matches the data-model doc categories
+    const SPEC = new Set(["FlashcardPages", "SprintSessions", "LearningJourney_Map"]);
+    const NEWT = new Set(["Agents", "ChapterMastery", "ReviewEvents"]);
+
+    function tagFor(name) {
+      if (SPEC.has(name)) return '<span class="tag-spec">SPEC</span>';
+      if (NEWT.has(name)) return '<span class="tag-new">NEW</span>';
+      return '<span class="tag-sup">SUP</span>';
+    }
+
+    function renderCell(v) {
+      if (v === null || v === undefined) return '<span class="null">NULL</span>';
+      if (typeof v === "string" && v.length > 60) {
+        return `<span class="truncate" title="${v.replace(/"/g,'&quot;')}">${v.slice(0,58)}…</span>`;
+      }
+      if (typeof v === "string" && (v.startsWith("[") || v.startsWith("{"))) {
+        try { const p = JSON.parse(v); return `<span class="truncate" title="${JSON.stringify(p,null,2).replace(/"/g,'&quot;')}">${v.slice(0,58)}${v.length>58?'…':''}</span>`; } catch(e){}
+      }
+      return String(v);
+    }
+
+    async function loadTables() {
+      const res = await fetch("/api/inspect/tables");
+      const data = await res.json();
+      const list = document.getElementById("table-list");
+      list.innerHTML = "";
+      // Order: SPEC first, then NEW, then support — user-requested
+      const specOrder = ["FlashcardPages","SprintSessions","LearningJourney_Map"];
+      const newOrder  = ["Agents","ChapterMastery","ReviewEvents"];
+      const supOrder  = ["MicroModules","QuizQuestions","QuizResponses"];
+      const orderedNames = [...specOrder, ...newOrder, ...supOrder];
+      const byName = Object.fromEntries(data.tables.map(t => [t.name, t]));
+      orderedNames.forEach(name => {
+        const t = byName[name];
+        if (!t) return;
+        const btn = document.createElement("button");
+        btn.className = "table-btn";
+        btn.dataset.name = t.name;
+        btn.innerHTML = `${t.name}${tagFor(t.name)}<span class="count">${t.row_count}</span>`;
+        btn.addEventListener("click", () => selectTable(t));
+        list.appendChild(btn);
+      });
+    }
+
+    let currentTable = null;
+
+    async function selectTable(t) {
+      currentTable = t;
+      document.querySelectorAll(".table-btn").forEach(b => {
+        b.classList.toggle("active", b.dataset.name === t.name);
+      });
+      document.getElementById("main-title").textContent = t.name;
+      document.getElementById("main-sub").textContent = `${t.row_count} 列總計 · 顯示最新 50 筆`;
+      document.getElementById("empty-hint").hidden = true;
+      document.getElementById("schema-container").hidden = false;
+      document.getElementById("refresh-btn").hidden = false;
+
+      // Render schema
+      const body = document.getElementById("schema-body");
+      body.innerHTML = "";
+      t.columns.forEach(c => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${c.cid}</td>
+          <td class="${c.pk ? 'pk' : ''}">${c.name}${c.pk ? ' 🔑' : ''}</td>
+          <td>${c.type || '-'}</td>
+          <td>${c.notnull ? '✓' : '<span class="null">-</span>'}</td>
+          <td>${c.default === null ? '<span class="null">-</span>' : c.default}</td>
+          <td>${c.pk ? 'PK' : '<span class="null">-</span>'}</td>
+        `;
+        body.appendChild(tr);
+      });
+
+      // Fetch + render rows
+      const res = await fetch(`/api/inspect/rows/${t.name}`);
+      const data = await res.json();
+      const tbl = document.getElementById("data-table");
+      if (data.rows.length === 0) {
+        tbl.innerHTML = `<tbody><tr><td style="padding:24px; color:var(--fg-dim); font-family: system-ui; text-align:center;">（目前這張表還沒有資料）</td></tr></tbody>`;
+        return;
+      }
+      const head = `<thead><tr>${data.columns.map(c => `<th>${c}</th>`).join("")}</tr></thead>`;
+      const body2 = `<tbody>${data.rows.map(row =>
+        `<tr>${data.columns.map(c => `<td>${renderCell(row[c])}</td>`).join("")}</tr>`
+      ).join("")}</tbody>`;
+      tbl.innerHTML = head + body2;
+    }
+
+    document.getElementById("refresh-btn").addEventListener("click", async () => {
+      // Reload table list (for updated counts) + current table
+      await loadTables();
+      if (currentTable) {
+        const updated = await fetch("/api/inspect/tables").then(r=>r.json());
+        const t = updated.tables.find(x => x.name === currentTable.name);
+        if (t) selectTable(t);
+      }
+    });
+
+    loadTables();
+  </script>
+</body>
+</html>

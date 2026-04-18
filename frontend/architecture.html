@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sprint Reader — 系統架構圖</title>
+  <link rel="stylesheet" href="assets/style.css" />
+  <style>
+    body { background: #0A1428; padding: 32px 24px 64px; }
+    .arch-page { max-width: 1280px; margin: 0 auto; color: var(--fg); }
+    .arch-head { margin-bottom: 28px; }
+    .arch-kicker { color: var(--accent); font-size: 12px; letter-spacing: 0.14em; font-weight: 700; text-transform: uppercase; }
+    .arch-title { font-size: 30px; font-weight: 800; margin-top: 8px; line-height: 1.3; color: var(--fg); }
+    .arch-sub { color: var(--fg-mute); font-size: 14px; margin-top: 8px; max-width: 680px; line-height: 1.6; }
+
+    .back-link {
+      display: inline-block; margin-bottom: 20px;
+      color: var(--fg-dim); font-size: 13px; text-decoration: none;
+    }
+    .back-link:hover { color: var(--accent); }
+
+    /* Layered layout */
+    .arch-grid { display: flex; flex-direction: column; gap: 20px; }
+    .layer {
+      border: 1px solid var(--glass-border);
+      border-radius: 18px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      padding: 20px 22px;
+      position: relative;
+    }
+    .layer-head {
+      display: flex; align-items: baseline; justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .layer-title { font-size: 15px; font-weight: 800; letter-spacing: 0.04em; }
+    .layer-tag {
+      font-size: 11px; font-weight: 600; color: var(--fg-dim);
+      padding: 3px 10px; border-radius: 999px;
+      background: rgba(255,255,255,0.04); border: 1px solid var(--glass-border);
+    }
+
+    .layer.l-frontend { border-left: 3px solid #60A5FA; }
+    .layer.l-frontend .layer-title { color: #60A5FA; }
+    .layer.l-api { border-left: 3px solid #22C55E; }
+    .layer.l-api .layer-title { color: #22C55E; }
+    .layer.l-service { border-left: 3px solid #A78BFA; }
+    .layer.l-service .layer-title { color: #A78BFA; }
+    .layer.l-db { border-left: 3px solid var(--kgi); }
+    .layer.l-db .layer-title { color: var(--kgi-light); }
+    .layer.l-ext { border-left: 3px solid #F59E0B; }
+    .layer.l-ext .layer-title { color: #F59E0B; }
+
+    .box-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+    }
+    .box {
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--glass-border);
+      transition: transform 0.12s, border-color 0.15s;
+    }
+    .box:hover { transform: translateY(-2px); border-color: var(--accent); }
+    .box-name { font-size: 13px; font-weight: 700; color: var(--fg); }
+    .box-desc { font-size: 11px; color: var(--fg-dim); margin-top: 4px; line-height: 1.5; }
+    .box-endpoint { font-size: 11px; font-family: ui-monospace, Menlo, monospace; color: #22C55E; margin-top: 4px; }
+    .box.core { border-color: rgba(240, 90, 40, 0.4); background: rgba(240, 90, 40, 0.06); }
+    .box.core .box-name::after { content: " ★"; color: var(--kgi-light); }
+
+    /* Arrow between layers */
+    .arrow-down {
+      text-align: center; color: var(--fg-dim); font-size: 22px;
+      margin: -10px 0; position: relative; z-index: 2;
+    }
+
+    /* Flow diagram */
+    .flow-section { margin-top: 36px; }
+    .flow-title { font-size: 18px; font-weight: 800; color: var(--fg); margin-bottom: 14px; }
+    .flow-sub { font-size: 13px; color: var(--fg-mute); margin-bottom: 20px; }
+    .flow {
+      display: flex; gap: 8px; flex-wrap: wrap; align-items: stretch;
+      padding: 18px; border-radius: 14px;
+      background: linear-gradient(180deg, rgba(96,165,250,0.06), rgba(96,165,250,0.02));
+      border: 1px solid rgba(96,165,250,0.18);
+    }
+    .flow-step {
+      flex: 1; min-width: 130px;
+      padding: 12px;
+      background: #0F1E3A;
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+      text-align: center;
+      position: relative;
+    }
+    .flow-step .n {
+      display: inline-block; width: 22px; height: 22px; line-height: 22px;
+      border-radius: 50%; background: var(--brand-grad); color: #fff;
+      font-size: 12px; font-weight: 800; margin-bottom: 6px;
+    }
+    .flow-step .t { font-size: 13px; font-weight: 700; color: var(--fg); }
+    .flow-step .d { font-size: 11px; color: var(--fg-dim); margin-top: 4px; line-height: 1.5; }
+    .flow-arrow {
+      align-self: center; color: var(--accent); font-weight: 900; font-size: 18px;
+    }
+    @media (max-width: 720px) {
+      .flow { flex-direction: column; }
+      .flow-arrow { transform: rotate(90deg); }
+    }
+
+    /* Legend */
+    .legend {
+      margin-top: 28px;
+      display: flex; gap: 16px; flex-wrap: wrap;
+      font-size: 12px; color: var(--fg-dim);
+    }
+    .legend-item { display: flex; align-items: center; gap: 6px; }
+    .legend-dot { width: 10px; height: 10px; border-radius: 3px; }
+
+    /* Key decisions list */
+    .notes { margin-top: 32px; }
+    .notes h3 { font-size: 16px; font-weight: 800; margin-bottom: 12px; color: var(--fg); }
+    .notes-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+    .note {
+      padding: 14px 16px; border-radius: 12px;
+      background: var(--glass-bg); border: 1px solid var(--glass-border);
+    }
+    .note .n-title { font-size: 13px; font-weight: 700; color: var(--accent); }
+    .note .n-body { font-size: 12px; color: var(--fg-mute); margin-top: 6px; line-height: 1.6; }
+    @media (max-width: 640px) {
+      body { padding: 16px 12px 56px; }
+      .arch-page h1 { font-size: 22px !important; }
+      .arch-sub { font-size: 13px; }
+      .notes-list { grid-template-columns: 1fr; }
+      .node-grid { grid-template-columns: 1fr !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="arch-page">
+    <a class="back-link" href="index.html">← 回 demo</a>
+    <div class="arch-head">
+      <div class="arch-kicker">Sprint Reader · System Architecture</div>
+      <h1 class="arch-title">系統架構圖</h1>
+      <p class="arch-sub">
+        人身保險考照 7 分鐘微學習 App（凱基金 MA 面試 Project 3）。<br/>
+        單體 FastAPI + SQLite，零外部依賴，前端 vanilla HTML/JS。★ 標記 = 面試論述的核心模組。
+      </p>
+    </div>
+
+    <div class="arch-grid">
+
+      <!-- Layer 1: Frontend -->
+      <div class="layer l-frontend">
+        <div class="layer-head">
+          <div class="layer-title">① 前端 · Browser (Vanilla HTML + CSS + JS)</div>
+          <span class="layer-tag">frontend/</span>
+        </div>
+        <div class="box-grid">
+          <div class="box">
+            <div class="box-name">index.html</div>
+            <div class="box-desc">章節 TOC + 整體進度 ring + 今日推薦 + 錯題挑戰 + 14 天節奏</div>
+          </div>
+          <div class="box">
+            <div class="box-name">splash.html</div>
+            <div class="box-desc">進 Sprint 前說明頁（章節名 / 時間 / 卡數）</div>
+          </div>
+          <div class="box core">
+            <div class="box-name">reader.html</div>
+            <div class="box-desc">7 分鐘倒數 · 滑卡 · Visibility API 偵測分心</div>
+          </div>
+          <div class="box">
+            <div class="box-name">handoff.html</div>
+            <div class="box-desc">Sprint → Quiz 過場</div>
+          </div>
+          <div class="box">
+            <div class="box-name">quiz.html</div>
+            <div class="box-desc">3 題 4 選 1，全部作答後一次提交</div>
+          </div>
+          <div class="box">
+            <div class="box-name">result.html</div>
+            <div class="box-desc">答對率 + 分心次數 + 逐題檢討 + 原文卡回查</div>
+          </div>
+          <div class="box">
+            <div class="box-name">review-setup / review</div>
+            <div class="box-desc">錯題挑戰流（跨章抽考）</div>
+          </div>
+          <div class="box">
+            <div class="box-name">brief.html</div>
+            <div class="box-desc">給面試官看的商業論述頁</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="arrow-down">▼ HTTP / JSON（同源）</div>
+
+      <!-- Layer 2: API routes -->
+      <div class="layer l-api">
+        <div class="layer-head">
+          <div class="layer-title">② API 路由 · FastAPI Routers</div>
+          <span class="layer-tag">app/routes/</span>
+        </div>
+        <div class="box-grid">
+          <div class="box">
+            <div class="box-name">module.py</div>
+            <div class="box-endpoint">GET /api/module · /api/module/{id}</div>
+            <div class="box-desc">章節清單 / 單章內容（含 flashcards）</div>
+          </div>
+          <div class="box core">
+            <div class="box-name">sprint.py</div>
+            <div class="box-endpoint">POST /start · /complete · /telemetry</div>
+            <div class="box-desc">Sprint 狀態機 + 分心事件累計</div>
+          </div>
+          <div class="box">
+            <div class="box-name">handoff.py</div>
+            <div class="box-endpoint">POST /api/handoff/to-quiz</div>
+            <div class="box-desc">生成 quiz_session_id，寫入 JourneyMap</div>
+          </div>
+          <div class="box core">
+            <div class="box-name">quiz.py</div>
+            <div class="box-endpoint">GET /{id} · POST /submit-batch · /finalize</div>
+            <div class="box-desc">抽題、判對錯、寫分數至 JourneyMap</div>
+          </div>
+          <div class="box">
+            <div class="box-name">review.py</div>
+            <div class="box-endpoint">GET /available · POST /submit-batch · /finalize</div>
+            <div class="box-desc">跨章錯題挑戰</div>
+          </div>
+          <div class="box">
+            <div class="box-name">stats.py</div>
+            <div class="box-endpoint">GET /progress · /chapters · /recommend</div>
+            <div class="box-desc">首頁 ring、章節進度、今日推薦</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="arrow-down">▼</div>
+
+      <!-- Layer 3: Services -->
+      <div class="layer l-service">
+        <div class="layer-head">
+          <div class="layer-title">③ 服務層 · Business Logic</div>
+          <span class="layer-tag">app/services/ · app/main.py · app/db.py</span>
+        </div>
+        <div class="box-grid">
+          <div class="box core">
+            <div class="box-name">session_manager.py</div>
+            <div class="box-desc">狀態機：<code>pre_sprint → reading → handoff → completed</code>，UUID 生成、分心事件遞增</div>
+          </div>
+          <div class="box">
+            <div class="box-name">main.py</div>
+            <div class="box-desc">FastAPI app、static mount <code>/ui/ → frontend/</code>、router 掛載</div>
+          </div>
+          <div class="box">
+            <div class="box-name">db.py</div>
+            <div class="box-desc">sqlite3 connection helper（with-statement 保證 commit / close）</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="arrow-down">▼</div>
+
+      <!-- Layer 4: DB -->
+      <div class="layer l-db">
+        <div class="layer-head">
+          <div class="layer-title">④ 資料層 · SQLite（file: data/sprint.db）</div>
+          <span class="layer-tag">init_db.py seeds</span>
+        </div>
+        <div class="box-grid">
+          <div class="box">
+            <div class="box-name">MicroModules</div>
+            <div class="box-desc">6 章 metadata（標題、時長、標籤）</div>
+          </div>
+          <div class="box">
+            <div class="box-name">FlashcardPages</div>
+            <div class="box-desc">30 張卡（5 卡 × 6 章）· 取材 PDF</div>
+          </div>
+          <div class="box">
+            <div class="box-name">QuizQuestions</div>
+            <div class="box-desc">18+ 題庫 · 取材業務員考試真題</div>
+          </div>
+          <div class="box core">
+            <div class="box-name">SprintSessions</div>
+            <div class="box-desc">每次 7 分鐘 session · 開始/結束 timestamp · 分心次數 · 完成狀態</div>
+          </div>
+          <div class="box">
+            <div class="box-name">QuizResponses</div>
+            <div class="box-desc">每題作答紀錄（盲點分析）</div>
+          </div>
+          <div class="box core">
+            <div class="box-name">LearningJourney_Map</div>
+            <div class="box-desc">P3 ⟷ P2 橋接表：sprint_id ↔ quiz_session_id ↔ score</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- External -->
+      <div class="layer l-ext" style="margin-top: 24px;">
+        <div class="layer-head">
+          <div class="layer-title">⑤ 外部素材（人工整理，非即時依賴）</div>
+          <span class="layer-tag">seed-time only</span>
+        </div>
+        <div class="box-grid">
+          <div class="box">
+            <div class="box-name">人身保險.pdf</div>
+            <div class="box-desc">JY 價值筆記 110 頁 · 人工切成 6 章 · seed 進 init_db.py</div>
+          </div>
+          <div class="box">
+            <div class="box-name">（未來）LLM 自動切章</div>
+            <div class="box-desc">Roadmap Phase B：接 Claude API 自動抽取 MicroModules + 題庫</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- User flow -->
+    <div class="flow-section">
+      <div class="flow-title">使用者主流程（Sprint → Quiz）</div>
+      <div class="flow-sub">單章最短可 5 分鐘完成：選章 → 7 分鐘滑卡 → 3 題測驗 → 看結果。</div>
+      <div class="flow">
+        <div class="flow-step"><span class="n">1</span><div class="t">選章節</div><div class="d">index.html TOC</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><span class="n">2</span><div class="t">Start Sprint</div><div class="d">POST /sprint/start<br/>（取得 sprint_id）</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><span class="n">3</span><div class="t">讀卡 · 偵測分心</div><div class="d">Visibility API<br/>POST /sprint/telemetry</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><span class="n">4</span><div class="t">Complete</div><div class="d">POST /sprint/complete<br/>＋ /handoff/to-quiz</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><span class="n">5</span><div class="t">Quiz 3 題</div><div class="d">GET /quiz/{id}<br/>POST /submit-batch</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><span class="n">6</span><div class="t">Result</div><div class="d">POST /quiz/finalize<br/>寫入 JourneyMap.score</div></div>
+      </div>
+    </div>
+
+    <!-- Key design decisions -->
+    <div class="notes">
+      <h3>5 個關鍵設計決策（面試可深入）</h3>
+      <div class="notes-list">
+        <div class="note">
+          <div class="n-title">① 後端蓋章 timestamp（防作弊）</div>
+          <div class="n-body">Start / end 都由 <code>session_manager</code> 寫入。前端改 JS / 時鐘也改不到真實閱讀時間。</div>
+        </div>
+        <div class="note">
+          <div class="n-title">② Visibility API + 即時累計</div>
+          <div class="n-body">切走就 POST 一次 <code>tab_switch</code>，切回就恢復計時。分心次數 = 行為遙測資產。</div>
+        </div>
+        <div class="note">
+          <div class="n-title">③ LearningJourney_Map（P2/P3 橋接）</div>
+          <div class="n-body">一張表同時存 sprint_id + quiz_session_id + score，未來串 AI 做個人化推薦。</div>
+        </div>
+        <div class="note">
+          <div class="n-title">④ 單體 + SQLite（面試情境最優解）</div>
+          <div class="n-body">零外部依賴、一鍵 <code>bash run.sh</code> 可 demo。正式版再切 Postgres + Redis。</div>
+        </div>
+        <div class="note">
+          <div class="n-title">⑤ 題目來自真題庫</div>
+          <div class="n-body">「業務員考試考古題」直接 seed 進 DB，被問「題目哪來的」有可信答案。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="legend">
+      <div class="legend-item"><span class="legend-dot" style="background:#60A5FA"></span>Frontend</div>
+      <div class="legend-item"><span class="legend-dot" style="background:#22C55E"></span>API Routes</div>
+      <div class="legend-item"><span class="legend-dot" style="background:#A78BFA"></span>Services</div>
+      <div class="legend-item"><span class="legend-dot" style="background:var(--kgi)"></span>SQLite 表</div>
+      <div class="legend-item"><span class="legend-dot" style="background:#F59E0B"></span>外部素材</div>
+      <div class="legend-item">★ = 面試核心模組</div>
+    </div>
+
+  </div>
+</body>
+</html>

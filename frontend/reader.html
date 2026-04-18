@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>Sprint Reader — Reading</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body data-page="reader">
+  <div class="reader">
+    <div class="reader-top">
+      <div class="progress-bars" id="progress"></div>
+      <div class="zoom-ctrl" title="字級調整">
+        <button id="zoom-down" aria-label="縮小">A−</button>
+        <span class="current" id="zoom-label">100%</span>
+        <button id="zoom-up" aria-label="放大">A+</button>
+      </div>
+      <div class="timer" id="timer">07:00</div>
+    </div>
+    <div class="reader-meta">
+      <span id="meta-tags"></span>
+      <span style="margin-left:auto" id="meta-source"></span>
+    </div>
+    <div class="cards-wrap">
+      <button class="nav-arrow prev" id="nav-prev" aria-label="回上一張">‹</button>
+      <div class="cards" id="cards"></div>
+      <button class="nav-arrow next" id="nav-next" aria-label="下一張">›</button>
+    </div>
+    <div class="reader-foot">
+      <span><span id="card-num">1 / 5</span> · <span id="tab-switch-count">分心 0 次</span></span>
+      <span style="font-size:12px; color: var(--fg-dim);">👈 左滑 下一張 &nbsp;•&nbsp; 右滑 上一張 👉</span>
+      <button id="foot-complete-btn" class="foot-complete-btn" hidden>✅ 進入測驗 →</button>
+    </div>
+    <div class="pause-banner" id="pause-banner">⏸ 已暫停 — 分心次數已記錄</div>
+    <div class="lock-overlay" id="lock">
+      <div class="lock-icon">⏱</div>
+      <div class="lock-text">Sprint Complete</div>
+      <div class="lock-sub">Generating your quiz…</div>
+    </div>
+    <div class="timeout-modal" id="timeout-modal" hidden>
+      <div class="timeout-card">
+        <div class="timeout-icon">⏰</div>
+        <h2 class="timeout-title">時間到</h2>
+        <p class="timeout-body">
+          偵測到你已超過 <b>7 分鐘</b>尚未完成閱讀，<br/>
+          依照學習科學規範，<b>本次閱讀紀錄將不納入學習進度</b>。<br/>
+          建議下次預留完整 7 分鐘再重新挑戰這章。
+        </p>
+        <div class="timeout-meta" id="timeout-meta"></div>
+        <button class="timeout-btn" id="timeout-home">返回首頁</button>
+      </div>
+    </div>
+  </div>
+  <script src="assets/app.js"></script>
+</body>
+</html>
