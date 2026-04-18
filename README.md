@@ -25,7 +25,7 @@ bash run.sh
 | URL | 用途 |
 |---|---|
 | `http://localhost:8000/ui/` | Demo 起點（Pre-Sprint Splash） |
-| `http://localhost:8000/ui/brief.html` | **給面試官看** — 完整商業論述 |
+| `http://localhost:8000/ui/brief.html` | 完整商業論述 |
 | `http://localhost:8000/docs` | FastAPI 自動產生的 API 文件 |
 
 ## What it solves
@@ -43,7 +43,7 @@ bash run.sh
 |---|---|---|
 | Backend | FastAPI | 與 sibling `secure-data-gateway` 對齊；自帶 OpenAPI |
 | DB | SQLite × 1 | demo 易啟動、schema 清晰、4 張表夠用 |
-| Frontend | Vanilla HTML/CSS/JS | 無 build step、無 framework、面試現場零摩擦 |
+| Frontend | Vanilla HTML/CSS/JS | 無 build step、無 framework、快速啟動零摩擦 |
 | Timer | Browser Visibility API + 後端 timestamp | UX 自然 + 防前端竄改 |
 
 ## 資料夾結構
@@ -68,7 +68,7 @@ sprint-reader/
 │   ├── index.html               ← Pre-Sprint Splash
 │   ├── reader.html              ← 滑卡 + 計時器 + Visibility API
 │   ├── handoff.html             ← Time's Up 交接畫面
-│   ├── brief.html               ← 給面試官的商業論述
+│   ├── brief.html               ← 商業論述頁
 │   └── assets/
 │       ├── style.css
 │       └── app.js
