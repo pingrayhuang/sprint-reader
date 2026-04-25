@@ -80,7 +80,7 @@ FastAPI 自動產出 Swagger 文件：`http://localhost:8000/docs`
 | 5 | 滑完末卡 → 自動進 Quiz | Handoff 狀態機觸發；展示 sprint_id 與 quiz_session_id 橋接 |
 | 6 | 答 3 題（故意錯 1 題）| 即時解釋 + 原文卡片回溯（source_seq 連結）|
 | 7 | Result 頁 | 本次分數、閱讀時間、分心次數、逐題檢討全部匯整 |
-| 8 | 打開 `/ui/brief.html` | 商業論述；適合讓面試官快速掌握產品定位與 MA 跨部門價值 |
+| 8 | 打開 `/ui/brief.html` | 商業論述；快速掌握產品定位與 MA 跨部門價值 |
 
 ---
 
