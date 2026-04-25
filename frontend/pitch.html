@@ -282,6 +282,31 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--fg);
   justify-content:center;gap:5px;}
 .rm-card h4{font-size:15px;font-weight:800;color:var(--fg);}
 .rm-card p{font-size:13px;color:var(--fg2);line-height:1.6;}
+
+/* ================================================================
+   SLIDE 08 — DB SCHEMA
+   ================================================================ */
+.dbs-wrap{display:flex;flex-direction:column;gap:8px;flex:1;}
+.dbs-legend{display:flex;gap:16px;align-items:center;flex-shrink:0;padding:2px 0;}
+.leg-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--fg3);}
+.leg-dot{width:9px;height:9px;border-radius:2px;}
+.dbs-section-label{font-size:9.5px;font-weight:700;color:var(--fg3);
+  letter-spacing:.14em;text-transform:uppercase;
+  padding-bottom:5px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.dbs-row{display:flex;gap:10px;flex:1;}
+.dbc{flex:1;border-radius:12px;background:rgba(255,255,255,.03);
+  border:1px solid var(--border);overflow:hidden;
+  display:flex;flex-direction:column;}
+.dbc-head{padding:9px 13px;display:flex;align-items:center;gap:8px;
+  border-bottom:1px solid var(--border);flex-shrink:0;}
+.dbc-name{font-size:12.5px;font-weight:800;color:var(--fg);}
+.dbc-dept{font-size:9px;color:var(--fg3);margin-left:auto;text-align:right;line-height:1.4;}
+.dbc-cols{padding:9px 13px;display:flex;flex-wrap:wrap;gap:5px;flex:1;align-content:flex-start;}
+.cc{font-size:10px;padding:2px 7px;border-radius:5px;font-weight:600;}
+.cc.spec{background:rgba(147,197,253,.08);color:var(--fg2);border:1px solid rgba(147,197,253,.15);}
+.cc.extra{background:rgba(252,211,77,.1);color:var(--gold);border:1px solid rgba(252,211,77,.28);}
+.cc.key{background:rgba(52,211,153,.1);color:var(--green);border:1px solid rgba(52,211,153,.28);}
+.dbc-note{padding:4px 13px 9px;font-size:10.5px;color:var(--fg3);line-height:1.5;flex-shrink:0;}
 </style>
 </head>
 <body>
@@ -292,7 +317,7 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--fg);
 
 <!-- ═══════════════════════════════════════════════ 01 Title -->
 <div class="slide active" id="s0">
-  <div class="slide-no">01 / 13</div>
+  <div class="slide-no">01 / 14</div>
   <div class="t-eyebrow">Sprint Reader · Project 3 of 3 · 凱基金 MA · 2026</div>
   <div class="t-main">7 分鐘保險考照<br/>微學習 App</div>
   <div class="t-desc">
@@ -310,7 +335,7 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--fg);
 
 <!-- ═══════════════════════════════════════════════ 02 遺忘曲線 -->
 <div class="slide" id="s1">
-  <div class="slide-no">02 / 13</div>
+  <div class="slide-no">02 / 14</div>
   <div class="sl-header">
     <div class="sl-kicker">01 · 背景</div>
     <div class="sl-title">人類大腦天生會遺忘</div>
@@ -339,7 +364,7 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--fg);
 
 <!-- ═══════════════════════════════════════════════ 03 場景 -->
 <div class="slide" id="s2">
-  <div class="slide-no">03 / 13</div>
+  <div class="slide-no">03 / 14</div>
   <div class="sl-header">
     <div class="sl-kicker">02 · 場景</div>
     <div class="sl-title">一位新進業務員的困境</div>
@@ -374,7 +399,7 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--fg);
 
 <!-- ═══════════════════════════════════════════════ 04 核心矛盾 -->
 <div class="slide" id="s3">
-  <div class="slide-no">04 / 13</div>
+  <div class="slide-no">04 / 14</div>
   <div class="sl-header">
     <div class="sl-kicker">03 · 核心矛盾</div>
     <div class="sl-title">傳統訓練量「出席率」，我們量「記憶效果」</div>
@@ -411,7 +436,7 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--fg);
 
 <!-- ═══════════════════════════════════════════════ 05 解法 -->
 <div class="slide" id="s4">
-  <div class="slide-no">05 / 13</div>
+  <div class="slide-no">05 / 14</div>
   <div class="sl-header">
     <div class="sl-kicker">04 · 解法</div>
     <div class="sl-title">三個設計，對應三個學習科學原則</div>
@@ -443,7 +468,7 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--fg);
 
 <!-- ═══════════════════════════════════════════════ 06 Demo -->
 <div class="slide" id="s5">
-  <div class="slide-no">06 / 13</div>
+  <div class="slide-no">06 / 14</div>
   <div class="sl-header">
     <div class="sl-kicker">05 · 產品 Demo</div>
     <div class="sl-title">完整使用者旅程：5 步驟學習閉環</div>
@@ -521,7 +546,7 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--fg);
 
 <!-- ═══════════════════════════════════════════════ 07 系統架構 -->
 <div class="slide" id="s6">
-  <div class="slide-no">07 / 13</div>
+  <div class="slide-no">07 / 14</div>
   <div class="sl-header">
     <div class="sl-kicker">06 · 系統架構</div>
     <div class="sl-title">Browser → FastAPI → SQLite 三層設計</div>
@@ -562,11 +587,125 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--fg);
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════ 08 行為遙測 -->
-<div class="slide" id="s7">
-  <div class="slide-no">08 / 13</div>
+<!-- ═══════════════════════════════════════════════ 08 資料庫設計 -->
+<div class="slide" id="s_db">
+  <div class="slide-no">08 / 14</div>
   <div class="sl-header">
-    <div class="sl-kicker">07 · 技術亮點 01 / 03</div>
+    <div class="sl-kicker">07 · 資料庫設計</div>
+    <div class="sl-title">9 張表：3 張規格要求、6 張自行設計</div>
+    <div class="sl-sub">規格只定義骨架；我們在核心表加入行為遙測欄位，並額外設計三張表驅動間隔重複引擎與資料科學分析</div>
+  </div>
+  <div class="sl-body">
+    <div class="dbs-wrap">
+      <div class="dbs-legend">
+        <div class="leg-item"><div class="leg-dot" style="background:rgba(147,197,253,.5);"></div>規格要求欄位</div>
+        <div class="leg-item"><div class="leg-dot" style="background:var(--gold);opacity:.8;"></div>自行新增欄位</div>
+        <div class="leg-item"><div class="leg-dot" style="background:var(--green);opacity:.8;"></div>自行設計整張表（規格外）</div>
+      </div>
+      <div class="dbs-section-label">規格要求 · 核心三張表</div>
+      <div class="dbs-row">
+        <div class="dbc" style="border-color:rgba(96,165,250,.25);">
+          <div class="dbc-head">
+            <div class="dbc-name">FlashcardPages</div>
+            <div class="dbc-dept">教育訓練部</div>
+          </div>
+          <div class="dbc-cols">
+            <span class="cc spec">page_id</span>
+            <span class="cc spec">module_id</span>
+            <span class="cc spec">sequence_number</span>
+            <span class="cc spec">page_content_json</span>
+          </div>
+          <div class="dbc-note">JSON 格式儲存卡片內容，未來加圖片、語音無需 schema migration</div>
+        </div>
+        <div class="dbc" style="border-color:rgba(96,165,250,.25);">
+          <div class="dbc-head">
+            <div class="dbc-name">SprintSessions</div>
+            <div class="dbc-dept">法遵部 · 稽核軌跡</div>
+          </div>
+          <div class="dbc-cols">
+            <span class="cc spec">sprint_id</span>
+            <span class="cc spec">module_id</span>
+            <span class="cc spec">start_timestamp</span>
+            <span class="cc spec">end_timestamp</span>
+            <span class="cc extra">tab_switch_count</span>
+            <span class="cc extra">completion_status</span>
+            <span class="cc extra">agent_id</span>
+          </div>
+          <div class="dbc-note">completion_status 三態：finished_early / timed_out / abandoned，行為品質差異化</div>
+        </div>
+        <div class="dbc" style="border-color:rgba(96,165,250,.25);">
+          <div class="dbc-head">
+            <div class="dbc-name">LearningJourney_Map</div>
+            <div class="dbc-dept">資料部 · P3↔P2 橋接</div>
+          </div>
+          <div class="dbc-cols">
+            <span class="cc spec">sprint_id</span>
+            <span class="cc spec">quiz_session_id</span>
+            <span class="cc spec">created_at</span>
+            <span class="cc extra">score</span>
+            <span class="cc extra">total_questions</span>
+          </div>
+          <div class="dbc-note">N:N 設計預留重考機制，不在 SprintSessions 加欄避免日後 schema migration</div>
+        </div>
+      </div>
+      <div class="dbs-section-label">自行設計（規格外）· 三張延伸表</div>
+      <div class="dbs-row">
+        <div class="dbc" style="border-color:rgba(52,211,153,.22);">
+          <div class="dbc-head">
+            <div class="dbc-name">Agents</div>
+            <div class="dbc-dept">IT · 身份管理</div>
+          </div>
+          <div class="dbc-cols">
+            <span class="cc key">agent_id</span>
+            <span class="cc key">employee_code</span>
+            <span class="cc key">display_name</span>
+            <span class="cc key">email</span>
+            <span class="cc key">team</span>
+            <span class="cc key">role</span>
+          </div>
+          <div class="dbc-note">employee_code 預留接企業 SSO；agent_id 用 UUID 保護隱私，不連號</div>
+        </div>
+        <div class="dbc" style="border-color:rgba(52,211,153,.22);">
+          <div class="dbc-head">
+            <div class="dbc-name">ChapterMastery</div>
+            <div class="dbc-dept">資料部 · SM-2 間隔重複引擎</div>
+          </div>
+          <div class="dbc-cols">
+            <span class="cc key">ease_factor</span>
+            <span class="cc key">current_interval_days</span>
+            <span class="cc key">next_review_at</span>
+            <span class="cc key">retention_estimate</span>
+            <span class="cc key">avg_tab_switches</span>
+            <span class="cc key">best_score_pct</span>
+            <span class="cc key">status</span>
+          </div>
+          <div class="dbc-note">實作 SM-2 演算法欄位；retention_estimate 對應 Ebbinghaus 遺忘曲線模型</div>
+        </div>
+        <div class="dbc" style="border-color:rgba(52,211,153,.22);">
+          <div class="dbc-head">
+            <div class="dbc-name">ReviewEvents</div>
+            <div class="dbc-dept">資料部 · Append-only 行為日誌</div>
+          </div>
+          <div class="dbc-cols">
+            <span class="cc key">event_type</span>
+            <span class="cc key">score_pct</span>
+            <span class="cc key">reading_seconds</span>
+            <span class="cc key">tab_switch_count</span>
+            <span class="cc key">recall_quality</span>
+            <span class="cc key">event_timestamp</span>
+          </div>
+          <div class="dbc-note">每一筆都是 RL 推薦引擎的訓練原料；append-only 保持稽核完整性</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ 09 行為遙測 -->
+<div class="slide" id="s7">
+  <div class="slide-no">09 / 14</div>
+  <div class="sl-header">
+    <div class="sl-kicker">08 · 技術亮點 01 / 03</div>
     <div class="sl-title">一個 UX 設計，蘊含三層商業意義</div>
     <div class="sl-sub">Browser Visibility API — 把「業務員切到 Line」這個動作，轉化成可分析、可預警的學習行為數據</div>
   </div>
@@ -598,11 +737,11 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--fg);
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════ 09 防竄改計時 -->
+<!-- ═══════════════════════════════════════════════ 10 防竄改計時 -->
 <div class="slide" id="s8">
-  <div class="slide-no">09 / 13</div>
+  <div class="slide-no">10 / 14</div>
   <div class="sl-header">
-    <div class="sl-kicker">08 · 技術亮點 02 / 03</div>
+    <div class="sl-kicker">09 · 技術亮點 02 / 03</div>
     <div class="sl-title">計時器由後端蓋章，前端改 JS 也沒用</div>
     <div class="sl-sub">Server-Authoritative Timing — 保障閱讀紀錄真實性，讓學習完訓具備法遵稽核效力</div>
   </div>
@@ -645,11 +784,11 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--fg);
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════ 10 智慧推薦 -->
+<!-- ═══════════════════════════════════════════════ 11 智慧推薦 -->
 <div class="slide" id="s9">
-  <div class="slide-no">10 / 13</div>
+  <div class="slide-no">11 / 14</div>
   <div class="sl-header">
-    <div class="sl-kicker">09 · 技術亮點 03 / 03</div>
+    <div class="sl-kicker">10 · 技術亮點 03 / 03</div>
     <div class="sl-title">系統自動決定「今天要讀哪章」</div>
     <div class="sl-sub">間隔重複推薦演算法 — 把 Ebbinghaus 學習科學，落實為工程實作</div>
   </div>
@@ -687,11 +826,11 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--fg);
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════ 11 商業價值 -->
+<!-- ═══════════════════════════════════════════════ 12 商業價值 -->
 <div class="slide" id="s10">
-  <div class="slide-no">11 / 13</div>
+  <div class="slide-no">12 / 14</div>
   <div class="sl-header">
-    <div class="sl-kicker">10 · 商業價值</div>
+    <div class="sl-kicker">11 · 商業價值</div>
     <div class="sl-title">同一個產品，對四個部門各有一個答案</div>
     <div class="sl-sub">MA 輪調會接觸的四個 function，這份簡報可以在同一個 demo 裡，對每個部門說出對方在意的 KPI</div>
   </div>
@@ -729,11 +868,11 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--fg);
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════ 12 延伸思考 -->
+<!-- ═══════════════════════════════════════════════ 13 延伸思考 -->
 <div class="slide" id="s11">
-  <div class="slide-no">12 / 13</div>
+  <div class="slide-no">13 / 14</div>
   <div class="sl-header">
-    <div class="sl-kicker">11 · 延伸思考</div>
+    <div class="sl-kicker">12 · 延伸思考</div>
     <div class="sl-title">Sprint Reader 升級為 AI 學習引擎的路徑</div>
     <div class="sl-sub">現有的行為數據基礎與 9 張表 schema，已具備支撐以下 4 個 AI 模組的設計條件</div>
   </div>
@@ -793,11 +932,11 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--fg);
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════ 13 Roadmap -->
+<!-- ═══════════════════════════════════════════════ 14 Roadmap -->
 <div class="slide" id="s12">
-  <div class="slide-no">13 / 13</div>
+  <div class="slide-no">14 / 14</div>
   <div class="sl-header">
-    <div class="sl-kicker">12 · Roadmap</div>
+    <div class="sl-kicker">13 · Roadmap</div>
     <div class="sl-title">如果這成為凱基金的真實產品</div>
     <div class="sl-sub">從 MVP 到 AI 個人化學習引擎，四個 Phase 逐步落地，每個 Phase 都有明確商業產出</div>
   </div>
@@ -850,7 +989,7 @@ const slides = Array.from(document.querySelectorAll('.slide'));
 const total = slides.length;
 const LABELS = [
   'Sprint Reader','遺忘曲線','業務員場景','核心矛盾',
-  '三個核心設計','產品 Demo','系統架構',
+  '三個核心設計','產品 Demo','系統架構','資料庫設計',
   '行為遙測','防竄改計時','智慧推薦',
   '商業價值','延伸思考','Roadmap'
 ];
