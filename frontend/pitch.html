@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sprint Reader — Pitch</title>
+  <style>
+    :root {
+      --bg-deep: #0A1628;
+      --bg: #0F1E3A;
+      --bg-raised: #1A2B4A;
+      --accent: #60A5FA;
+      --accent-2: #93C5FD;
+      --gold: #FCD34D;
+      --success: #22C55E;
+      --fg: #E6EEFA;
+      --fg-mute: #9FB0CC;
+      --fg-dim: #64748B;
+      --glass-bg: rgba(255,255,255,0.04);
+      --glass-border: rgba(147,197,253,0.12);
+      --brand-grad: linear-gradient(135deg, #2563EB 0%, #60A5FA 100%);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 100%; height: 100%;
+      background: var(--bg-deep);
+      color: var(--fg);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow: hidden;
+    }
+
+    /* ── Slide container ── */
+    .deck { width: 100%; height: 100vh; position: relative; }
+    .slide {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      padding: 60px 80px;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    .slide.active { opacity: 1; pointer-events: all; }
+
+    /* ── Progress bar ── */
+    .progress-bar {
+      position: fixed; top: 0; left: 0; height: 3px;
+      background: var(--brand-grad);
+      transition: width 0.4s ease;
+      z-index: 100;
+    }
+    .slide-counter {
+      position: fixed; bottom: 28px; right: 36px;
+      font-size: 12px; color: var(--fg-dim); letter-spacing: 0.08em;
+    }
+    .nav-hint {
+      position: fixed; bottom: 28px; left: 36px;
+      font-size: 12px; color: var(--fg-dim);
+    }
+
+    /* ── Nav buttons ── */
+    .nav-btn {
+      position: fixed; top: 50%; transform: translateY(-50%);
+      background: var(--glass-bg); border: 1px solid var(--glass-border);
+      color: var(--fg-mute); width: 40px; height: 40px;
+      border-radius: 50%; cursor: pointer; font-size: 18px;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, color 0.2s;
+      z-index: 50;
+    }
+    .nav-btn:hover { background: rgba(96,165,250,0.12); color: var(--accent); }
+    .nav-prev { left: 20px; }
+    .nav-next { right: 20px; }
+
+    /* ── Typography ── */
+    .kicker {
+      font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--accent); font-weight: 700; margin-bottom: 16px;
+    }
+    h1 {
+      font-size: 52px; font-weight: 900; line-height: 1.1;
+      background: var(--brand-grad); -webkit-background-clip: text; background-clip: text; color: transparent;
+      text-align: center;
+    }
+    h2 {
+      font-size: 36px; font-weight: 800; line-height: 1.2;
+      background: var(--brand-grad); -webkit-background-clip: text; background-clip: text; color: transparent;
+      margin-bottom: 32px; text-align: center;
+    }
+    .subtitle {
+      font-size: 18px; color: var(--fg-mute); margin-top: 16px; text-align: center; line-height: 1.6;
+    }
+    .label { font-size: 11px; color: var(--fg-dim); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
+
+    /* ── Cards / boxes ── */
+    .card-row { display: flex; gap: 20px; width: 100%; max-width: 900px; }
+    .card {
+      flex: 1; background: var(--glass-bg); border: 1px solid var(--glass-border);
+      border-radius: 16px; padding: 24px 20px;
+    }
+    .card .card-icon { font-size: 28px; margin-bottom: 12px; }
+    .card h4 { font-size: 15px; font-weight: 700; color: var(--accent); margin-bottom: 8px; }
+    .card p { font-size: 13.5px; color: var(--fg-mute); line-height: 1.65; }
+
+    /* ── Big stat ── */
+    .stat-row { display: flex; gap: 40px; justify-content: center; margin: 24px 0; }
+    .stat { text-align: center; }
+    .stat .num {
+      font-size: 56px; font-weight: 900;
+      background: var(--brand-grad); -webkit-background-clip: text; background-clip: text; color: transparent;
+      line-height: 1;
+    }
+    .stat .lbl { font-size: 13px; color: var(--fg-mute); margin-top: 6px; line-height: 1.5; }
+
+    /* ── Timeline / flow ── */
+    .flow { display: flex; align-items: center; gap: 0; flex-wrap: wrap; justify-content: center; margin-top: 8px; }
+    .flow-step {
+      background: var(--glass-bg); border: 1px solid var(--glass-border);
+      border-radius: 12px; padding: 14px 18px; text-align: center; min-width: 110px;
+    }
+    .flow-step .step-icon { font-size: 22px; margin-bottom: 6px; }
+    .flow-step .step-label { font-size: 12px; color: var(--fg-mute); line-height: 1.4; }
+    .flow-arrow { font-size: 20px; color: var(--fg-dim); padding: 0 8px; }
+
+    /* ── Code block ── */
+    .code-wrap {
+      background: #060E1E; border: 1px solid var(--glass-border);
+      border-radius: 12px; padding: 20px 24px;
+      font-family: ui-monospace, Menlo, "Cascadia Code", monospace;
+      font-size: 13px; line-height: 1.7; color: #93C5FD;
+      width: 100%; max-width: 680px; margin: 0 auto;
+    }
+    .code-wrap .cm { color: #4B6180; }
+    .code-wrap .kw { color: #7DD3FC; }
+    .code-wrap .fn { color: #A78BFA; }
+    .code-wrap .st { color: #86EFAC; }
+    .code-wrap .nm { color: #FDE68A; }
+
+    /* ── Tech slide layout ── */
+    .tech-layout { display: flex; gap: 32px; align-items: flex-start; width: 100%; max-width: 960px; }
+    .tech-left { flex: 1; }
+    .tech-right { flex: 1.1; }
+    .tech-headline { font-size: 20px; font-weight: 700; color: var(--fg); margin-bottom: 10px; line-height: 1.4; }
+    .tech-why {
+      background: rgba(96,165,250,0.07); border-left: 3px solid var(--accent);
+      border-radius: 0 10px 10px 0; padding: 12px 16px;
+      font-size: 13px; color: var(--fg-mute); line-height: 1.65; margin-top: 16px;
+    }
+    .tech-why strong { color: var(--fg); }
+    .tag {
+      display: inline-block; background: rgba(96,165,250,0.12); color: var(--accent);
+      padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.06em; margin-bottom: 14px;
+    }
+
+    /* ── Table ── */
+    .db-table { width: 100%; max-width: 820px; border-collapse: collapse; font-size: 13px; }
+    .db-table th {
+      padding: 8px 14px; text-align: left; color: var(--fg-dim);
+      font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em;
+      border-bottom: 1px solid var(--glass-border);
+    }
+    .db-table td { padding: 9px 14px; border-bottom: 1px solid rgba(147,197,253,0.06); color: var(--fg-mute); }
+    .db-table td:first-child { font-family: ui-monospace, monospace; color: var(--accent); font-size: 12px; }
+    .db-table td.cat { color: var(--fg-dim); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; }
+    .db-table tr.section-head td { background: rgba(96,165,250,0.05); color: var(--fg-dim); font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding-top: 14px; }
+
+    /* ── Bullet list ── */
+    .bullet-list { list-style: none; width: 100%; max-width: 720px; }
+    .bullet-list li {
+      padding: 10px 0 10px 28px; position: relative;
+      font-size: 15px; color: var(--fg-mute); line-height: 1.6;
+      border-bottom: 1px solid rgba(147,197,253,0.06);
+    }
+    .bullet-list li::before { content: "▸"; position: absolute; left: 0; color: var(--accent); }
+    .bullet-list li strong { color: var(--fg); }
+
+    /* ── Roadmap ── */
+    .roadmap { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 720px; }
+    .rm-item { display: flex; gap: 16px; align-items: flex-start; }
+    .rm-badge {
+      min-width: 100px; padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 700;
+      text-align: center; letter-spacing: 0.04em; flex-shrink: 0; margin-top: 2px;
+    }
+    .rm-badge.done { background: rgba(34,197,94,0.15); color: #86EFAC; }
+    .rm-badge.p2   { background: rgba(96,165,250,0.15); color: var(--accent); }
+    .rm-badge.p3   { background: rgba(167,139,250,0.15); color: #C4B5FD; }
+    .rm-badge.p4   { background: rgba(240,136,62,0.15); color: #FDBA74; }
+    .rm-text { font-size: 14px; color: var(--fg-mute); line-height: 1.6; }
+    .rm-text strong { color: var(--fg); }
+
+    /* ── Screenshot ── */
+    .screenshot {
+      max-width: 780px; width: 100%;
+      border-radius: 14px; border: 1px solid var(--glass-border);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+
+    /* ── Value table ── */
+    .val-table { width: 100%; max-width: 820px; border-collapse: collapse; font-size: 13.5px; }
+    .val-table th { padding: 8px 14px; color: var(--fg-dim); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; border-bottom: 1px solid var(--glass-border); }
+    .val-table td { padding: 11px 14px; border-bottom: 1px solid rgba(147,197,253,0.06); color: var(--fg-mute); line-height: 1.5; }
+    .val-table td:first-child { color: var(--accent); font-weight: 600; white-space: nowrap; }
+
+    /* ── Slide-specific ── */
+    #slide-title { background: radial-gradient(ellipse at 50% 30%, rgba(37,99,235,0.18) 0%, transparent 70%); }
+    #slide-title .title-tag { font-size: 12px; color: var(--fg-dim); margin-top: 20px; letter-spacing: 0.1em; }
+  </style>
+</head>
+<body>
+
+<div class="progress-bar" id="progress-bar"></div>
+<button class="nav-btn nav-prev" id="btn-prev">‹</button>
+<button class="nav-btn nav-next" id="btn-next">›</button>
+<div class="slide-counter" id="slide-counter"></div>
+<div class="nav-hint">← → 鍵翻頁</div>
+
+<div class="deck" id="deck">
+
+  <!-- ① Title -->
+  <div class="slide active" id="slide-title">
+    <div class="kicker">Sprint Reader · Project 3</div>
+    <h1>7 分鐘保險考照<br/>微學習 App</h1>
+    <p class="subtitle">遺忘曲線 × 間隔重複 × 行為遙測<br/>把備考從「大量刷題」變成「每日 7 分鐘習慣」</p>
+    <p class="title-tag">Ray Huang · 凱基金 MA · 2026</p>
+  </div>
+
+  <!-- ② 遺忘曲線 -->
+  <div class="slide" id="slide-forgetting">
+    <div class="kicker">背景 · 學習科學</div>
+    <h2>人類大腦天生會遺忘</h2>
+    <div class="stat-row">
+      <div class="stat">
+        <div class="num">80%</div>
+        <div class="lbl">週一學的知識<br/>若不主動提取<br/>週五就忘掉 80%</div>
+      </div>
+      <div class="stat">
+        <div class="num">&lt;30%</div>
+        <div class="lbl">傳統 e-learning<br/>有效吸收率<br/>（完訓率雖高）</div>
+      </div>
+      <div class="stat">
+        <div class="num">3×</div>
+        <div class="lbl">間隔重複複習<br/>比集中複習的<br/>長期留存率高 3 倍</div>
+      </div>
+    </div>
+    <p class="subtitle" style="max-width:640px; margin-top: 28px;">
+      問題不在學習量，在於<strong style="color:var(--fg)">「回饋迴圈斷掉了」</strong>。<br/>
+      學完沒有立即測驗、沒有間隔推播、沒有弱點追蹤。
+    </p>
+  </div>
+
+  <!-- ③ 場景帶入 -->
+  <div class="slide" id="slide-scenario">
+    <div class="kicker">場景 · 凱基業務員</div>
+    <h2>一位新進業務員的一天</h2>
+    <div class="card-row" style="max-width:860px;">
+      <div class="card">
+        <div class="card-icon">📋</div>
+        <h4>考照壓力</h4>
+        <p>人身保險業務員資格考試：150 題、140 分及格、考前 1 個月密集備考。考不過無法執業。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📱</div>
+        <h4>零碎時間</h4>
+        <p>業務員每天被客戶電話、Line 訊息打斷，無法撥出連續 2 小時讀 110 頁 PDF。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">😶</div>
+        <h4>被動學習</h4>
+        <p>傳統 e-learning 只要點完就算數。沒有即時測驗、沒有弱點回饋，讀完等於沒讀。</p>
+      </div>
+    </div>
+    <div class="tech-why" style="max-width:860px; margin-top: 28px;">
+      <strong>這就是 Sprint Reader 要解決的問題：</strong>讓業務員在通勤、等候的 7 分鐘內，完成一章複習並立即測驗，系統自動記錄弱點，下次推薦最需要複習的章節。
+    </div>
+  </div>
+
+  <!-- ④ 解法概覽 -->
+  <div class="slide" id="slide-solution">
+    <div class="kicker">解法 · 三個核心設計</div>
+    <h2>Sprint Reader 的不同</h2>
+    <div class="card-row" style="max-width:900px;">
+      <div class="card">
+        <div class="card-icon">⏱</div>
+        <h4>7 分鐘限時衝刺</h4>
+        <p>把 110 頁筆記切成 6 章 × 5 張卡。每章 7 分鐘，剛好填滿通勤或等候的空檔，降低「沒時間讀書」的阻力。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎯</div>
+        <h4>即將測驗觸發</h4>
+        <p>讀完立即接 3 題 quiz，搭配解釋與原文卡片回溯。「即將被考」的心理壓力讓閱讀從被動瀏覽變成主動提取。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔁</div>
+        <h4>間隔重複推薦</h4>
+        <p>根據「答錯率 × 距上次複習天數」自動推薦最需複習的章節。系統幫你決定「今天要讀哪章」。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ⑤ Demo 流程 -->
+  <div class="slide" id="slide-demo">
+    <div class="kicker">Demo · 完整使用者旅程</div>
+    <div class="flow" style="margin-bottom: 28px;">
+      <div class="flow-step"><div class="step-icon">🏠</div><div class="step-label">選章節<br/>TOC</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="step-icon">📖</div><div class="step-label">7 分鐘<br/>閱讀衝刺</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="step-icon">✅</div><div class="step-label">3 題<br/>即時測驗</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="step-icon">📊</div><div class="step-label">分數 +<br/>逐題檢討</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="step-icon">🔁</div><div class="step-label">弱點更新<br/>推薦下章</div></div>
+    </div>
+    <img class="screenshot" src="assets/../docs/screenshots/01-index.png" alt="章節選擇頁" />
+  </div>
+
+  <!-- ⑥ 技術亮點 1 — Visibility API -->
+  <div class="slide" id="slide-tech1">
+    <div class="tag">技術亮點 01 / 03</div>
+    <div class="tech-layout">
+      <div class="tech-left">
+        <div class="tech-headline">偵測業務員「切到 Line 去了」</div>
+        <p style="font-size:14px; color:var(--fg-mute); line-height:1.7; margin-bottom:16px;">
+          閱讀中途切換到其他 app 或分頁，計時器自動暫停，切回後從原處繼續。每次切換記一筆 <code style="color:var(--accent); font-size:12px;">tab_switch_count</code> 到後端。
+        </p>
+        <div class="tech-why">
+          <strong>為什麼這樣設計？</strong><br/>
+          不懲罰業務員被打斷，但<strong>記錄下來</strong>。tab 切換次數高的使用者，答錯率也更高 — 這是「需要個別輔導」的早期訊號，也是未來 AI 推薦的輸入特徵。
+        </div>
+      </div>
+      <div class="tech-right">
+        <div class="code-wrap">
+<span class="cm">// reader.html — Visibility API</span>
+document.addEventListener(
+  <span class="st">'visibilitychange'</span>,
+  () => {
+    <span class="kw">if</span> (document.hidden) {
+      <span class="fn">pauseTimer</span>();
+      <span class="fn">fetch</span>(<span class="st">'/api/sprint/telemetry'</span>, {
+        method: <span class="st">'POST'</span>,
+        body: JSON.stringify({
+          sprint_id: <span class="nm">sprintId</span>,
+          event: <span class="st">'tab_switch'</span>
+        })
+      });
+    } <span class="kw">else</span> {
+      <span class="fn">resumeTimer</span>();
+    }
+  }
+);
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ⑦ 技術亮點 2 — 狀態機 -->
+  <div class="slide" id="slide-tech2">
+    <div class="tag">技術亮點 02 / 03</div>
+    <div class="tech-layout">
+      <div class="tech-left">
+        <div class="tech-headline">Timer 由後端蓋章，前端無法作弊</div>
+        <p style="font-size:14px; color:var(--fg-mute); line-height:1.7; margin-bottom:16px;">
+          所有 timestamp 由後端 <code style="color:var(--accent); font-size:12px;">session_manager.py</code> 記錄。即使使用者改瀏覽器時間或修改 JS，閱讀時長仍正確。
+        </p>
+        <div class="flow" style="justify-content:flex-start; gap:0; margin-top:8px;">
+          <div class="flow-step" style="min-width:90px; padding:10px 12px;">
+            <div class="step-label" style="color:var(--accent); font-weight:700;">pre_sprint</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step" style="min-width:90px; padding:10px 12px;">
+            <div class="step-label" style="color:var(--accent); font-weight:700;">reading</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step" style="min-width:90px; padding:10px 12px;">
+            <div class="step-label" style="color:var(--accent); font-weight:700;">handoff</div>
+          </div>
+        </div>
+        <div class="tech-why" style="margin-top:16px;">
+          <strong>設計取捨：</strong>前端只顯示倒數，不持有真實時間。每個狀態轉換都寫入 <code style="color:var(--accent); font-size:12px;">SprintSessions</code>，保留完整稽核軌跡，可作為合規完訓證明。
+        </div>
+      </div>
+      <div class="tech-right">
+        <div class="code-wrap">
+<span class="cm"># session_manager.py</span>
+<span class="kw">def</span> <span class="fn">start_sprint</span>(module_id, agent_id):
+    sprint_id = <span class="fn">str</span>(uuid4())
+    <span class="fn">db_execute</span>(
+        <span class="st">"""INSERT INTO SprintSessions
+           (sprint_id, agent_id, module_id,
+            start_timestamp, completion_status)
+           VALUES (?,?,?,?,?)"""</span>,
+        (sprint_id, agent_id, module_id,
+         <span class="fn">utcnow</span>(), <span class="st">'in_progress'</span>)
+    )
+    <span class="kw">return</span> sprint_id
+
+<span class="kw">def</span> <span class="fn">complete_sprint</span>(sprint_id):
+    <span class="fn">db_execute</span>(
+        <span class="st">"""UPDATE SprintSessions
+           SET end_timestamp=?, completion_status=?
+           WHERE sprint_id=?"""</span>,
+        (<span class="fn">utcnow</span>(), <span class="st">'completed'</span>, sprint_id)
+    )
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ⑧ 技術亮點 3 — 間隔重複 -->
+  <div class="slide" id="slide-tech3">
+    <div class="tag">技術亮點 03 / 03</div>
+    <div class="tech-layout">
+      <div class="tech-left">
+        <div class="tech-headline">系統自動決定「今天要讀哪章」</div>
+        <p style="font-size:14px; color:var(--fg-mute); line-height:1.7; margin-bottom:16px;">
+          每次完成 quiz 後，後端更新 <code style="color:var(--accent); font-size:12px;">ChapterMastery</code>，根據答錯率與距上次複習天數算出優先分數，推薦最需複習的章節。
+        </p>
+        <div class="tech-why">
+          <strong>公式：</strong><br/>
+          <code style="color:var(--gold); font-size:13px;">priority = wrong_rate × log(days_since + 1)</code><br/><br/>
+          答錯越多、越久沒讀 → 分數越高 → 越早被推薦。<br/>
+          <strong>未來 Phase 3：</strong>升級為強化學習（RL），動態預測每位員工「即將遺忘」的時點。
+        </div>
+      </div>
+      <div class="tech-right">
+        <div class="code-wrap">
+<span class="cm"># services/mastery.py</span>
+<span class="kw">def</span> <span class="fn">get_recommendation</span>(agent_id):
+    rows = <span class="fn">db_query</span>(
+        <span class="st">"""SELECT module_id, wrong_rate,
+              julianday('now') -
+              julianday(last_reviewed_at)
+              AS days_since
+           FROM ChapterMastery
+           WHERE agent_id = ?
+           ORDER BY
+             wrong_rate *
+             log(days_since + 1) DESC
+           LIMIT 1"""</span>,
+        (agent_id,)
+    )
+    <span class="kw">return</span> rows[<span class="nm">0</span>] <span class="kw">if</span> rows <span class="kw">else</span> <span class="nm">None</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ⑨ 資料架構 -->
+  <div class="slide" id="slide-db">
+    <div class="kicker">資料架構 · 9 張表 3 層設計</div>
+    <h2 style="font-size:28px; margin-bottom: 20px;">三層分離 = 三種使用情境</h2>
+    <table class="db-table">
+      <thead>
+        <tr><th>資料表</th><th>分類</th><th>用途</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>FlashcardPages</td><td class="cat">核心</td><td style="color:var(--fg)">6 章 × 5 張閱讀卡內容</td></tr>
+        <tr><td>SprintSessions</td><td class="cat">核心</td><td style="color:var(--fg)">每次閱讀行為（timer、tab 切換、完成狀態）</td></tr>
+        <tr><td>LearningJourney_Map</td><td class="cat">核心</td><td style="color:var(--fg)">閱讀 × 測驗橋接表，記錄最終分數</td></tr>
+        <tr><td>QuizQuestions</td><td class="cat">測驗</td><td>6 章 × 3 題，含選項、正解、解釋</td></tr>
+        <tr><td>QuizResponses</td><td class="cat">測驗</td><td>每題作答紀錄，可分析盲點</td></tr>
+        <tr><td>ChapterMastery</td><td class="cat">推薦</td><td>答對率 + 距上次複習天數，驅動間隔重複推薦</td></tr>
+        <tr><td>ReviewEvents</td><td class="cat">推薦</td><td>每次推薦事件的觸發紀錄（append-only log）</td></tr>
+        <tr><td>MicroModules</td><td class="cat">支援</td><td>章節 metadata（標題、卡片數、預估時間）</td></tr>
+        <tr><td>Agents</td><td class="cat">支援</td><td>使用者設定（預留 AI 推薦擴充）</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ⑩ 商業價值 -->
+  <div class="slide" id="slide-value">
+    <div class="kicker">商業價值 · MA 跨部門</div>
+    <h2 style="font-size:28px; margin-bottom: 20px;">同一個產品，對四個部門各有答案</h2>
+    <table class="val-table">
+      <thead>
+        <tr><th>部門</th><th>他們在意的問題</th><th>Sprint Reader 的答案</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>人資 / 教育訓練</td>
+          <td style="color:var(--fg)">「新人考照通過率要怎麼拉高？」</td>
+          <td>6 章結構化複習 + 弱點圖譜 + 錯題複習</td>
+        </tr>
+        <tr>
+          <td>業務管理</td>
+          <td style="color:var(--fg)">「哪些新人要額外輔導？」</td>
+          <td>答錯率 + tab 切換次數 → 風險分級訊號</td>
+        </tr>
+        <tr>
+          <td>資料 / AI</td>
+          <td style="color:var(--fg)">「行為數據能幹嘛？」</td>
+          <td>LearningJourney_Map → 個人化推薦、自動出題</td>
+        </tr>
+        <tr>
+          <td>數金 / IT</td>
+          <td style="color:var(--fg)">「上線複雜度多高？」</td>
+          <td>FastAPI + SQLite，零依賴一鍵啟動</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="tech-why" style="max-width:820px; margin-top:20px;">
+      <strong>考照後延伸：</strong>新法規一出，立刻切成 7 分鐘包推播給所有業務員，取代冗長年度回訓。合規訓練從「成本中心」變成「風險預警資產」。
+    </div>
+  </div>
+
+  <!-- ⑪ Roadmap -->
+  <div class="slide" id="slide-roadmap">
+    <div class="kicker">Roadmap · 四個 Phase</div>
+    <h2 style="font-size:28px; margin-bottom: 28px;">如果這成為真實產品</h2>
+    <div class="roadmap">
+      <div class="rm-item">
+        <div class="rm-badge done">已完成</div>
+        <div class="rm-text"><strong>Phase 1 MVP</strong> — 7 分鐘滑卡 + 3 題 quiz + 規則式間隔推薦 + 行為遙測</div>
+      </div>
+      <div class="rm-item">
+        <div class="rm-badge p2">3 個月</div>
+        <div class="rm-text"><strong>Phase 2 內容自動化</strong> — 接入凱基真實合規文件，用 LLM 自動把長文切成 7 分鐘 sprint 包</div>
+      </div>
+      <div class="rm-item">
+        <div class="rm-badge p3">6 個月</div>
+        <div class="rm-text"><strong>Phase 3 強化學習</strong> — 把規則式推薦升級為 RL，動態預測每位員工「即將遺忘」的時點，在最佳複習時機推播</div>
+      </div>
+      <div class="rm-item">
+        <div class="rm-badge p4">12 個月</div>
+        <div class="rm-text"><strong>Phase 4 風險預警</strong> — 行為訊號接入業務員風險評分，提早預警違規高風險個案，建立個人化學習推薦引擎</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end deck -->
+
+<script>
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  let cur = 0;
+
+  function go(n) {
+    slides[cur].classList.remove('active');
+    cur = Math.max(0, Math.min(total - 1, n));
+    slides[cur].classList.add('active');
+    document.getElementById('progress-bar').style.width = ((cur + 1) / total * 100) + '%';
+    document.getElementById('slide-counter').textContent = (cur + 1) + ' / ' + total;
+    document.getElementById('btn-prev').style.opacity = cur === 0 ? '0.2' : '1';
+    document.getElementById('btn-next').style.opacity = cur === total - 1 ? '0.2' : '1';
+  }
+
+  document.getElementById('btn-prev').addEventListener('click', () => go(cur - 1));
+  document.getElementById('btn-next').addEventListener('click', () => go(cur + 1));
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') go(cur + 1);
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   go(cur - 1);
+  });
+
+  go(0);
+</script>
+</body>
+</html>
