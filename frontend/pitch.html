@@ -455,7 +455,8 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--fg);
         <span class="step">STEP 01</span>
         <div class="fi">🏠</div>
         <div class="ft">選擇章節</div>
-        <div class="fd">系統根據算法顯示「今日推薦」，也可自由選擇 6 章中任一。</div>
+        <div style="font-size:10px;color:var(--fg3);margin:-4px 0 2px;font-family:monospace;">/ui/index.html</div>
+        <div class="fd">今日推薦算法自動計算最需複習的章節，也可自由選 6 章任一。</div>
         <ul class="fdetail">
           <li>整體完成度儀表板</li>
           <li>今日推薦 + 錯題複習</li>
@@ -467,10 +468,11 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--fg);
         <span class="step">STEP 02</span>
         <div class="fi">📖</div>
         <div class="ft">7 分鐘閱讀</div>
-        <div class="fd">5 張滑卡順序閱讀，計時器倒數。切換 app 時自動暫停，切回後接續。</div>
+        <div style="font-size:10px;color:var(--fg3);margin:-4px 0 2px;font-family:monospace;">/ui/reader.html</div>
+        <div class="fd">5 張滑卡倒數計時，切換 app 自動暫停，切回後無縫接續。</div>
         <ul class="fdetail">
           <li>左右滑動翻頁</li>
-          <li>Server-side 倒數計時</li>
+          <li>Server-side 計時戳記</li>
           <li>分心次數自動記錄</li>
         </ul>
       </div>
@@ -479,11 +481,12 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--fg);
         <span class="step">STEP 03</span>
         <div class="fi">✅</div>
         <div class="ft">3 題測驗</div>
-        <div class="fd">4 選 1 選擇題，全部作答後統一公布正解，搭配詳細解釋。</div>
+        <div style="font-size:10px;color:var(--fg3);margin:-4px 0 2px;font-family:monospace;">/ui/quiz.html</div>
+        <div class="fd">4 選 1 考古題，作答後公布正解 + 詳細解釋 + 原文卡片回溯。</div>
         <ul class="fdetail">
-          <li>題目來自真實考古題</li>
-          <li>解釋 + 原文卡片回溯</li>
-          <li>每題對錯即時記錄</li>
+          <li>題目來自真實考古題庫</li>
+          <li>解釋 + source_seq 回溯</li>
+          <li>每題對錯即時入 DB</li>
         </ul>
       </div>
       <div class="farr">→</div>
@@ -491,7 +494,8 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--fg);
         <span class="step">STEP 04</span>
         <div class="fi">📊</div>
         <div class="ft">成績檢討</div>
-        <div class="fd">顯示答對率、閱讀時間、分心次數，逐題回顧正確解答與說明。</div>
+        <div style="font-size:10px;color:var(--fg3);margin:-4px 0 2px;font-family:monospace;">/ui/result.html</div>
+        <div class="fd">本次答對率、閱讀時間、分心次數，逐題回顧正解與說明。</div>
         <ul class="fdetail">
           <li>本次 Sprint 完整數據</li>
           <li>逐題詳細檢討</li>
@@ -503,9 +507,10 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--fg);
         <span class="step">STEP 05</span>
         <div class="fi">🔁</div>
         <div class="ft">弱點更新</div>
-        <div class="fd">系統重新計算各章掌握度，更新推薦優先順序，下次開啟即顯示最需複習的章節。</div>
+        <div style="font-size:10px;color:var(--fg3);margin:-4px 0 2px;font-family:monospace;">POST /api/quiz/finalize</div>
+        <div class="fd">系統更新 ChapterMastery，重排推薦優先序，下次首頁即顯示最需複習章節。</div>
         <ul class="fdetail">
-          <li>答錯率自動更新</li>
+          <li>答錯率寫入 DB</li>
           <li>推薦算法重新排序</li>
           <li>行為數據持續累積</li>
         </ul>
@@ -550,6 +555,9 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--fg);
         <div class="db-box"><div class="db-stripe" style="background:#A78BFA;"></div><div class="db-inner"><div class="db-name" style="color:var(--purple);">推薦 · 2 張</div><div class="db-tables">ChapterMastery<br/>ReviewEvents</div></div></div>
         <div class="db-box"><div class="db-stripe" style="background:var(--fg3);"></div><div class="db-inner"><div class="db-name" style="color:var(--fg2);">支援 · 2 張</div><div class="db-tables">MicroModules<br/>Agents</div></div></div>
       </div>
+    </div>
+    <div class="callout ma" style="flex-shrink:0;">
+      <strong>技術選型原則：零外部依賴是刻意的決策。</strong>FastAPI + SQLite 不需要 GCP 帳號、不需要 PostgreSQL server、沒有 build pipeline — 企業 IT 部門 <code style="background:rgba(252,211,77,.12);padding:1px 5px;border-radius:4px;font-size:12px;">bash run.sh</code> 30 秒內完成環境建立。複雜的技術棧增加導入摩擦；降低接入成本，才能讓好產品真正被用上。
     </div>
   </div>
 </div>
