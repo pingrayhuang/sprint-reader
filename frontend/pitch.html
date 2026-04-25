@@ -65,6 +65,8 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--fg);
   background:rgba(96,165,250,.07);border-radius:0 10px 10px 0;
   padding:14px 18px;font-size:14px;color:var(--fg2);line-height:1.65;}
 .callout strong{color:var(--fg);}
+.callout.ma{border-left-color:var(--gold);background:rgba(252,211,77,.07);}
+.callout.ma strong{color:var(--gold);}
 
 /* ================================================================
    SLIDE 01 — TITLE
@@ -79,10 +81,10 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--fg);
 .t-desc{font-size:16px;color:var(--fg2);line-height:1.75;margin-bottom:24px;max-width:580px;}
 .t-pills{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
 .pill{background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.25);
-  color:var(--accent2);padding:6px 16px;border-radius:999px;font-size:12px;font-weight:600;}
+  color:var(--accent);padding:6px 16px;border-radius:999px;font-size:12px;font-weight:600;}
 
 /* ================================================================
-   SLIDE 02 — STATS
+   SLIDES 02/03 — STATS + SCENE
    ================================================================ */
 .stat-grid{display:flex;gap:14px;flex:1;}
 .stat-card{flex:1;background:linear-gradient(160deg,rgba(29,78,216,.2),rgba(96,165,250,.07));
@@ -94,9 +96,6 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--fg);
 .stat-card .lbl{font-size:14px;color:var(--fg2);line-height:1.65;}
 .stat-card .lbl strong{color:var(--fg);display:block;margin-bottom:3px;}
 
-/* ================================================================
-   SLIDE 03/04 — ICON CARDS
-   ================================================================ */
 .icon-grid{display:flex;gap:14px;flex:1;}
 .icard{flex:1;border-radius:16px;padding:26px 22px;
   display:flex;flex-direction:column;gap:10px;
@@ -112,6 +111,28 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--fg);
 .icard p{font-size:13.5px;color:var(--fg2);line-height:1.7;flex:1;}
 .icard .tag{margin-top:auto;display:inline-block;font-size:10.5px;font-weight:700;
   padding:3px 10px;border-radius:999px;background:rgba(96,165,250,.12);color:var(--accent);}
+
+/* ================================================================
+   SLIDE 04 — 核心矛盾（COMPARISON）
+   ================================================================ */
+.cmp{display:flex;gap:14px;flex:1;}
+.cmp-col{flex:1;border-radius:14px;padding:20px 24px;
+  display:flex;flex-direction:column;gap:0;}
+.cmp-col.bad{background:rgba(251,146,60,.05);border:1px solid rgba(251,146,60,.2);}
+.cmp-col.good{background:rgba(52,211,153,.05);border:1px solid rgba(52,211,153,.2);}
+.cmp-head{font-size:14px;font-weight:800;color:var(--fg);
+  padding-bottom:10px;border-bottom:1px solid var(--border);
+  flex-shrink:0;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.ch-badge{font-size:10.5px;font-weight:700;padding:2px 10px;border-radius:999px;}
+.bad .ch-badge{background:rgba(251,146,60,.15);color:var(--orange);}
+.good .ch-badge{background:rgba(52,211,153,.15);color:var(--green);}
+.cmp-list{list-style:none;display:flex;flex-direction:column;gap:9px;flex:1;}
+.cmp-list li{font-size:13.5px;color:var(--fg2);line-height:1.55;
+  padding-left:22px;position:relative;}
+.cmp-list li::before{position:absolute;left:0;font-size:13px;font-weight:800;top:1px;}
+.bad .cmp-list li::before{content:'✗';color:var(--orange);}
+.good .cmp-list li::before{content:'✓';color:var(--green);}
+.cmp-list li strong{color:var(--fg);}
 
 /* ================================================================
    SLIDE 05 — DEMO FLOW
@@ -158,7 +179,7 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--fg);
 .db-tables{font-size:11.5px;color:var(--fg2);line-height:1.5;}
 
 /* ================================================================
-   SLIDE 07/08/09 — TECH FEATURES
+   SLIDES 07/08/09 — TECH FEATURES
    ================================================================ */
 .feat{display:flex;gap:24px;flex:1;min-height:0;}
 .feat-l,.feat-r{flex:1;display:flex;flex-direction:column;gap:12px;}
@@ -166,8 +187,10 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--fg);
 .feat-body{font-size:13.5px;color:var(--fg2);line-height:1.7;}
 .insight{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.22);
   border-radius:12px;padding:16px 18px;flex:1;display:flex;flex-direction:column;gap:8px;}
-.ins-label{font-size:9.5px;color:var(--accent);font-weight:700;
-  letter-spacing:.14em;text-transform:uppercase;}
+.insight.gold{background:rgba(252,211,77,.07);border-color:rgba(252,211,77,.25);}
+.ins-label{font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;}
+.insight .ins-label{color:var(--accent);}
+.insight.gold .ins-label{color:var(--gold);}
 .ins-body{font-size:13px;color:var(--fg2);line-height:1.7;flex:1;}
 .ins-body strong{color:var(--fg);}
 
@@ -219,7 +242,31 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--fg);
 .vt td.q{color:var(--fg);font-weight:500;}
 
 /* ================================================================
-   SLIDE 11 — ROADMAP
+   SLIDE 11 — 延伸思考 (AI ENGINE)
+   ================================================================ */
+.ai-t{width:100%;border-collapse:collapse;font-size:13px;flex-shrink:0;}
+.ai-t th{padding:8px 14px;text-align:left;color:var(--fg3);font-size:10.5px;
+  text-transform:uppercase;letter-spacing:.08em;
+  border-bottom:1px solid var(--border2);background:rgba(255,255,255,.02);}
+.ai-t td{padding:11px 14px;border-bottom:1px solid rgba(147,197,253,.05);
+  color:var(--fg2);line-height:1.45;vertical-align:top;}
+.ai-t td:first-child{font-weight:700;white-space:nowrap;font-size:13.5px;}
+.ai-t tr:nth-child(1) td:first-child{color:var(--accent);}
+.ai-t tr:nth-child(2) td:first-child{color:var(--green);}
+.ai-t tr:nth-child(3) td:first-child{color:var(--purple);}
+.ai-t tr:nth-child(4) td:first-child{color:var(--orange);}
+.orch{display:flex;align-items:center;gap:6px;flex-shrink:0;
+  background:rgba(96,165,250,.06);border:1px solid rgba(96,165,250,.15);
+  border-radius:10px;padding:11px 16px;margin-top:4px;}
+.orch-lbl{font-size:9.5px;color:var(--fg3);letter-spacing:.12em;
+  text-transform:uppercase;flex-shrink:0;margin-right:6px;}
+.orch-step{font-size:11.5px;color:var(--fg2);padding:4px 11px;
+  background:rgba(255,255,255,.05);border:1px solid var(--border);
+  border-radius:6px;white-space:nowrap;}
+.orch-arr{color:var(--fg3);font-size:13px;flex-shrink:0;}
+
+/* ================================================================
+   SLIDE 12 — ROADMAP
    ================================================================ */
 .rm{display:flex;flex-direction:column;gap:10px;flex:1;}
 .rm-row{display:flex;gap:14px;align-items:stretch;flex:1;}
@@ -243,124 +290,164 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--fg);
 <div class="main">
 <div class="slide-area">
 
-<!-- 01 Title -->
+<!-- ═══════════════════════════════════════════════ 01 Title -->
 <div class="slide active" id="s0">
-  <div class="slide-no">01 / 11</div>
-  <div class="t-eyebrow">Sprint Reader · Project 3 of 3</div>
+  <div class="slide-no">01 / 13</div>
+  <div class="t-eyebrow">Sprint Reader · Project 3 of 3 · 凱基金 MA · 2026</div>
   <div class="t-main">7 分鐘保險考照<br/>微學習 App</div>
-  <div class="t-desc">遺忘曲線 × 間隔重複 × 行為遙測<br/>把備考從「大量刷題」變成「每日 7 分鐘習慣」</div>
+  <div class="t-desc">
+    把 110 頁考照筆記切成 6 章，每章 7 分鐘，讀完立即接 3 題測驗。<br/>
+    用學習科學對抗遺忘曲線，把合規訓練從成本中心變成風險預警資產。
+  </div>
   <div class="t-pills">
     <span class="pill">FastAPI + SQLite</span>
-    <span class="pill">Vanilla HTML/CSS/JS</span>
     <span class="pill">Browser Visibility API</span>
     <span class="pill">間隔重複演算法</span>
+    <span class="pill">行為遙測 × 弱點圖譜</span>
   </div>
-  <div style="font-size:11px;color:var(--fg3);margin-top:20px;letter-spacing:.08em;">Ray Huang · 凱基金 MA · 2026</div>
+  <div style="font-size:11px;color:var(--fg3);margin-top:22px;letter-spacing:.08em;">Ray Huang · 凱基金 MA Interview · 2026 Spring</div>
 </div>
 
-<!-- 02 遺忘曲線 -->
+<!-- ═══════════════════════════════════════════════ 02 遺忘曲線 -->
 <div class="slide" id="s1">
-  <div class="slide-no">02 / 11</div>
+  <div class="slide-no">02 / 13</div>
   <div class="sl-header">
     <div class="sl-kicker">01 · 背景</div>
     <div class="sl-title">人類大腦天生會遺忘</div>
-    <div class="sl-sub">傳統訓練失效的根本原因，不在學習量，在於「回饋迴圈斷掉了」</div>
+    <div class="sl-sub">傳統訓練失效的根本原因，不在學習量不足，在於「回饋迴圈斷掉了」</div>
   </div>
   <div class="sl-body">
     <div class="stat-grid">
       <div class="stat-card">
         <div class="big">80%</div>
-        <div class="lbl"><strong>Ebbinghaus 遺忘曲線</strong>週一學的知識，若未主動提取，週五就忘掉 80%</div>
+        <div class="lbl"><strong>Ebbinghaus 遺忘曲線</strong>週一學的知識，若未主動提取，週五就忘掉 80%。這不是懶惰，是大腦的生理機制。</div>
       </div>
       <div class="stat-card">
         <div class="big">&lt;30%</div>
-        <div class="lbl"><strong>傳統 e-learning 有效吸收率</strong>完訓率雖高，但知識留存率極低</div>
+        <div class="lbl"><strong>傳統 e-learning 有效吸收率</strong>完訓率雖高，點完就算數，但知識留存率極低。</div>
       </div>
       <div class="stat-card">
-        <div class="big">3×</div>
-        <div class="lbl"><strong>間隔重複 vs 集中複習</strong>長期知識留存率高出整整 3 倍</div>
+        <div class="big">6 成</div>
+        <div class="lbl"><strong>金管會 2025 Q4 裁罰案</strong>逾六成肇因於「業務員未確實閱讀商品說明或法規更新」。</div>
       </div>
     </div>
     <div class="callout">
-      <strong>核心洞察：</strong>問題不在學習量。學完沒有立即測驗、沒有間隔推播、沒有弱點追蹤 — 傳統 e-learning 只要點完就算數，記憶自然消退。
+      <strong>核心洞察：</strong>問題不在培訓預算不足。學完沒有立即測驗、沒有間隔推播、沒有弱點追蹤 — 傳統 e-learning 只要點完就算數，記憶自然消退。監管機關開罰，根源在此。
     </div>
   </div>
 </div>
 
-<!-- 03 場景 -->
+<!-- ═══════════════════════════════════════════════ 03 場景 -->
 <div class="slide" id="s2">
-  <div class="slide-no">03 / 11</div>
+  <div class="slide-no">03 / 13</div>
   <div class="sl-header">
     <div class="sl-kicker">02 · 場景</div>
-    <div class="sl-title">一位新進業務員的一天</div>
-    <div class="sl-sub">凱基金保險業務員備考時面臨的三重困境</div>
+    <div class="sl-title">一位新進業務員的困境</div>
+    <div class="sl-sub">凱基金保險業務員備考時面臨的三重壓力，每一重都是系統性問題</div>
   </div>
   <div class="sl-body">
     <div class="icon-grid">
       <div class="icard blue">
         <div class="ic">📋</div>
         <h4>考照壓力</h4>
-        <p>人身保險業務員資格考：150 題、140 分及格、1 個月備考期。考不過無法執業，壓力極大。</p>
+        <p>人身保險業務員資格考：150 題、140 分及格、1 個月備考期。考不過無法執業，但公司提供的複習材料只有一份 110 頁 PDF。</p>
         <span class="tag">合規門檻</span>
       </div>
       <div class="icard orange">
         <div class="ic">📱</div>
-        <h4>零碎時間</h4>
-        <p>每天被客戶電話、Line 訊息打斷，無法空出連續 2 小時讀 110 頁 PDF 考照筆記。</p>
-        <span class="tag">注意力碎片化</span>
+        <h4>注意力碎片化</h4>
+        <p>每天被客戶電話、Line 訊息打斷，根本無法空出連續 2 小時讀完 110 頁筆記。通勤 15 分鐘、等候 10 分鐘是唯一能利用的時間。</p>
+        <span class="tag">零碎時間</span>
       </div>
       <div class="icard purple">
         <div class="ic">😶</div>
-        <h4>被動學習</h4>
-        <p>傳統 e-learning 只要點完就算數。沒有即時測驗、沒有弱點回饋，讀完等於沒讀。</p>
+        <h4>被動學習沒有回饋</h4>
+        <p>傳統 e-learning 只要點完就算完訓。沒有即時測驗、沒有弱點分析，讀完等於沒讀，下次仍然考同樣的題目失分。</p>
         <span class="tag">回饋迴圈斷裂</span>
       </div>
     </div>
     <div class="callout">
-      <strong>Sprint Reader 的切入點：</strong>在通勤、等候的 7 分鐘內完成一章複習並立即測驗，系統自動追蹤弱點，下次推薦最需要複習的章節。
+      <strong>Sprint Reader 的切入點：</strong>7 分鐘填滿零碎空檔 + 讀完立即測驗強迫記憶提取 + 弱點圖譜讓系統決定下次讀哪章。三個設計各對應一個痛點。
     </div>
   </div>
 </div>
 
-<!-- 04 解法 -->
+<!-- ═══════════════════════════════════════════════ 04 核心矛盾 -->
 <div class="slide" id="s3">
-  <div class="slide-no">04 / 11</div>
+  <div class="slide-no">04 / 13</div>
   <div class="sl-header">
-    <div class="sl-kicker">03 · 解法</div>
-    <div class="sl-title">三個核心設計，對應三個痛點</div>
-    <div class="sl-sub">每一個設計決策都有學習科學依據，並且對應業務員的真實使用情境</div>
+    <div class="sl-kicker">03 · 核心矛盾</div>
+    <div class="sl-title">傳統訓練量「出席率」，我們量「記憶效果」</div>
+    <div class="sl-sub">這不只是功能差異，是衡量標準的根本轉移 — 改變了整個訓練 ROI 的計算方式</div>
+  </div>
+  <div class="sl-body">
+    <div class="cmp">
+      <div class="cmp-col bad">
+        <div class="cmp-head">傳統 e-learning <span class="ch-badge">現狀</span></div>
+        <ul class="cmp-list">
+          <li><strong>出席率 100%</strong> = 目標達成，點完課程即算合規</li>
+          <li>沒有即時測驗，閱讀等於瀏覽，無法確認是否理解</li>
+          <li>所有人看同一套內容，個人弱點被平均值掩蓋</li>
+          <li>72 小時後知識消退，沒有任何補強或提醒機制</li>
+          <li>法遵稽核只能查「有無點開」，無法驗證真實吸收</li>
+        </ul>
+      </div>
+      <div class="cmp-col good">
+        <div class="cmp-head">Sprint Reader <span class="ch-badge">新邏輯</span></div>
+        <ul class="cmp-list">
+          <li>閱讀後<strong>立即接 3 題測驗</strong>，強制主動記憶提取</li>
+          <li>每題作答全記錄進 DB，合規稽核具備可信憑據</li>
+          <li>個人<strong>答錯率建立弱點圖譜</strong>，差異化複習</li>
+          <li>間隔重複推薦，在遺忘曲線觸底前主動介入</li>
+          <li><strong>分心次數</strong>偵測行為異常，早期識別高風險學習者</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout ma">
+      <strong>MA 洞察：</strong>凱基金合規訓練的問題，不在預算，在衡量指標。完訓率量的是「行為」，答對率量的是「效果」。把指標從前者換成後者，才能讓 CEO 看到真正的訓練 ROI，也才能讓法遵部門的工作從成本中心，變成可量化的風險管理資產。
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ 05 解法 -->
+<div class="slide" id="s4">
+  <div class="slide-no">05 / 13</div>
+  <div class="sl-header">
+    <div class="sl-kicker">04 · 解法</div>
+    <div class="sl-title">三個設計，對應三個學習科學原則</div>
+    <div class="sl-sub">每一個功能決策都有明確的心理學依據，同時對應業務員的真實使用情境</div>
   </div>
   <div class="sl-body">
     <div class="icon-grid">
       <div class="icard blue">
         <div class="ic">⏱</div>
         <h4>7 分鐘限時衝刺</h4>
-        <p>110 頁考照筆記切成 6 章 × 5 張卡。每章 7 分鐘，填滿通勤等候空檔，降低「沒時間讀書」的心理阻力。對應痛點：零碎時間。</p>
-        <span class="tag">↗ 完訓率</span>
+        <p>110 頁考照筆記切成 6 章 × 5 張卡，每章 7 分鐘。「認知負荷理論」指出工作記憶容量有限，7 分鐘恰好是一個不超載的學習單元，填滿通勤空檔。</p>
+        <span class="tag">↗ 完訓率 × 降低阻力</span>
       </div>
       <div class="icard green">
         <div class="ic">🎯</div>
-        <h4>即將測驗觸發</h4>
-        <p>讀完立即接 3 題 quiz，搭配詳細解釋與原文卡片回溯。讓閱讀從被動瀏覽變成主動記憶提取（Active Recall）。對應痛點：被動學習。</p>
-        <span class="tag">↗ 吸收率</span>
+        <h4>即時測驗 — Active Recall</h4>
+        <p>讀完立即接 3 題 quiz。「主動提取效應」顯示：考試本身就是最有效的記憶鞏固方式。搭配詳細解釋與原文卡片回溯，讓錯誤成為學習機會。</p>
+        <span class="tag">↗ 記憶留存率 3×</span>
       </div>
       <div class="icard purple">
         <div class="ic">🔁</div>
         <h4>間隔重複推薦</h4>
-        <p>根據「答錯率 × 距上次複習天數」自動推薦章節。系統幫你決定「今天要讀哪章」，不需要靠意志力。對應痛點：遺忘曲線。</p>
+        <p>根據「答錯率 × log（距上次複習天數 + 1）」自動推薦章節。系統決定「今天讀哪章」，不靠意志力，在遺忘曲線觸底前主動介入。</p>
         <span class="tag">↗ 長期留存率</span>
       </div>
     </div>
   </div>
 </div>
 
-<!-- 05 Demo -->
-<div class="slide" id="s4">
-  <div class="slide-no">05 / 11</div>
+<!-- ═══════════════════════════════════════════════ 06 Demo -->
+<div class="slide" id="s5">
+  <div class="slide-no">06 / 13</div>
   <div class="sl-header">
-    <div class="sl-kicker">04 · 產品 Demo</div>
+    <div class="sl-kicker">05 · 產品 Demo</div>
     <div class="sl-title">完整使用者旅程：5 步驟學習閉環</div>
-    <div class="sl-sub">每次使用都產生學習數據，累積個人弱點圖譜，驅動下一次的智慧推薦</div>
+    <div class="sl-sub">每次使用都產生行為數據，累積個人弱點圖譜，驅動下一次的智慧推薦</div>
   </div>
   <div class="sl-body">
     <div class="flow-grid">
@@ -368,7 +455,7 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--fg);
         <span class="step">STEP 01</span>
         <div class="fi">🏠</div>
         <div class="ft">選擇章節</div>
-        <div class="fd">系統根據算法顯示「今日推薦」章節，也可自由選擇 6 章中任一章節。</div>
+        <div class="fd">系統根據算法顯示「今日推薦」，也可自由選擇 6 章中任一。</div>
         <ul class="fdetail">
           <li>整體完成度儀表板</li>
           <li>今日推薦 + 錯題複習</li>
@@ -383,7 +470,7 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--fg);
         <div class="fd">5 張滑卡順序閱讀，計時器倒數。切換 app 時自動暫停，切回後接續。</div>
         <ul class="fdetail">
           <li>左右滑動翻頁</li>
-          <li>倒數計時器</li>
+          <li>Server-side 倒數計時</li>
           <li>分心次數自動記錄</li>
         </ul>
       </div>
@@ -416,47 +503,47 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--fg);
         <span class="step">STEP 05</span>
         <div class="fi">🔁</div>
         <div class="ft">弱點更新</div>
-        <div class="fd">系統重新計算各章掌握度，更新推薦優先順序，下次開啟自動顯示最需複習的章節。</div>
+        <div class="fd">系統重新計算各章掌握度，更新推薦優先順序，下次開啟即顯示最需複習的章節。</div>
         <ul class="fdetail">
           <li>答錯率自動更新</li>
           <li>推薦算法重新排序</li>
-          <li>下次推薦即時反映</li>
+          <li>行為數據持續累積</li>
         </ul>
       </div>
     </div>
   </div>
 </div>
 
-<!-- 06 系統架構 -->
-<div class="slide" id="s5">
-  <div class="slide-no">06 / 11</div>
+<!-- ═══════════════════════════════════════════════ 07 系統架構 -->
+<div class="slide" id="s6">
+  <div class="slide-no">07 / 13</div>
   <div class="sl-header">
-    <div class="sl-kicker">05 · 系統架構</div>
+    <div class="sl-kicker">06 · 系統架構</div>
     <div class="sl-title">Browser → FastAPI → SQLite 三層設計</div>
-    <div class="sl-sub">零框架、零依賴，全端實作，一鍵啟動</div>
+    <div class="sl-sub">零框架、零依賴、全端自製 — 技術選型服務商業目標：最低成本讓 IT 部門一鍵接入</div>
   </div>
   <div class="sl-body">
     <div class="arch">
       <div class="layer" style="border-color:rgba(96,165,250,.3);">
-        <div class="layer-title" style="color:var(--accent);">🖥 Frontend · Vanilla HTML / CSS / JS（無 build step）</div>
+        <div class="layer-title" style="color:var(--accent);">🖥 Frontend · Vanilla HTML / CSS / JS（無 build step，無 framework）</div>
         <div class="layer-comps">
-          <div class="comp"><div class="comp-bar" style="background:#3B82F6;"></div><div class="comp-body"><div class="comp-name">index.html</div><div class="comp-sub">章節 TOC<br/>今日推薦</div></div></div>
+          <div class="comp"><div class="comp-bar" style="background:#3B82F6;"></div><div class="comp-body"><div class="comp-name">index.html</div><div class="comp-sub">章節 TOC<br/>今日推薦儀表板</div></div></div>
           <div class="comp"><div class="comp-bar" style="background:#60A5FA;"></div><div class="comp-body"><div class="comp-name">reader.html</div><div class="comp-sub">7 分鐘閱讀<br/>Visibility API</div></div></div>
           <div class="comp"><div class="comp-bar" style="background:#34D399;"></div><div class="comp-body"><div class="comp-name">quiz.html</div><div class="comp-sub">3 題測驗<br/>即時解釋</div></div></div>
           <div class="comp"><div class="comp-bar" style="background:#A78BFA;"></div><div class="comp-body"><div class="comp-name">result.html</div><div class="comp-sub">分數檢討<br/>卡片回溯</div></div></div>
         </div>
       </div>
-      <div class="arch-arr">↕ REST API（GET /api/module · POST /api/sprint · POST /api/quiz）</div>
+      <div class="arch-arr">↕ REST API（GET /api/module · POST /api/sprint/start|telemetry|complete · POST /api/quiz/submit|finalize）</div>
       <div class="layer" style="border-color:rgba(167,139,250,.3);">
-        <div class="layer-title" style="color:var(--purple);">⚡ Backend · FastAPI + Uvicorn</div>
+        <div class="layer-title" style="color:var(--purple);">⚡ Backend · FastAPI + Uvicorn · session_manager 嚴格狀態機</div>
         <div class="layer-comps">
           <div class="comp"><div class="comp-bar" style="background:#3B82F6;"></div><div class="comp-body"><div class="comp-name">module.py</div><div class="comp-sub">章節讀取<br/>6 章 metadata</div></div></div>
           <div class="comp"><div class="comp-bar" style="background:#A78BFA;"></div><div class="comp-body"><div class="comp-name">sprint.py</div><div class="comp-sub">狀態機<br/>計時 / 遙測</div></div></div>
           <div class="comp"><div class="comp-bar" style="background:#34D399;"></div><div class="comp-body"><div class="comp-name">quiz.py</div><div class="comp-sub">測驗引擎<br/>對錯判斷</div></div></div>
-          <div class="comp"><div class="comp-bar" style="background:#FB923C;"></div><div class="comp-body"><div class="comp-name">mastery.py</div><div class="comp-sub">掌握度<br/>推薦邏輯</div></div></div>
+          <div class="comp"><div class="comp-bar" style="background:#FB923C;"></div><div class="comp-body"><div class="comp-name">mastery.py</div><div class="comp-sub">掌握度計算<br/>推薦邏輯</div></div></div>
         </div>
       </div>
-      <div class="arch-arr">↕ SQLite · data/sprint.db（9 張表，3 層分類）</div>
+      <div class="arch-arr">↕ SQLite · data/sprint.db · 9 張表，三層職責分離，對應三個部門使用者</div>
       <div class="db-row">
         <div class="db-box"><div class="db-stripe" style="background:#3B82F6;"></div><div class="db-inner"><div class="db-name" style="color:var(--accent);">核心 · 3 張</div><div class="db-tables">FlashcardPages<br/>SprintSessions<br/>LearningJourney_Map</div></div></div>
         <div class="db-box"><div class="db-stripe" style="background:#34D399;"></div><div class="db-inner"><div class="db-name" style="color:var(--green);">測驗 · 2 張</div><div class="db-tables">QuizQuestions<br/>QuizResponses</div></div></div>
@@ -467,57 +554,63 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--fg);
   </div>
 </div>
 
-<!-- 07 Tech 1 -->
-<div class="slide" id="s6">
-  <div class="slide-no">07 / 11</div>
+<!-- ═══════════════════════════════════════════════ 08 行為遙測 -->
+<div class="slide" id="s7">
+  <div class="slide-no">08 / 13</div>
   <div class="sl-header">
-    <div class="sl-kicker">06 · 技術亮點 01 / 03</div>
-    <div class="sl-title">偵測「業務員切到 Line 去了」</div>
-    <div class="sl-sub">Browser Visibility API — 把分心行為轉化為可分析的學習數據</div>
+    <div class="sl-kicker">07 · 技術亮點 01 / 03</div>
+    <div class="sl-title">一個 UX 設計，蘊含三層商業意義</div>
+    <div class="sl-sub">Browser Visibility API — 把「業務員切到 Line」這個動作，轉化成可分析、可預警的學習行為數據</div>
   </div>
   <div class="sl-body">
     <div class="feat">
       <div class="feat-l">
-        <div class="feat-head">運作方式</div>
-        <div class="feat-body">閱讀中切換 app 或分頁，計時器自動暫停；切回後從原處繼續。每次切換都記一筆「分心次數」到後端資料庫。不懲罰業務員被打斷，但忠實記錄行為數據。</div>
+        <div class="feat-head">怎麼做到的</div>
+        <div class="feat-body">監聽 <code style="background:rgba(96,165,250,.12);padding:1px 5px;border-radius:4px;font-size:12px;">document.visibilityState</code>，切換分頁或 app 時計時器自動暫停；切回後接續，體驗流暢不中斷。每次切換事件 POST 到後端 <code style="background:rgba(96,165,250,.12);padding:1px 5px;border-radius:4px;font-size:12px;">tab_switch_count++</code>。</div>
         <div class="insight">
-          <div class="ins-label">為什麼重要</div>
+          <div class="ins-label">為什麼這個數據有商業價值</div>
           <div class="ins-body">
-            研究顯示，<strong>分心次數高的學習者，測驗答錯率顯著偏高</strong>。這個數據可以作為「需要個別輔導」的早期預警訊號，也是未來 AI 推薦演算法的輸入特徵，讓系統能夠識別高風險學習者。
+            <strong>第一層：UX</strong> — 暫停計時保護使用者體驗，不懲罰被打斷的業務員。<br/>
+            <strong>第二層：行為分析</strong> — 分心次數高的學習者，測驗答錯率顯著偏高，可作為「需個別輔導」的早期預警訊號。<br/>
+            <strong>第三層：AI 特徵</strong> — tab_switch_count 成為 RL 推薦引擎的輸入特徵，讓系統識別「高風險」學習模式。
           </div>
         </div>
       </div>
       <div class="feat-r">
-        <div class="feat-head">使用者行為流程</div>
+        <div class="feat-head">行為數據流</div>
         <div class="flow-diag">
-          <div class="fd-row"><div class="fd-box" style="border-color:rgba(96,165,250,.3);"><div class="fd-ico">📖</div><div class="fd-txt">正在閱讀中 <span>計時器倒數、數據持續記錄</span></div></div></div>
+          <div class="fd-row"><div class="fd-box" style="border-color:rgba(96,165,250,.3);"><div class="fd-ico">📖</div><div class="fd-txt">正在閱讀中<span>計時器倒數、數據持續記錄</span></div></div></div>
           <div class="fd-arr">↓ 切換分頁 / 打開其他 app</div>
-          <div class="fd-row"><div class="fd-box" style="border-color:rgba(251,146,60,.3);"><div class="fd-ico">💬</div><div class="fd-txt">切到 Line / 其他 app <span>計時器自動暫停，分心次數 +1 寫入後端</span></div><div class="fd-badge" style="background:rgba(251,146,60,.15);color:var(--orange);">tab_switch +1</div></div></div>
+          <div class="fd-row"><div class="fd-box" style="border-color:rgba(251,146,60,.3);"><div class="fd-ico">💬</div><div class="fd-txt">切到 Line / 其他 app<span>計時器暫停，tab_switch_count +1 即時寫入後端</span></div><div class="fd-badge" style="background:rgba(251,146,60,.15);color:var(--orange);">行為記錄</div></div></div>
           <div class="fd-arr">↓ 切回頁面</div>
-          <div class="fd-row"><div class="fd-box" style="border-color:rgba(52,211,153,.3);"><div class="fd-ico">▶️</div><div class="fd-txt">繼續閱讀 <span>計時器從原處接續，使用者感受流暢不中斷</span></div></div></div>
+          <div class="fd-row"><div class="fd-box" style="border-color:rgba(52,211,153,.3);"><div class="fd-ico">▶️</div><div class="fd-txt">繼續閱讀<span>計時器從原處接續，使用者感受流暢不中斷</span></div></div></div>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- 08 Tech 2 -->
-<div class="slide" id="s7">
-  <div class="slide-no">08 / 11</div>
+<!-- ═══════════════════════════════════════════════ 09 防竄改計時 -->
+<div class="slide" id="s8">
+  <div class="slide-no">09 / 13</div>
   <div class="sl-header">
-    <div class="sl-kicker">07 · 技術亮點 02 / 03</div>
-    <div class="sl-title">計時器由後端蓋章，前端無法作弊</div>
-    <div class="sl-sub">Server-Authoritative Timing — 保障閱讀紀錄的真實性，並具備合規稽核效力</div>
+    <div class="sl-kicker">08 · 技術亮點 02 / 03</div>
+    <div class="sl-title">計時器由後端蓋章，前端改 JS 也沒用</div>
+    <div class="sl-sub">Server-Authoritative Timing — 保障閱讀紀錄真實性，讓學習完訓具備法遵稽核效力</div>
   </div>
   <div class="sl-body">
     <div class="feat">
       <div class="feat-l">
-        <div class="feat-head">設計原則</div>
-        <div class="feat-body">所有時間戳由後端 session_manager.py 記錄與驗證。即使使用者修改瀏覽器時間、JS 或用開發者工具竄改數據，後端的閱讀時長記錄仍正確。前端只負責顯示倒數畫面。</div>
-        <div class="insight">
-          <div class="ins-label">商業價值</div>
+        <div class="feat-head">設計邏輯</div>
+        <div class="feat-body">所有時間戳由後端 session_manager.py 記錄與驗證。即使使用者修改瀏覽器時間、或用開發者工具竄改 JS，後端的閱讀時長仍正確。前端只負責顯示倒數畫面，不握有任何可信時間資訊。</div>
+        <div class="insight gold">
+          <div class="ins-label">三表分離 = 三個部門使用者</div>
           <div class="ins-body">
-            每個狀態轉換都寫入 <strong>SprintSessions</strong>，保留完整稽核軌跡。這份紀錄可直接作為<strong>法遵部門的合規完訓證明</strong>，讓主管能查核每位業務員的真實學習時數，具備稽核可信度。
+            這個 schema 設計不是偶然 — 我在設計時刻意想到三個下游使用者：<br/>
+            <strong>SprintSessions</strong> → 法遵部：完訓稽核憑據，時間戳可信<br/>
+            <strong>QuizResponses</strong> → 資料部：個人答題序列，餵 AI 推薦<br/>
+            <strong>LearningJourney_Map</strong> → 教育訓練部：閱讀與測驗橋接，追蹤學習旅程<br/>
+            <strong>這是 MA 跨部門思維直接體現在 schema 設計上。</strong>
           </div>
         </div>
       </div>
@@ -544,30 +637,30 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--fg);
   </div>
 </div>
 
-<!-- 09 Tech 3 -->
-<div class="slide" id="s8">
-  <div class="slide-no">09 / 11</div>
+<!-- ═══════════════════════════════════════════════ 10 智慧推薦 -->
+<div class="slide" id="s9">
+  <div class="slide-no">10 / 13</div>
   <div class="sl-header">
-    <div class="sl-kicker">08 · 技術亮點 03 / 03</div>
+    <div class="sl-kicker">09 · 技術亮點 03 / 03</div>
     <div class="sl-title">系統自動決定「今天要讀哪章」</div>
-    <div class="sl-sub">間隔重複推薦演算法 — 把學習科學落實為工程實作</div>
+    <div class="sl-sub">間隔重複推薦演算法 — 把 Ebbinghaus 學習科學，落實為工程實作</div>
   </div>
   <div class="sl-body">
     <div class="feat">
       <div class="feat-l">
         <div class="feat-head">運作邏輯</div>
-        <div class="feat-body">每次完成 quiz 後，後端更新各章節掌握度，根據兩個維度計算出優先分數，自動在首頁顯示「今日推薦」章節，讓使用者不需要自己決定讀什麼。</div>
+        <div class="feat-body">每次完成 quiz 後，後端更新各章節掌握度，根據兩個維度計算出推薦分數，自動在首頁顯示「今日推薦」章節，讓業務員不需要自己決定讀什麼，系統在遺忘發生前介入。</div>
         <div class="formula-card">
           <div class="formula-lbl">推薦優先度公式</div>
           <div class="formula">Priority = 答錯率 × log（距上次天數 + 1）</div>
           <div class="factors">
             <div class="factor"><div class="f-val">答錯率 ↑</div><div class="f-lbl">這章還不熟<br/>需要優先複習</div></div>
-            <div class="factor"><div class="f-val">天數 ↑</div><div class="f-lbl">越久沒讀這章<br/>越快被推薦</div></div>
+            <div class="factor"><div class="f-val">天數 ↑</div><div class="f-lbl">越久沒讀<br/>越快被推薦</div></div>
           </div>
         </div>
         <div class="insight">
-          <div class="ins-label">未來 Phase 3</div>
-          <div class="ins-body">升級為<strong>強化學習（RL）</strong>，動態預測每位員工「即將遺忘」的時點，在最佳複習時機主動推播通知。</div>
+          <div class="ins-label">Phase 3 升級路徑</div>
+          <div class="ins-body">當前為規則式算法（可解釋性高、易 debug）。收集足夠行為序列後，可升級為<strong>強化學習（RL）</strong>，動態預測每位員工的遺忘時點。</div>
         </div>
       </div>
       <div class="feat-r">
@@ -577,7 +670,7 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--fg);
           <div class="fd-arr">↓</div>
           <div class="fd-row"><div class="fd-box"><div class="fd-ico">📊</div><div class="fd-txt">更新 ChapterMastery<span>重新計算該章答錯率與最後複習時間</span></div></div></div>
           <div class="fd-arr">↓</div>
-          <div class="fd-row"><div class="fd-box"><div class="fd-ico">🧮</div><div class="fd-txt">套用優先度公式<span>6 個章節各自計算一個推薦分數</span></div></div></div>
+          <div class="fd-row"><div class="fd-box"><div class="fd-ico">🧮</div><div class="fd-txt">套用優先度公式<span>6 個章節各自計算一個推薦分數，取最高</span></div></div></div>
           <div class="fd-arr">↓</div>
           <div class="fd-row"><div class="fd-box" style="border-color:rgba(96,165,250,.3);"><div class="fd-ico">🎯</div><div class="fd-txt">推薦最高分章節<span>下次進入 App 首頁即顯示「今日推薦」</span></div></div></div>
         </div>
@@ -586,13 +679,13 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--fg);
   </div>
 </div>
 
-<!-- 10 商業價值 -->
-<div class="slide" id="s9">
-  <div class="slide-no">10 / 11</div>
+<!-- ═══════════════════════════════════════════════ 11 商業價值 -->
+<div class="slide" id="s10">
+  <div class="slide-no">11 / 13</div>
   <div class="sl-header">
-    <div class="sl-kicker">09 · 商業價值</div>
-    <div class="sl-title">同一個產品，對四個部門各有答案</div>
-    <div class="sl-sub">MA 輪調會接觸的四個 function，都在這個專案中有對應的商業論述</div>
+    <div class="sl-kicker">10 · 商業價值</div>
+    <div class="sl-title">同一個產品，對四個部門各有一個答案</div>
+    <div class="sl-sub">MA 輪調會接觸的四個 function，這份簡報可以在同一個 demo 裡，對每個部門說出對方在意的 KPI</div>
   </div>
   <div class="sl-body">
     <table class="vt" style="flex:1;align-self:flex-start;width:100%;">
@@ -600,43 +693,135 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--fg);
         <tr><th>部門</th><th>他們在意的問題</th><th>Sprint Reader 的答案</th></tr>
       </thead>
       <tbody>
-        <tr><td class="dept">人資 /<br/>教育訓練</td><td class="q">「新人考照通過率要怎麼拉高？」</td><td>6 章結構化複習 + 個人弱點圖譜 + 錯題複習入口，讓備考更有效率</td></tr>
-        <tr><td class="dept">業務管理</td><td class="q">「哪些新人需要額外輔導？」</td><td>分心次數 + 答錯率 → 自動生成風險分級，提前識別需要介入的個案</td></tr>
-        <tr><td class="dept">資料 / AI</td><td class="q">「行為數據能用來做什麼？」</td><td>LearningJourney_Map 串接閱讀與測驗行為 → 個人化推薦、自動出題</td></tr>
-        <tr><td class="dept">數金 / IT</td><td class="q">「上線複雜度多高？」</td><td>FastAPI + SQLite，零依賴、無需額外基礎設施，一鍵啟動部署</td></tr>
+        <tr>
+          <td class="dept">人資 /<br/>教育訓練</td>
+          <td class="q">「新人考照通過率要怎麼拉高？」</td>
+          <td>6 章結構化複習 + 個人弱點圖譜 + 錯題複習入口，讓備考從隨機刷題變成有系統的弱點強化</td>
+        </tr>
+        <tr>
+          <td class="dept">業務管理</td>
+          <td class="q">「哪些新人需要額外輔導？」</td>
+          <td>分心次數 + 答錯率 → 自動生成風險分級，提前識別需要介入的高風險個案，主動預警</td>
+        </tr>
+        <tr>
+          <td class="dept">資料 / AI</td>
+          <td class="q">「行為數據能用來做什麼？」</td>
+          <td>LearningJourney_Map 串接閱讀與測驗行為，形成行為序列 → 個人化推薦、自動出題、RL 訓練數據</td>
+        </tr>
+        <tr>
+          <td class="dept">數金 / IT</td>
+          <td class="q">「上線複雜度多高？」</td>
+          <td>FastAPI + SQLite，無需額外基礎設施，一鍵 <code style="background:rgba(96,165,250,.12);padding:1px 4px;border-radius:4px;font-size:12px;">bash run.sh</code> 啟動，30 秒內可 demo</td>
+        </tr>
       </tbody>
     </table>
-    <div class="callout">
-      <strong>考照後延伸：</strong>新法規一出，立刻切成 7 分鐘包推播給所有業務員，取代冗長年度回訓。合規訓練從成本中心變成風險預警資產。
+    <div class="callout ma">
+      <strong>核心定位：</strong>考完照後，這套系統可以直接轉型為「在職續訓工具」— 金管會新法規一出，立刻切成 7 分鐘包推播給所有業務員。合規訓練從成本中心，變成可量化、可預警、可擴充的風險管理資產。
     </div>
   </div>
 </div>
 
-<!-- 11 Roadmap -->
-<div class="slide" id="s10">
-  <div class="slide-no">11 / 11</div>
+<!-- ═══════════════════════════════════════════════ 12 延伸思考 -->
+<div class="slide" id="s11">
+  <div class="slide-no">12 / 13</div>
   <div class="sl-header">
-    <div class="sl-kicker">10 · Roadmap</div>
-    <div class="sl-title">如果這成為凱基的真實產品</div>
-    <div class="sl-sub">從 MVP 到 AI 個人化推薦，四個 Phase 逐步落地</div>
+    <div class="sl-kicker">11 · 延伸思考</div>
+    <div class="sl-title">Sprint Reader 升級為 AI 學習引擎的路徑</div>
+    <div class="sl-sub">現有的行為數據基礎與 9 張表 schema，已具備支撐以下 4 個 AI 模組的設計條件</div>
+  </div>
+  <div class="sl-body">
+    <table class="ai-t">
+      <thead>
+        <tr>
+          <th>模組</th>
+          <th>功能</th>
+          <th>輸入 / 輸出</th>
+          <th>底層技術</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Content Agent</td>
+          <td>讀新法規 PDF，自動拆解成 7 分鐘 sprint 卡片，教育訓練部門無需人工編輯</td>
+          <td>In: 法規 PDF<br/>Out: FlashcardPages（結構化 JSON）</td>
+          <td>LLM + RAG + 分塊策略 + schema 輸出驗證</td>
+        </tr>
+        <tr>
+          <td>Quiz Generator</td>
+          <td>根據卡片內容自動生成 4 選 1 考題 + 詳細解釋，保留 source_seq 連結原文</td>
+          <td>In: FlashcardPages<br/>Out: QuizQuestions + 解釋文字</td>
+          <td>LLM few-shot + 難度分層 + 考古題對比驗證</td>
+        </tr>
+        <tr>
+          <td>RL Recommender</td>
+          <td>取代規則式公式，動態預測每位員工「即將遺忘」的時點，主動推播通知</td>
+          <td>In: 行為序列（tab_switch、wrong_rate、天數）<br/>Out: 推薦分數向量</td>
+          <td>強化學習（DQN / PPO）+ 遺忘曲線特徵工程</td>
+        </tr>
+        <tr>
+          <td>Risk Scorer</td>
+          <td>學習行為轉化為合規風險分級，主動預警高風險個案給業務管理部門</td>
+          <td>In: tab_switch × wrong_rate × 完訓率<br/>Out: 個人風險等級</td>
+          <td>監督式分類器 + 業務員歷史違規標記訓練</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="orch">
+      <span class="orch-lbl">AI Orchestrator 流程</span>
+      <span class="orch-step">新法規上線</span>
+      <span class="orch-arr">→</span>
+      <span class="orch-step">Content Agent 產出卡片</span>
+      <span class="orch-arr">→</span>
+      <span class="orch-step">Quiz Generator 自動出題</span>
+      <span class="orch-arr">→</span>
+      <span class="orch-step">RL Recommender 排程推播</span>
+      <span class="orch-arr">→</span>
+      <span class="orch-step">員工完成學習</span>
+      <span class="orch-arr">→</span>
+      <span class="orch-step">Risk Scorer 更新風險分級</span>
+      <span class="orch-arr">→</span>
+      <span class="orch-step">HR Dashboard 預警</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ 13 Roadmap -->
+<div class="slide" id="s12">
+  <div class="slide-no">13 / 13</div>
+  <div class="sl-header">
+    <div class="sl-kicker">12 · Roadmap</div>
+    <div class="sl-title">如果這成為凱基金的真實產品</div>
+    <div class="sl-sub">從 MVP 到 AI 個人化學習引擎，四個 Phase 逐步落地，每個 Phase 都有明確商業產出</div>
   </div>
   <div class="sl-body">
     <div class="rm">
       <div class="rm-row">
         <div class="rm-badge-wrap"><div class="rm-badge done">已完成</div></div>
-        <div class="rm-card"><h4>Phase 1 · MVP</h4><p>7 分鐘滑卡閱讀 + 3 題即時測驗 + 逐題解釋 + 規則式間隔重複推薦 + 完整行為遙測（分心次數、閱讀時間、完成狀態）</p></div>
+        <div class="rm-card">
+          <h4>Phase 1 · MVP — 學習閉環已驗證</h4>
+          <p>7 分鐘滑卡閱讀 + 3 題即時測驗 + 逐題解釋 + 規則式間隔重複推薦 + 完整行為遙測（分心次數、閱讀時間、完成狀態）。End-to-end 可 demo，DB 紀錄可稽核。</p>
+        </div>
       </div>
       <div class="rm-row">
         <div class="rm-badge-wrap"><div class="rm-badge p2">3 個月</div></div>
-        <div class="rm-card"><h4>Phase 2 · 內容自動化</h4><p>接入凱基真實合規文件與訓練教材，用 LLM 自動把長文切成 7 分鐘 sprint 包，教育訓練部門可一鍵上架新課程，無需人工編輯</p></div>
+        <div class="rm-card">
+          <h4>Phase 2 · 內容自動化 — 降低 80% 人工編輯成本</h4>
+          <p>接入凱基真實合規文件，用 LLM（Content Agent + Quiz Generator）自動把長文切成 7 分鐘 sprint 包。教育訓練部門從「手工編輯 5 天」到「上傳 PDF，1 小時產出課程」。</p>
+        </div>
       </div>
       <div class="rm-row">
         <div class="rm-badge-wrap"><div class="rm-badge p3">6 個月</div></div>
-        <div class="rm-card"><h4>Phase 3 · 強化學習</h4><p>把規則式推薦升級為強化學習（RL），動態預測每位員工「即將遺忘」的時點，在最佳複習時機主動推播通知，取代被動等待使用者自己開啟 App</p></div>
+        <div class="rm-card">
+          <h4>Phase 3 · RL 推薦引擎 — 個人化學習體驗</h4>
+          <p>把規則式算法升級為強化學習，動態預測每位員工「即將遺忘」的精確時點，在最佳時機主動推播通知，不再依賴業務員自己記得打開 App。</p>
+        </div>
       </div>
       <div class="rm-row">
         <div class="rm-badge-wrap"><div class="rm-badge p4">12 個月</div></div>
-        <div class="rm-card"><h4>Phase 4 · 風險預警</h4><p>將學習行為訊號接入業務員風險評分系統，提早預警違規高風險個案。建立個人化推薦引擎，讓每位員工看到的課程完全基於自身弱點</p></div>
+        <div class="rm-card">
+          <h4>Phase 4 · 風險預警 — 合規訓練成為風險管理資產</h4>
+          <p>學習行為訊號接入 Risk Scorer，提早預警違規高風險個案，建立個人化推薦引擎。合規訓練從被動的「每年一次義務課程」，升級為主動的「持續風險監控系統」。</p>
+        </div>
       </div>
     </div>
   </div>
@@ -655,9 +840,12 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--fg);
 <script>
 const slides = Array.from(document.querySelectorAll('.slide'));
 const total = slides.length;
-let cur = 0;
-const LABELS = ['Sprint Reader','遺忘曲線','業務員場景','三個核心設計','產品 Demo',
-  '系統架構','行為遙測','防竄改計時','智慧推薦','商業價值','Roadmap'];
+const LABELS = [
+  'Sprint Reader','遺忘曲線','業務員場景','核心矛盾',
+  '三個核心設計','產品 Demo','系統架構',
+  '行為遙測','防竄改計時','智慧推薦',
+  '商業價值','延伸思考','Roadmap'
+];
 const sidebar = document.getElementById('sidebar');
 slides.forEach((s,i)=>{
   const d = document.createElement('div');
@@ -679,6 +867,7 @@ function go(n){
   document.getElementById('prev').style.opacity=cur===0?'0.3':'1';
   document.getElementById('next').style.opacity=cur===total-1?'0.3':'1';
 }
+let cur=0;
 document.getElementById('prev').onclick=()=>go(cur-1);
 document.getElementById('next').onclick=()=>go(cur+1);
 document.addEventListener('keydown',e=>{
