@@ -187,8 +187,8 @@ async function initReader() {
     if (completed) return;
     const active = cardEls()[currentIdx];
     if (!active || !active.contains(e.target)) return;
-    // Don't start drag on interactive children (e.g. complete button)
-    if (e.target.closest(".card-complete-btn")) return;
+    // Don't start drag on interactive children
+    if (e.target.closest(".card-complete-btn, .conf-btn")) return;
     drag = { x0: e.clientX, y0: e.clientY, card: active, width: active.clientWidth };
     active.setPointerCapture(e.pointerId);
     active.classList.add("is-dragging");
@@ -250,6 +250,21 @@ async function initReader() {
   cardsEl.addEventListener("pointercancel", endDrag);
 
   showCard(0);
+
+  // ---- Confidence rating ----
+  const confidenceMap = {}; // page_id → confidence (1-3)
+  cardsEl.addEventListener("click", (e) => {
+    const btn = e.target.closest(".conf-btn");
+    if (!btn) return;
+    const bar = btn.closest(".conf-bar");
+    const pageId = Number(bar.dataset.pageId);
+    const conf = Number(btn.dataset.conf);
+    bar.querySelectorAll(".conf-btn").forEach((b) => b.classList.remove("selected"));
+    btn.classList.add("selected");
+    confidenceMap[pageId] = conf;
+    api("POST", "/api/sprint/confidence", { sprint_id: sprintId, page_id: pageId, confidence: conf })
+      .catch(() => {});
+  });
 
   let pausedMs = 0;
   let pausedAt = null;
@@ -330,6 +345,7 @@ async function initReader() {
       const handoff = await api("POST", "/api/handoff/to-quiz", { sprint_id: sprintId });
       sessionStorage.setItem("handoff", JSON.stringify(handoff));
       sessionStorage.setItem("quiz_session_id", handoff.quiz_session_id);
+      sessionStorage.setItem("confidence_map", JSON.stringify(confidenceMap));
       setTimeout(() => { location.href = "handoff.html"; }, 1400);
     } catch (e) {
       document.querySelector(".lock-text").textContent = "Handoff failed";
@@ -366,6 +382,12 @@ function renderCards(mod) {
       <h2 class="card-title">${p.title}</h2>
       <p class="card-body">${p.body}</p>
       ${p.highlight ? `<div class="card-highlight">${p.highlight}</div>` : ""}
+      <div class="conf-bar-label">這張卡片你有把握嗎？</div>
+      <div class="conf-bar" data-page-id="${p.page_id}">
+        <button class="conf-btn" data-conf="1">😕 不確定</button>
+        <button class="conf-btn" data-conf="2">😐 還好</button>
+        <button class="conf-btn" data-conf="3">😊 有把握</button>
+      </div>
       ${isLast ? `<button class="card-complete-btn" onclick="window.__readerComplete && window.__readerComplete()">✅ 完成 Sprint · 進入 Quiz</button>` : ""}
     `;
     wrap.appendChild(card);
@@ -524,6 +546,16 @@ async function initResult() {
   document.getElementById("result-reading").textContent = r.reading_sec != null ? `${r.reading_sec} 秒` : "—";
   document.getElementById("result-tabs").textContent = `${r.tab_switch_count ?? 0} 次`;
   document.getElementById("result-status").textContent = r.completion_status || "—";
+
+  // Re-fetch live sprint stats so tab_switch_count is always fresh from DB
+  if (r.sprint_id) {
+    api("GET", `/api/sprint/${r.sprint_id}/stats`).then(stats => {
+      document.getElementById("result-tabs").textContent = `${stats.tab_switch_count ?? 0} 次`;
+      if (stats.reading_sec != null)
+        document.getElementById("result-reading").textContent = `${stats.reading_sec} 秒`;
+      document.getElementById("result-status").textContent = stats.completion_status || "—";
+    }).catch(() => { /* keep sessionStorage value */ });
+  }
   document.getElementById("result-ids").innerHTML = `
     <div class="handoff-row"><span class="k">sprint_id</span><span class="v">${r.sprint_id}</span></div>
     <div class="handoff-row"><span class="k">quiz_session_id</span><span class="v">${r.quiz_session_id}</span></div>
@@ -531,14 +563,25 @@ async function initResult() {
 
   // Load module pages once for the card-review modal
   let pagesBySeq = {};
+  let pageIdBySeq = {}; // sequence_number → page_id (for confidence lookup)
   try {
     const mod = await api("GET", `/api/module/${moduleId}`);
-    mod.pages.forEach((p) => { pagesBySeq[p.sequence_number] = p; });
+    mod.pages.forEach((p) => {
+      pagesBySeq[p.sequence_number] = p;
+      pageIdBySeq[p.sequence_number] = p.page_id;
+    });
   } catch (e) { /* no-op */ }
+
+  const confMap = JSON.parse(sessionStorage.getItem("confidence_map") || "{}");
+  const confLabel = ["", "😕 不確定", "😐 還好", "😊 有把握"];
 
   const list = document.getElementById("result-breakdown");
   list.innerHTML = "";
   r.responses.forEach((resp) => {
+    const srcPageId = resp.source_page_seq ? pageIdBySeq[resp.source_page_seq] : null;
+    const selfConf = srcPageId != null ? (confMap[srcPageId] ?? null) : null;
+    const isBlindspot = selfConf === 3 && !resp.is_correct;
+
     const item = document.createElement("div");
     item.className = "review-item " + (resp.is_correct ? "ok" : "ng");
     item.innerHTML = `
@@ -553,6 +596,8 @@ async function initResult() {
           ? `<div>正確答案：<b class="ok-text">${String.fromCharCode(65 + resp.correct_index)}. ${resp.options[resp.correct_index]}</b></div>`
           : ""}
         ${resp.explanation ? `<div class="review-exp">💡 ${resp.explanation}</div>` : ""}
+        ${selfConf != null ? `<div class="conf-self-tag" data-conf="${selfConf}">閱讀時自評：${confLabel[selfConf]}</div>` : ""}
+        ${isBlindspot ? `<div class="conf-gap-warn">⚠️ 自評「有把握」卻答錯 — 這是最需要複習的盲點</div>` : ""}
         ${resp.source_page_seq
           ? `<button class="review-src-btn" data-seq="${resp.source_page_seq}">📖 參考原文卡片 #${resp.source_page_seq} →</button>`
           : ""}

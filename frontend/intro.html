@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>About — 黃品睿 Ray Huang</title>
+<style>
+:root{
+  --bg:#070F1E;--bg2:#0C1A2E;--panel:rgba(15,32,64,.55);
+  --blue:#2563EB;--accent:#60A5FA;--purple:#A78BFA;
+  --green:#34D399;--orange:#FB923C;--gold:#FCD34D;
+  --fg:#E6EEFA;--fg2:#9FB0CC;--fg3:#4B6180;
+  --border:rgba(147,197,253,.12);--border2:rgba(147,197,253,.22);
+  --grad:linear-gradient(135deg,#1D4ED8,#60A5FA);
+  --sidebar:220px;--topbar:50px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);color:var(--fg);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Microsoft JhengHei",sans-serif;
+  -webkit-font-smoothing:antialiased;
+  /* site-nav.js will add padding-top:50px via .snav-body-pad */
+}
+
+/* ── Sidebar ── */
+.sidebar{
+  position:fixed;top:var(--topbar);left:0;
+  width:var(--sidebar);height:calc(100vh - var(--topbar));
+  background:#050C1A;border-right:1px solid var(--border);
+  overflow-y:auto;z-index:100;padding:28px 0 40px;
+}
+.sb-brand{padding:0 20px 20px;border-bottom:1px solid rgba(147,197,253,.08);margin-bottom:12px;}
+.sb-name{font-size:14px;font-weight:800;color:var(--fg);}
+.sb-role{font-size:11px;color:var(--fg3);margin-top:3px;}
+.nav-cat{font-size:10px;color:var(--fg3);letter-spacing:.1em;text-transform:uppercase;
+  padding:14px 20px 4px;}
+.sidebar a{
+  display:flex;align-items:center;gap:9px;
+  padding:9px 20px;font-size:13px;color:var(--fg2);
+  text-decoration:none;transition:.15s;
+  border-left:2px solid transparent;
+}
+.sidebar a:hover{color:var(--accent);background:rgba(96,165,250,.06);}
+.sidebar a.active{color:var(--accent);border-left-color:var(--accent);
+  background:rgba(96,165,250,.08);font-weight:600;}
+.nav-num{font-size:10px;color:var(--fg3);min-width:18px;}
+.sidebar a.active .nav-num{color:var(--accent);}
+
+/* ── Main ── */
+.main{margin-left:var(--sidebar);}
+section{
+  padding:64px 56px 80px;
+  border-bottom:1px solid rgba(147,197,253,.05);
+}
+.sec-eyebrow{font-size:11px;color:var(--fg3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;}
+.sec-title{font-size:26px;font-weight:800;color:var(--fg);margin-bottom:32px;line-height:1.3;}
+.sec-title em{
+  font-style:normal;
+  background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;
+}
+
+/* ── Cards / Boxes ── */
+.card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:22px;}
+.card-label{font-size:10px;color:var(--fg3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;}
+.card-title{font-size:15px;font-weight:800;color:var(--fg);margin-bottom:4px;}
+.card-sub{font-size:12px;color:var(--accent);margin-bottom:14px;}
+
+ul.dot{list-style:none;padding:0;margin:0;}
+ul.dot li{font-size:13px;color:var(--fg2);line-height:1.7;padding:2px 0 2px 14px;position:relative;}
+ul.dot li::before{content:'·';color:var(--accent);position:absolute;left:0;}
+ul.dot li strong{color:var(--fg);}
+
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;}
+.tag{font-size:11.5px;color:var(--fg2);
+  background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.18);
+  border-radius:999px;padding:3px 10px;}
+
+hr.dim{border:none;border-top:1px solid rgba(147,197,253,.08);margin:16px 0;}
+
+/* work blocks */
+.work-co{font-size:14px;font-weight:700;color:var(--fg);margin-bottom:2px;}
+.work-role{font-size:11.5px;color:var(--accent);margin-bottom:10px;}
+ul.bullet{list-style:none;padding:0;margin:0;}
+ul.bullet li{font-size:12.5px;color:var(--fg2);line-height:1.65;padding:2px 0 2px 14px;position:relative;}
+ul.bullet li::before{content:'●';font-size:5px;color:var(--blue);position:absolute;left:0;top:7px;}
+ul.bullet li strong{color:var(--fg);}
+
+/* ext project card */
+.ext-card{background:rgba(15,32,64,.4);border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin-bottom:12px;}
+.ec-eyebrow{font-size:10px;color:var(--fg3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;}
+.ec-title{font-size:13px;font-weight:700;color:var(--fg);margin-bottom:3px;}
+.ec-sub{font-size:11.5px;color:var(--accent);margin-bottom:8px;}
+.ec-body{font-size:12.5px;color:var(--fg2);line-height:1.6;}
+
+/* ── Section 01 grid ── */
+.intro-grid{display:grid;grid-template-columns:1fr 1.3fr 1fr;gap:18px;}
+
+/* ── Section 02 ACT ── */
+.act-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px;}
+.act-card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:22px;}
+.act-letter{font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;}
+.challenge .act-letter{color:var(--orange);}
+.action .act-letter{color:var(--accent);}
+.target .act-letter{color:var(--green);}
+.act-head{font-size:14px;font-weight:700;color:var(--fg);margin-bottom:12px;}
+ul.act-list{list-style:none;padding:0;margin:0;}
+ul.act-list li{font-size:12.5px;color:var(--fg2);line-height:1.7;padding:3px 0 3px 14px;position:relative;}
+ul.act-list li::before{content:'—';color:var(--fg3);position:absolute;left:0;}
+
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:24px;}
+.kpi-card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:18px 14px;text-align:center;}
+.kpi-num{font-size:26px;font-weight:800;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:6px;}
+.kpi-lbl{font-size:11.5px;color:var(--fg2);line-height:1.5;}
+
+/* generic table */
+.gtable{width:100%;border-collapse:collapse;font-size:13.5px;}
+.gtable th{font-size:10.5px;color:var(--fg3);letter-spacing:.07em;text-transform:uppercase;
+  padding:10px 14px;text-align:left;border-bottom:1px solid var(--border2);}
+.gtable td{padding:12px 14px;color:var(--fg2);border-bottom:1px solid rgba(147,197,253,.05);vertical-align:top;}
+.gtable td:first-child{color:var(--fg);font-weight:600;white-space:nowrap;}
+.gtable code{font-size:11.5px;background:rgba(96,165,250,.1);color:var(--accent);border-radius:3px;padding:1px 5px;}
+
+/* ── Section 03 arch ── */
+.arch-row{display:flex;align-items:stretch;gap:0;margin-bottom:28px;}
+.arch-layer{flex:1;background:var(--panel);border:1px solid var(--border);padding:20px 18px;}
+.arch-layer:first-child{border-radius:12px 0 0 12px;}
+.arch-layer:last-child{border-radius:0 12px 12px 0;}
+.arch-arrow{display:flex;align-items:center;padding:0 6px;color:var(--fg3);font-size:18px;}
+.al-label{font-size:10px;color:var(--fg3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;}
+.al-name{font-size:14px;font-weight:700;color:var(--fg);margin-bottom:12px;}
+.al-list{list-style:none;padding:0;margin:0;}
+.al-list li{font-size:12px;color:var(--fg2);padding:3px 0;}
+.al-list li .f{color:var(--accent);font-size:11px;}
+
+.state-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:24px;}
+.state-box{background:rgba(37,99,235,.15);border:1px solid rgba(96,165,250,.3);
+  border-radius:8px;padding:10px 16px;font-size:13px;font-weight:600;color:var(--accent);}
+.state-arr{color:var(--fg3);font-size:16px;}
+
+.callout{
+  border-left:3px solid var(--accent);background:rgba(96,165,250,.06);
+  padding:14px 18px;border-radius:0 8px 8px 0;margin-top:24px;
+  font-size:13.5px;color:var(--fg2);line-height:1.7;
+}
+.callout strong{color:var(--fg);}
+
+/* ── Section 04 Demo ── */
+.demo-steps{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px;}
+.demo-step{background:var(--panel);border:1px solid var(--border);border-radius:8px;
+  padding:10px 14px;font-size:12.5px;color:var(--fg2);}
+.demo-step strong{color:var(--accent);}
+
+.iframe-wrap{border:1px solid var(--border2);border-radius:12px;overflow:hidden;}
+.iframe-wrap iframe{width:100%;height:640px;border:none;display:block;}
+.iframe-ext{text-align:right;margin-top:10px;}
+.iframe-ext a{font-size:12px;color:var(--accent);text-decoration:none;}
+
+/* ── Section 05 API ── */
+.api-table{width:100%;border-collapse:collapse;}
+.api-table th{font-size:10px;color:var(--fg3);letter-spacing:.08em;text-transform:uppercase;
+  padding:10px 12px;text-align:left;border-bottom:1px solid var(--border2);background:rgba(5,12,26,.5);}
+.api-table td{padding:11px 12px;font-size:13px;color:var(--fg2);
+  border-bottom:1px solid rgba(147,197,253,.05);vertical-align:top;}
+.api-table tr:hover td{background:rgba(96,165,250,.04);}
+.method{font-size:11px;font-weight:700;border-radius:4px;padding:2px 7px;white-space:nowrap;}
+.get{background:rgba(52,211,153,.15);color:#34D399;}
+.post{background:rgba(96,165,250,.15);color:#60A5FA;}
+.ep{font-size:12px;color:var(--accent);font-family:monospace;white-space:nowrap;}
+
+.code-block{
+  background:rgba(4,10,20,.9);border:1px solid var(--border);border-radius:8px;
+  padding:18px 20px;margin-top:24px;font-size:12px;color:var(--fg2);
+  font-family:monospace;overflow-x:auto;line-height:1.8;white-space:pre;
+}
+.code-block .cmd{color:var(--green);}
+.code-block .cmt{color:var(--fg3);}
+
+/* ── Section 06 process ── */
+.decision-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:36px;}
+.dc{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:20px;}
+.dc-q{font-size:11.5px;color:var(--fg3);margin-bottom:6px;}
+.dc-ans{font-size:14px;font-weight:700;color:var(--fg);margin-bottom:10px;}
+.dc p{font-size:13px;color:var(--fg2);line-height:1.65;}
+.dc code{font-size:11.5px;background:rgba(96,165,250,.1);color:var(--accent);border-radius:3px;padding:1px 5px;}
+
+.learn-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.lc{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:18px;}
+.lc-icon{font-size:22px;margin-bottom:10px;}
+.lc-title{font-size:13px;font-weight:700;color:var(--fg);margin-bottom:8px;}
+.lc p{font-size:12.5px;color:var(--fg2);line-height:1.65;}
+
+/* ── Section 07 extension ── */
+.roadmap{padding-left:28px;position:relative;}
+.roadmap::before{content:'';position:absolute;left:8px;top:6px;bottom:6px;
+  width:2px;background:rgba(96,165,250,.12);}
+.rm{position:relative;margin-bottom:32px;}
+.rm::before{content:'';position:absolute;left:-24px;top:5px;
+  width:12px;height:12px;border-radius:50%;
+  background:var(--bg2);border:2px solid var(--blue);}
+.rm.done::before{background:var(--blue);}
+.rm-phase{font-size:11px;color:var(--fg3);letter-spacing:.07em;text-transform:uppercase;margin-bottom:4px;}
+.rm-title{font-size:15px;font-weight:700;color:var(--fg);margin-bottom:6px;}
+.rm-desc{font-size:13px;color:var(--fg2);line-height:1.65;}
+.rm-desc code{font-size:11.5px;background:rgba(96,165,250,.1);color:var(--accent);border-radius:3px;padding:1px 5px;}
+.rm-badge{display:inline-block;font-size:11px;border-radius:4px;padding:2px 8px;margin-top:8px;}
+.done-badge{color:var(--green);border:1px solid rgba(52,211,153,.3);}
+.next-badge{color:var(--gold);border:1px solid rgba(252,211,77,.3);}
+
+.ai-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:32px;}
+.ai-mod{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:18px;}
+.am-phase{font-size:10px;color:var(--fg3);letter-spacing:.07em;text-transform:uppercase;margin-bottom:6px;}
+.am-name{font-size:14px;font-weight:700;color:var(--fg);margin-bottom:4px;}
+.am-io{font-size:11.5px;color:var(--fg2);margin-bottom:10px;}
+.ai-mod p{font-size:12.5px;color:var(--fg2);line-height:1.65;}
+
+.footer-line{margin-top:56px;padding-top:24px;border-top:1px solid rgba(147,197,253,.07);
+  font-size:12px;color:var(--fg3);}
+
+/* ── PM link callout ── */
+.pm-link{background:rgba(252,211,77,.06);border:1px solid rgba(252,211,77,.2);
+  border-radius:10px;padding:14px 18px;margin-top:20px;}
+.pm-link-label{font-size:9.5px;font-weight:700;color:var(--gold);letter-spacing:.12em;
+  text-transform:uppercase;margin-bottom:6px;}
+.pm-link-tags{display:flex;flex-wrap:wrap;gap:6px;}
+.pm-tag{font-size:11.5px;color:var(--gold);background:rgba(252,211,77,.1);
+  border:1px solid rgba(252,211,77,.2);border-radius:999px;padding:2px 10px;}
+.exp-meta{font-size:12px;color:var(--fg3);margin-bottom:24px;}
+.exp-meta strong{color:var(--accent);}
+
+/* ── Scene cards (exp1 PMO) ── */
+.phase-strip{display:flex;align-items:center;gap:8px;margin-bottom:18px;
+  padding:11px 14px;background:var(--panel);border:1px solid var(--border);border-radius:10px;}
+.phase-chip{flex:1;padding:8px 12px;border-radius:7px;}
+.phase-chip-orange{background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.18);}
+.phase-chip-blue{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.18);}
+.phase-chip-green{background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.18);}
+.pc-tag{font-size:9.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;margin-bottom:3px;}
+.phase-chip-orange .pc-tag{color:var(--orange);}
+.phase-chip-blue .pc-tag{color:var(--accent);}
+.phase-chip-green .pc-tag{color:var(--green);}
+.pc-name{font-size:12px;color:var(--fg);font-weight:600;}
+.phase-arr{color:var(--fg3);font-size:14px;flex-shrink:0;}
+
+.pmo-wrap{display:grid;grid-template-columns:175px 1fr;gap:14px;margin-bottom:20px;}
+.pmo-sum{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:18px 16px;}
+.pmos-sec{font-size:9.5px;font-weight:700;color:var(--fg3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;}
+.pmos-big{font-size:26px;font-weight:900;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1;}
+.pmos-sub{font-size:11px;color:var(--fg3);margin-top:3px;margin-bottom:12px;}
+.pmos-div{border:none;border-top:1px solid var(--border);margin:12px 0;}
+.pmos-row{font-size:12px;color:var(--fg2);padding:4px 0;display:flex;align-items:flex-start;gap:6px;line-height:1.5;}
+.pmos-num{color:var(--accent);font-size:10px;font-weight:700;flex-shrink:0;margin-top:2px;}
+
+.scene-stack{display:flex;flex-direction:column;gap:12px;}
+.scene-card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px 20px;}
+.sc-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.sc-num{font-size:9.5px;font-weight:800;color:var(--fg3);background:rgba(147,197,253,.1);
+  border:1px solid var(--border);border-radius:4px;padding:2px 7px;letter-spacing:.06em;flex-shrink:0;}
+.sc-title{font-size:13.5px;font-weight:700;color:var(--fg);}
+.sc-quote{font-size:12.5px;color:var(--fg2);font-style:italic;line-height:1.7;
+  padding:10px 14px;background:rgba(96,165,250,.04);border-left:2px solid rgba(96,165,250,.22);
+  border-radius:0 6px 6px 0;margin-bottom:12px;}
+.sc-act-label{font-size:9.5px;font-weight:700;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:7px;}
+.sc-flow{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:11px;}
+.sc-flow-step{font-size:11.5px;color:var(--fg2);background:rgba(96,165,250,.07);
+  border:1px solid rgba(96,165,250,.15);border-radius:6px;padding:4px 10px;}
+.sc-flow-arr{color:var(--fg3);font-size:12px;}
+.sc-result{display:flex;align-items:flex-start;gap:8px;padding:9px 12px;
+  background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);border-radius:7px;}
+.sc-result-badge{font-size:9.5px;font-weight:700;color:var(--green);background:rgba(52,211,153,.12);
+  border-radius:4px;padding:2px 7px;flex-shrink:0;margin-top:1px;letter-spacing:.04em;}
+.sc-result-txt{font-size:12.5px;color:var(--fg2);line-height:1.6;}
+
+/* Responsive */
+@media(max-width:900px){
+  .sidebar{display:none;}
+  .main{margin-left:0;}
+  section{padding:48px 20px 64px;}
+  .intro-grid,.act-grid,.ai-grid{grid-template-columns:1fr;}
+  .kpi-row,.decision-grid,.learn-row{grid-template-columns:1fr 1fr;}
+  .arch-row{flex-direction:column;}
+  .arch-layer{border-radius:0!important;}
+  .arch-layer:first-child{border-radius:12px 12px 0 0!important;}
+  .arch-layer:last-child{border-radius:0 0 12px 12px!important;}
+  .arch-arrow{display:none;}
+}
+@media(max-width:560px){
+  .kpi-row,.decision-grid,.learn-row{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- ── Sidebar ── -->
+<nav class="sidebar">
+  <div class="nav-cat">簡介</div>
+  <a href="#profile"><span class="nav-num" style="color:var(--fg3)">↓</span>學歷 &amp; 技能</a>
+  <div class="nav-cat">國泰世華 MA</div>
+  <a href="#cathay"><span class="nav-num" style="color:var(--fg3)">↓</span>全覽</a>
+  <a href="#exp1"><span class="nav-num">01</span>年度策略制定</a>
+  <a href="#exp2"><span class="nav-num">02</span>AI 產品化架構</a>
+  <a href="#exp3"><span class="nav-num">03</span>AI 會議助手</a>
+  <div class="nav-cat">實習經歷</div>
+  <a href="#exp4"><span class="nav-num">04</span>勤業眾信｜風險諮詢</a>
+  <a href="#exp5"><span class="nav-num">05</span>台新銀行｜數位金融</a>
+  <div class="nav-cat">其他</div>
+  <a href="#extra"><span class="nav-num">06</span>課外 &amp; 競賽</a>
+</nav>
+
+<!-- ── Main ── -->
+<div class="main">
+
+<!-- 個人簡介 -->
+<section id="profile">
+  <div class="sec-eyebrow">個人簡介</div>
+  <div class="sec-title">黃品睿 Ray Huang，<em>財金 × AI 跨域</em></div>
+
+  <div style="display:grid;grid-template-columns:1fr 1.4fr;gap:16px;">
+
+    <!-- 左欄：學歷 + 技能 -->
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div class="card">
+        <div class="card-label">學歷</div>
+        <div class="card-title">國立中山大學</div>
+        <div class="card-sub">財務管理研究所　2022 – 2024</div>
+        <div style="margin-top:10px;display:flex;align-items:baseline;gap:8px;">
+          <div style="font-size:32px;font-weight:900;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1;">4.01</div>
+          <div style="font-size:12px;color:var(--fg3);">GPA（滿分 4.3）</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label">技能</div>
+        <ul class="dot" style="margin-top:8px;">
+          <li><strong>分析</strong>　Python、SQL、R</li>
+          <li><strong>金融</strong>　Bloomberg、TEJ 資料庫</li>
+          <li><strong>視覺化</strong>　Tableau、PowerBI</li>
+          <li><strong>AI</strong>　LLM、AI Agent</li>
+          <li><strong>管理</strong>　專案管理、跨部門溝通</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 右欄：定位開場 -->
+    <div class="card" style="display:flex;flex-direction:column;justify-content:center;padding:32px 28px;">
+      <div style="font-size:10px;color:var(--fg3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:16px;">AI PM 定位</div>
+      <div style="font-size:22px;font-weight:900;line-height:1.4;margin-bottom:20px;">
+        <span style="background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;">理解業務端痛點、</span><br/>
+        <span style="background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;">技術端限制，</span><br/>
+        <span style="color:var(--fg);">整合雙方需求。</span>
+      </div>
+      <div style="font-size:13px;color:var(--fg2);line-height:1.8;margin-bottom:20px;">
+        財金背景出身，歷經國泰世華 MA 的 AI 策略統籌、勤業眾信的模型驗證現場、台新銀行的數位金融分析，在業務與技術之間反覆轉換視角，形成能橋接兩端的 PM 思維。
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;">
+        <span style="font-size:11px;color:var(--accent);background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.2);border-radius:999px;padding:3px 11px;">業務需求轉譯</span>
+        <span style="font-size:11px;color:var(--accent);background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.2);border-radius:999px;padding:3px 11px;">技術可行性評估</span>
+        <span style="font-size:11px;color:var(--accent);background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.2);border-radius:999px;padding:3px 11px;">跨部門協調</span>
+        <span style="font-size:11px;color:var(--accent);background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.2);border-radius:999px;padding:3px 11px;">AI 落地推進</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- 00 國泰世華全覽 -->
+<section id="cathay">
+  <div class="sec-eyebrow">國泰世華商業銀行｜儲備幹部（MA）</div>
+  <div class="sec-title">從策略到執行，<em>三個維度的 AI PM 實踐</em></div>
+
+  <p style="font-size:14px;color:var(--fg2);line-height:1.8;margin-bottom:32px;max-width:680px;">
+    在國泰世華銀行擔任儲備幹部（MA）期間，我以三種角色參與 AI 應用落地。先以 <strong style="color:var(--fg);">PMO 身份</strong>統籌年度策略規劃，再建立<strong style="color:var(--fg);">治理框架</strong>讓全行 AI 需求可被系統化評估，最後從零識別業務痛點、親手設計並提案一套 <strong style="color:var(--fg);">AI 產品</strong>。<br/>三段經歷分別對應 AI PM 的策略、管理與執行三個核心維度。
+  </p>
+
+  <div style="display:grid;grid-template-columns:1fr 36px 1fr 36px 1fr;align-items:center;gap:0;">
+    <div style="background:var(--panel);border:1px solid rgba(251,146,60,.25);border-radius:12px;padding:22px 18px;">
+      <div style="font-size:10px;color:var(--orange);letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;">① 策略制定</div>
+      <div style="font-size:15px;font-weight:800;color:var(--fg);margin-bottom:8px;">年度策略規劃</div>
+      <div style="font-size:12.5px;color:var(--fg2);line-height:1.65;margin-bottom:16px;">PMO 統籌 8 子案、協調 4 PM，從訪談痛點、三階段規劃到提案通過納入年度策略。</div>
+      <a href="#exp1" style="font-size:11.5px;color:var(--orange);text-decoration:none;border:1px solid rgba(251,146,60,.3);border-radius:999px;padding:3px 12px;display:inline-block;">01 詳細 →</a>
+    </div>
+    <div style="text-align:center;color:var(--fg3);font-size:22px;">→</div>
+    <div style="background:var(--panel);border:1px solid rgba(96,165,250,.25);border-radius:12px;padding:22px 18px;">
+      <div style="font-size:10px;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;">② 專案管理</div>
+      <div style="font-size:15px;font-weight:800;color:var(--fg);margin-bottom:8px;">AI 產品化架構</div>
+      <div style="font-size:12.5px;color:var(--fg2);line-height:1.65;margin-bottom:16px;">建立需求評估→能力對應→決策機制的治理框架，讓全行 AI 需求可被系統化管理。</div>
+      <a href="#exp2" style="font-size:11.5px;color:var(--accent);text-decoration:none;border:1px solid rgba(96,165,250,.3);border-radius:999px;padding:3px 12px;display:inline-block;">02 詳細 →</a>
+    </div>
+    <div style="text-align:center;color:var(--fg3);font-size:22px;">→</div>
+    <div style="background:var(--panel);border:1px solid rgba(52,211,153,.25);border-radius:12px;padding:22px 18px;">
+      <div style="font-size:10px;color:var(--green);letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;">③ 實際開發</div>
+      <div style="font-size:15px;font-weight:800;color:var(--fg);margin-bottom:8px;">AI 會議助手</div>
+      <div style="font-size:12.5px;color:var(--fg2);line-height:1.65;margin-bottom:16px;">識別新人痛點，設計 RAG 知識字典＋Multi-Agent 架構，提案通過並選定 MVP 場景。</div>
+      <a href="#exp3" style="font-size:11.5px;color:var(--green);text-decoration:none;border:1px solid rgba(52,211,153,.3);border-radius:999px;padding:3px 12px;display:inline-block;">03 詳細 →</a>
+    </div>
+  </div>
+</section>
+
+<!-- 01 年度策略制定 -->
+<section id="exp1">
+  <div class="sec-eyebrow">國泰世華商業銀行｜儲備幹部（MA）</div>
+  <div class="sec-title">一、年度策略制定<em>　AI 賦能 End-to-End 分析師流程</em></div>
+  <div class="exp-meta">以 AI 賦能為核心切入點，作為 <strong>PMO 統籌 8 個子案、協調 4 位 PM</strong>，從分析師訪談 → 三階段規劃 → 跨部門可行性驗證 → 通過提案納入 2026 年度策略</div>
+
+  <!-- 三階段時間軸（壓縮版） -->
+  <div class="phase-strip">
+    <div class="phase-chip phase-chip-orange">
+      <div class="pc-tag">前期 · 資料蒐集</div>
+      <div class="pc-name">拆解 E2E 分析師流程</div>
+    </div>
+    <div class="phase-arr">→</div>
+    <div class="phase-chip phase-chip-blue">
+      <div class="pc-tag">中期 · 資料分析</div>
+      <div class="pc-name">Text-to-SQL 降低操作門檻</div>
+    </div>
+    <div class="phase-arr">→</div>
+    <div class="phase-chip phase-chip-green">
+      <div class="pc-tag">後期 · 隱藏樣態</div>
+      <div class="pc-name">提升風險預警與決策</div>
+    </div>
+  </div>
+
+  <!-- PMO 左：職能總覽　右：場景卡 -->
+  <div class="pmo-wrap">
+
+    <!-- 左側：PMO 協調中樞 -->
+    <div class="pmo-sum">
+      <div class="pmos-sec">角色定位</div>
+
+      <!-- PMO 角色卡 -->
+      <div style="background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.28);border-radius:8px;padding:10px 12px;margin-bottom:14px;">
+        <div style="font-size:32px;font-weight:900;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1;letter-spacing:-.02em;margin-bottom:3px;">PMO</div>
+        <div style="font-size:9px;color:var(--fg3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;">Project Management Officer</div>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <div style="text-align:center;flex:1;">
+            <div style="font-size:22px;font-weight:900;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1;">8</div>
+            <div style="font-size:10px;color:var(--fg3);margin-top:2px;">子案統籌</div>
+          </div>
+          <div style="width:1px;height:32px;background:rgba(147,197,253,.15);"></div>
+          <div style="text-align:center;flex:1;">
+            <div style="font-size:22px;font-weight:900;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1;">4</div>
+            <div style="font-size:10px;color:var(--fg3);margin-top:2px;">PM 協調</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pmos-sec">協調方向</div>
+
+      <!-- ↓ 直管 -->
+      <div style="display:flex;align-items:stretch;gap:8px;margin-bottom:7px;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:2px;width:18px;flex-shrink:0;padding-top:4px;">
+          <div style="width:1px;flex:1;background:rgba(96,165,250,.2);"></div>
+          <div style="font-size:12px;color:var(--accent);">↓</div>
+        </div>
+        <div style="flex:1;background:rgba(96,165,250,.06);border:1px solid rgba(96,165,250,.15);border-radius:7px;padding:8px 10px;">
+          <div style="font-size:9px;color:var(--fg3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px;">直管</div>
+          <div style="font-size:12px;font-weight:700;color:var(--fg);">PM × 4 ／ 子案 × 8</div>
+          <div style="font-size:10.5px;color:var(--fg3);margin-top:2px;">WBS 拆解、進度追蹤</div>
+        </div>
+      </div>
+
+      <!-- ↔ 跨部門 -->
+      <div style="display:flex;align-items:stretch;gap:8px;margin-bottom:7px;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:2px;width:18px;flex-shrink:0;padding-top:4px;">
+          <div style="width:1px;flex:1;background:rgba(251,146,60,.2);"></div>
+          <div style="font-size:12px;color:var(--orange);">↔</div>
+        </div>
+        <div style="flex:1;background:rgba(251,146,60,.05);border:1px solid rgba(251,146,60,.15);border-radius:7px;padding:8px 10px;">
+          <div style="font-size:9px;color:var(--fg3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px;">跨部門協調</div>
+          <div style="font-size:12px;font-weight:700;color:var(--fg);">數據 × 業務單位</div>
+          <div style="font-size:10.5px;color:var(--fg3);margin-top:2px;">量能評估、場景驗證</div>
+        </div>
+      </div>
+
+      <!-- ↑ 向上彙報 -->
+      <div style="display:flex;align-items:stretch;gap:8px;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:2px;width:18px;flex-shrink:0;padding-top:4px;">
+          <div style="width:1px;flex:1;background:rgba(52,211,153,.2);"></div>
+          <div style="font-size:12px;color:var(--green);">↑</div>
+        </div>
+        <div style="flex:1;background:rgba(52,211,153,.05);border:1px solid rgba(52,211,153,.15);border-radius:7px;padding:8px 10px;">
+          <div style="font-size:9px;color:var(--fg3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px;">向上彙報</div>
+          <div style="font-size:12px;font-weight:700;color:var(--fg);">提案 → 年度策略</div>
+          <div style="font-size:10.5px;color:var(--fg3);margin-top:2px;">整合提案、通過審核</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 右側：場景卡 -->
+    <div class="scene-stack">
+
+      <div class="scene-card">
+        <div class="sc-head">
+          <span class="sc-num">SCENE 01</span>
+          <span class="sc-title">整合 8 個子案：在推進中發現資源重疊</span>
+        </div>
+        <div class="sc-quote">
+          「中期推進到一半，我發現兩組 PM 各自在做客戶資料清洗——一組處理監管指引、一組整理外部判決書，方向高度重疊，但彼此不知道對方在做什麼。」
+        </div>
+        <div class="sc-act-label">我怎麼做</div>
+        <div class="sc-flow">
+          <div class="sc-flow-step">以 WBS 拆解各子案交付物邊界</div>
+          <div class="sc-flow-arr">→</div>
+          <div class="sc-flow-step">每兩週召集 PM 同步邊界</div>
+          <div class="sc-flow-arr">→</div>
+          <div class="sc-flow-step">主動提出合併方案</div>
+        </div>
+        <div class="sc-result">
+          <span class="sc-result-badge">結果</span>
+          <span class="sc-result-txt">合併重複工作，騰出開發資源投入後期隱藏樣態探索，三段方案完整落地，最終提案通過納入年度策略</span>
+        </div>
+      </div>
+
+      <div class="scene-card">
+        <div class="sc-head">
+          <span class="sc-num">SCENE 02</span>
+          <span class="sc-title">業務單位態度保守：如何打開跨部門合作</span>
+        </div>
+        <div class="sc-quote">
+          「業務單位最初的回應是：『你們先做出一個成果，我再配合驗證。』——沒有業務場景就做不出成果，沒有成果就拿不到業務場景，典型的雞生蛋問題。」
+        </div>
+        <div class="sc-act-label">我怎麼做</div>
+        <div class="sc-flow">
+          <div class="sc-flow-step">訪談 3 位分析師量化痛點</div>
+          <div class="sc-flow-arr">→</div>
+          <div class="sc-flow-step">帶數據找業務端提案</div>
+          <div class="sc-flow-arr">→</div>
+          <div class="sc-flow-step">從小範圍 POC 切入</div>
+        </div>
+        <div class="sc-result">
+          <span class="sc-result-badge">結果</span>
+          <span class="sc-result-txt">業務單位從「等你們先做出來」轉為「可以先跑一個 POC，我來找場景」，跨部門協作正式啟動</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="pm-link">
+    <div class="pm-link-label">與 AI PM 職缺的連結</div>
+    <div class="pm-link-tags">
+      <span class="pm-tag">科技策略規劃與執行</span>
+      <span class="pm-tag">WBS 專案進度管控</span>
+      <span class="pm-tag">專案進度控管（PMO 統籌 8 子案）</span>
+      <span class="pm-tag">需求目的釐清與分析</span>
+      <span class="pm-tag">跨部門利害關係人溝通</span>
+      <span class="pm-tag">文件規劃與提案撰寫</span>
+    </div>
+  </div>
+</section>
+
+<!-- 02 AI Agent 提案 -->
+<section id="exp2">
+  <div class="sec-eyebrow">國泰世華商業銀行｜儲備幹部（MA）</div>
+  <div class="sec-title">二、AI 產品化架構<em>　能力透明化與治理強化</em></div>
+  <div class="exp-meta">讓全行業務單位清楚了解 AI 實際能做什麼，建立<strong>需求評估 → 功能拆解 → AI 必要性判斷</strong>的系統化治理框架</div>
+
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;">
+    <div class="card">
+      <div class="card-label" style="color:var(--accent);">第一步</div>
+      <div class="card-title" style="font-size:13px;margin-bottom:8px;">應用場景分類</div>
+      <ul class="dot">
+        <li>將需求區分為<strong>對內員工賦能</strong>與<strong>對外客戶應用</strong>兩大類</li>
+        <li>確保策略方向集中一致，避免各單位重複開發浪費資源</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-label" style="color:var(--green);">第二步</div>
+      <div class="card-title" style="font-size:13px;margin-bottom:8px;">功能模組拆解</div>
+      <ul class="dot">
+        <li>將業務需求拆解成具體功能任務（資料整理 / 摘要 / 比對）</li>
+        <li>釐清需求涵蓋哪些功能模組，建立跨單位的標準化需求語言</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-label" style="color:var(--purple);">第三步</div>
+      <div class="card-title" style="font-size:13px;margin-bottom:8px;">AI 必要性判斷</div>
+      <ul class="dot">
+        <li>判斷任務是否真的需要 AI，或可透過既有系統規則處理</li>
+        <li>評估技術成熟度是否與行內發展方向一致，決定優先順序</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout" style="margin-bottom:20px;">
+    <strong>具體案例：</strong>數位銀行提出語音轉文字功能需求 → 拆解為「語音轉換」＋「內容整理」兩個任務 → 評估多模態 Guardrail 治理成熟度，發現與行內 AI 發展方向不符 → 將此需求優先順序往後調整。
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
+    <div class="card" style="border-color:rgba(52,211,153,.25);">
+      <div class="card-label" style="color:var(--green);">額外效益 ①</div>
+      <div class="card-title" style="font-size:13px;margin-bottom:8px;">確保整體 AI 發展方向一致</div>
+      <p style="font-size:12.5px;color:var(--fg2);line-height:1.65;">透過需求辨識哪些能力是公司未來要長期投資的，避免各單位各自為政，讓整體 AI 佈局更聚焦有效。</p>
+    </div>
+    <div class="card" style="border-color:rgba(167,139,250,.25);">
+      <div class="card-label" style="color:var(--purple);">額外效益 ②</div>
+      <div class="card-title" style="font-size:13px;margin-bottom:8px;">責任歸屬清晰，執行更有效率</div>
+      <p style="font-size:12.5px;color:var(--fg2);line-height:1.65;">需求分類後，可明確對應負責單位，降低跨部門溝通成本，讓後續推動與管理更有效率。</p>
+    </div>
+  </div>
+
+  <div class="pm-link">
+    <div class="pm-link-label">與 AI PM 職缺的連結</div>
+    <div class="pm-link-tags">
+      <span class="pm-tag">科技策略規劃與執行</span>
+      <span class="pm-tag">需求目的釐清與分析</span>
+      <span class="pm-tag">評估技術層面適用性</span>
+      <span class="pm-tag">專案文件規劃與維護</span>
+      <span class="pm-tag">協助擬定全集團科技策略方向</span>
+    </div>
+  </div>
+</section>
+
+<!-- 03 AI 產品化架構 -->
+<section id="exp3">
+  <div class="sec-eyebrow">國泰世華商業銀行｜儲備幹部（MA）</div>
+  <div class="sec-title">三、AI 會議助手<em>　全流程自動化 Multi-Agent 系統</em></div>
+  <div class="exp-meta">從識別新人痛點 → 自主設計 AI 系統 → 提案通過 → 選定<strong>數據部門作為 MVP 驗證場景</strong></div>
+
+  <div class="callout" style="margin-bottom:20px;">
+    剛進部門需參加大量跨部門會議，發現兩個核心問題：<strong>① 整理會議紀錄耗時</strong>；<strong>② 數據部門會議充滿專有名詞</strong>，新人不易理解，整理時容易產生理解誤差。因此設計「會議記錄助手」，目標是把逐字稿整理、摘要生成到會後寄送的整個流程交由 AI 完成。
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;">
+    <div class="card">
+      <div class="card-label" style="color:var(--accent);">功能一</div>
+      <div class="card-title" style="font-size:13px;margin-bottom:8px;">知識字典（RAG 概念）</div>
+      <ul class="dot">
+        <li>建立內部專有名詞定義庫，結合類似 RAG 的概念</li>
+        <li>AI 生成摘要時可即時參照，提升理解準確性</li>
+        <li>解決新人對數據術語理解誤差的核心問題</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-label" style="color:var(--green);">功能二</div>
+      <div class="card-title" style="font-size:13px;margin-bottom:8px;">System Prompt 格式規範</div>
+      <ul class="dot">
+        <li>透過 system prompt 規範摘要輸出格式</li>
+        <li>讓摘要結構一致、易於跨部門閱讀</li>
+        <li>減少人工二次整理的成本</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-label" style="color:var(--purple);">功能三</div>
+      <div class="card-title" style="font-size:13px;margin-bottom:8px;">人工確認 + 自動寄送</div>
+      <ul class="dot">
+        <li>系統產出後，使用者可即時調整內容</li>
+        <li>確認後自動生成並寄出會議紀錄</li>
+        <li>保留人工判斷作為最後一道審核關卡</li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:18px 24px;margin-bottom:20px;">
+    <div style="font-size:10px;color:var(--fg3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;">全流程自動化</div>
+    <div style="display:grid;grid-template-columns:1fr 32px 1fr 32px 1fr 32px 1fr 32px 1fr;align-items:center;">
+      <div style="text-align:center;background:rgba(96,165,250,.06);border:1px solid rgba(96,165,250,.18);border-radius:8px;padding:10px 8px;">
+        <div style="font-size:13px;font-weight:700;color:var(--fg);margin-bottom:4px;">逐字稿 / 語音檔</div>
+        <div style="font-size:10.5px;color:var(--fg3);">INPUT</div>
+      </div>
+      <div style="text-align:center;color:var(--fg3);font-size:16px;">→</div>
+      <div style="text-align:center;background:rgba(96,165,250,.06);border:1px solid rgba(96,165,250,.18);border-radius:8px;padding:10px 8px;">
+        <div style="font-size:13px;font-weight:700;color:var(--fg);margin-bottom:4px;">重點摘要</div>
+        <div style="font-size:10.5px;color:var(--fg3);">AI 生成</div>
+      </div>
+      <div style="text-align:center;color:var(--fg3);font-size:16px;">→</div>
+      <div style="text-align:center;background:rgba(96,165,250,.06);border:1px solid rgba(96,165,250,.18);border-radius:8px;padding:10px 8px;">
+        <div style="font-size:13px;font-weight:700;color:var(--fg);margin-bottom:4px;">對話式調整</div>
+        <div style="font-size:10.5px;color:var(--fg3);">人工確認</div>
+      </div>
+      <div style="text-align:center;color:var(--fg3);font-size:16px;">→</div>
+      <div style="text-align:center;background:rgba(96,165,250,.06);border:1px solid rgba(96,165,250,.18);border-radius:8px;padding:10px 8px;">
+        <div style="font-size:13px;font-weight:700;color:var(--fg);margin-bottom:4px;">會議摘要</div>
+        <div style="font-size:10.5px;color:var(--fg3);">結構化輸出</div>
+      </div>
+      <div style="text-align:center;color:var(--fg3);font-size:16px;">→</div>
+      <div style="text-align:center;background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.35);border-radius:8px;padding:10px 8px;">
+        <div style="font-size:13px;font-weight:700;color:var(--accent);margin-bottom:4px;">自動寄信</div>
+        <div style="font-size:10.5px;color:var(--fg3);">OUTPUT</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pm-link">
+    <div class="pm-link-label">與 AI PM 職缺的連結</div>
+    <div class="pm-link-tags">
+      <span class="pm-tag">需求目的釐清與分析</span>
+      <span class="pm-tag">專案進度控管與跨部門溝通</span>
+      <span class="pm-tag">與技術人員有效對話</span>
+      <span class="pm-tag">文件規劃（提案書撰寫）</span>
+      <span class="pm-tag">呈報成果 · 獲管理層支持</span>
+    </div>
+  </div>
+</section>
+
+<!-- 04 勤業眾信 -->
+<section id="exp4">
+  <div class="sec-eyebrow">勤業眾信管理顧問公司　2024.02 – 2024.06</div>
+  <div class="sec-title">風險諮詢實習生<em>　AML 模型驗證專案</em></div>
+  <div class="exp-meta">參與銀行 <strong>AML 客戶風險評級模型驗證</strong>，確認模型邏輯設計與計算結果是否合理，並提出優化方向</div>
+
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px;">
+    <div class="card">
+      <div class="card-label">模型重建與差異驗證</div>
+      <ul class="dot" style="margin-top:8px;">
+        <li>使用 <strong>SQL 重建整個模型的運算邏輯</strong>，與正式系統的風險評分結果進行逐筆比對</li>
+        <li>定位差異來源，確認計算結果在邏輯上是否合理</li>
+        <li>檢視模型中的風險因子是否符合主管機關規範要求</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-label">顧問端窗口職責</div>
+      <ul class="dot" style="margin-top:8px;">
+        <li><strong>初期</strong>　與銀行進行驗證需求訪談，確認驗證範圍與交付標準</li>
+        <li><strong>中期</strong>　每週向銀行提交動態週報，滾動匯報驗證進度與發現</li>
+        <li><strong>後期</strong>　彙整驗證成果，撰寫最終報告並向銀行呈報結論</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-label">優化方向提案</div>
+      <div style="margin-top:10px;">
+        <div style="font-size:10px;color:var(--fg3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;">洞察發現過程</div>
+        <div style="background:rgba(251,146,60,.06);border:1px solid rgba(251,146,60,.18);border-radius:7px;padding:8px 10px;margin-bottom:5px;">
+          <div style="font-size:9px;color:var(--orange);letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px;">① 異常偵測</div>
+          <div style="font-size:12px;font-weight:600;color:var(--fg);">客戶頻繁跨境轉帳 → 模型判高風險</div>
+        </div>
+        <div style="text-align:center;color:var(--fg3);font-size:11px;margin:2px 0;">↓</div>
+        <div style="background:rgba(96,165,250,.06);border:1px solid rgba(96,165,250,.18);border-radius:7px;padding:8px 10px;margin-bottom:5px;">
+          <div style="font-size:9px;color:var(--accent);letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px;">② 情境還原</div>
+          <div style="font-size:12px;font-weight:600;color:var(--fg);">收款方為白名單家人 → 行為實屬合理</div>
+        </div>
+        <div style="text-align:center;color:var(--fg3);font-size:11px;margin:2px 0;">↓</div>
+        <div style="background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.18);border-radius:7px;padding:8px 10px;">
+          <div style="font-size:9px;color:var(--green);letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px;">③ 優化提案</div>
+          <div style="font-size:12px;font-weight:600;color:var(--fg);">引入「交易對象關係」為新風險因子</div>
+          <div style="font-size:11px;color:var(--fg2);margin-top:2px;">維持敏感度，同時降低誤判率</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout" style="margin-bottom:20px;">
+    <strong>關鍵洞察 ①　模型品質：</strong>模型驗證不只是確認計算是否正確，更重要的是判斷模型是否貼近真實行為。透過引入交易對象關係資訊，可以在<strong>風險敏感度與誤判率之間取得更好的平衡</strong>，而不是單純提高或降低閾值。
+    <br/><br/>
+    <strong>關鍵洞察 ②　專案管理：</strong>作為顧問端與銀行的溝通窗口，定期週報讓客戶端隨時掌握驗證進度，而非等到最終報告才發現偏差。<strong>透明的進度管理降低了雙方認知落差，也壓縮了最終修改的往返成本</strong>——這是在技術工作之外，讓專案順利收尾的關鍵。
+  </div>
+
+  <div class="pm-link">
+    <div class="pm-link-label">與 AI PM 職缺的連結</div>
+    <div class="pm-link-tags">
+      <span class="pm-tag">需求目的釐清與分析</span>
+      <span class="pm-tag">評估技術層面適用性</span>
+      <span class="pm-tag">從數據中識別優化空間</span>
+      <span class="pm-tag">金融合規 / 風控場景理解</span>
+    </div>
+  </div>
+</section>
+
+<!-- 05 台新銀行 -->
+<section id="exp5">
+  <div class="sec-eyebrow">台新國際商業銀行　2023.07 – 2024.12</div>
+  <div class="sec-title">數位金融實習生<em>　客戶數據分析與系統優化</em></div>
+  <div class="exp-meta">跨功能專案參與，從<strong>數據分析到跨部門提案落地</strong></div>
+
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;">
+    <div class="card">
+      <div class="card-label">業務績效系統</div>
+      <ul class="dot" style="margin-top:8px;">
+        <li>樞紐分析建構業務績效追蹤系統</li>
+        <li>減少人工核對時間，提升資料準確率</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-label">客戶需求分析</div>
+      <ul class="dot" style="margin-top:8px;">
+        <li>分析客戶數據，繪製顧客旅程圖</li>
+        <li>從數據與使用者視角理解金融服務客戶經營需求</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-label">跨部門提案</div>
+      <ul class="dot" style="margin-top:8px;">
+        <li>LINE 官方帳號功能優化提案發想</li>
+        <li>社群行銷策略規劃，提升用戶互動率</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="pm-link">
+    <div class="pm-link-label">與 AI PM 職缺的連結</div>
+    <div class="pm-link-tags">
+      <span class="pm-tag">訪談並收斂提案單位業務需求</span>
+      <span class="pm-tag">跨部門利害關係人溝通</span>
+      <span class="pm-tag">數位金融場景理解</span>
+      <span class="pm-tag">成果呈報與追蹤</span>
+    </div>
+  </div>
+</section>
+
+<!-- 06 課外 & 競賽 -->
+<section id="extra">
+  <div class="sec-eyebrow">課外 &amp; 競賽活動</div>
+  <div class="sec-title">實戰驗證，<em>技術落地能力</em></div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+    <div class="card">
+      <div class="card-label">課外經驗</div>
+      <div class="work-co" style="margin-top:8px;">TMBA 商管社團｜學期部門生</div>
+      <ul class="bullet" style="margin-top:8px;">
+        <li>與中國信託合作專案，運用 AI 設計新商業模式，推動數位轉型策略</li>
+        <li>培養質化研究與數據量化分析能力</li>
+        <li>累積跨團隊協作經驗</li>
+      </ul>
+      <hr class="dim">
+      <div class="work-co" style="margin-top:8px;">2023 Singapore Fintech Festival｜校園大使</div>
+      <ul class="bullet" style="margin-top:8px;">
+        <li>前往新加坡參展，負責與國外新創公司介紹國內金融科技環境及服務</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-label">競賽 / 獲獎</div>
+      <div class="ext-card" style="margin-top:8px;">
+        <div class="ec-eyebrow">金融科技服務｜資料案例競賽</div>
+        <p class="ec-body">運用銀行提供的客戶資料進行分群分析，識別目標客群並制定個人化行銷策略，提升通路點擊率。</p>
+      </div>
+      <div class="ext-card">
+        <div class="ec-eyebrow" style="color:var(--gold);">金融程式｜程式交易競賽　🏆 第 2 名</div>
+        <p class="ec-body">透過程式設計基本面與技術面買賣條件，並進行回測與優化，開發自動化交易策略。</p>
+      </div>
+    </div>
+  </div>
+
+  <p class="footer-line">黃品睿 · Ray Huang · AI PM · 2026 Spring</p>
+</section>
+
+</div><!-- /main -->
+
+<script>
+const links = document.querySelectorAll('.sidebar a[href^="#"]');
+const sections = document.querySelectorAll('section[id]');
+
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    links.forEach(a => a.classList.remove('active'));
+    const a = document.querySelector(`.sidebar a[href="#${e.target.id}"]`);
+    if (a) a.classList.add('active');
+  });
+}, { threshold: 0.2, rootMargin: '-50px 0px -40% 0px' });
+
+sections.forEach(s => obs.observe(s));
+
+links.forEach(a => a.addEventListener('click', e => {
+  e.preventDefault();
+  document.querySelector(a.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+}));
+</script>
+<script src="assets/site-nav.js?v=4"></script>
+</body>
+</html>

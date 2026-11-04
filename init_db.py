@@ -84,6 +84,17 @@ CREATE TABLE IF NOT EXISTS LearningJourney_Map (
     total_questions  INTEGER,
     FOREIGN KEY (sprint_id) REFERENCES SprintSessions(sprint_id)
 );
+
+CREATE TABLE IF NOT EXISTS CardConfidenceRatings (
+    rating_id   INTEGER PRIMARY KEY AUTOINCREMENT,
+    sprint_id   TEXT    NOT NULL,
+    page_id     INTEGER NOT NULL,
+    confidence  INTEGER NOT NULL CHECK(confidence IN (1,2,3)),
+    rated_at    TEXT    NOT NULL,
+    UNIQUE(sprint_id, page_id),
+    FOREIGN KEY (sprint_id) REFERENCES SprintSessions(sprint_id),
+    FOREIGN KEY (page_id)   REFERENCES FlashcardPages(page_id)
+);
 """
 
 CHAPTERS = [

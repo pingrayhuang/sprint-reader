@@ -68,7 +68,7 @@ CREATE INDEX IF NOT EXISTS idx_review_events_module
 # Secure Data Gateway (which will tokenize it into token_id).
 DEFAULT_AGENT_ID = "demo-agent-001"
 DEFAULT_AGENT_NAME = "葉悟員"
-DEFAULT_EMPLOYEE_CODE = "KGI-MA-2026-042"  # 凱基-MA訓練生-2026年第42號
+DEFAULT_EMPLOYEE_CODE = "AGT-2026-042"  # 業務員-2026年第42號
 
 
 def init_migrations():
@@ -93,7 +93,7 @@ def init_migrations():
                 "INSERT INTO Agents (agent_id, employee_code, display_name, email, "
                 "team, role, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
                 (DEFAULT_AGENT_ID, DEFAULT_EMPLOYEE_CODE, DEFAULT_AGENT_NAME,
-                 "yewuyuan@kgifh.internal", "個人金融事業群 · 數位金融",
+                 "yewuyuan@company.internal", "個人金融事業群 · 數位金融",
                  "MA 管理培訓生",
                  datetime.now(timezone.utc).isoformat()),
             )
@@ -103,7 +103,7 @@ def init_migrations():
                 "UPDATE Agents SET employee_code = COALESCE(employee_code, ?), "
                 "email = COALESCE(email, ?), team = COALESCE(team, ?), "
                 "role = COALESCE(role, ?) WHERE agent_id = ?",
-                (DEFAULT_EMPLOYEE_CODE, "yewuyuan@kgifh.internal",
+                (DEFAULT_EMPLOYEE_CODE, "yewuyuan@company.internal",
                  "個人金融事業群 · 數位金融", "MA 管理培訓生", DEFAULT_AGENT_ID),
             )
         conn.commit()

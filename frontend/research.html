@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>AI 研究 — 黃品睿 Ray Huang</title>
+<style>
+:root{
+  --bg:#070F1E;--bg2:#0C1A2E;--panel:rgba(15,32,64,.55);
+  --blue:#2563EB;--accent:#60A5FA;--purple:#A78BFA;
+  --green:#34D399;--orange:#FB923C;--gold:#FCD34D;--red:#F87171;
+  --fg:#E6EEFA;--fg2:#9FB0CC;--fg3:#4B6180;
+  --border:rgba(147,197,253,.12);--border2:rgba(147,197,253,.22);
+  --grad:linear-gradient(135deg,#1D4ED8,#60A5FA);
+  --topbar:50px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);color:var(--fg);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Microsoft JhengHei",sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── Page header ── */
+.page-header{
+  padding:56px 0 40px;
+  max-width:900px;margin:0 auto;padding-left:48px;padding-right:48px;
+}
+.ph-eyebrow{
+  font-size:11px;color:var(--fg3);letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px;
+}
+.ph-title{
+  font-size:32px;font-weight:900;line-height:1.2;margin-bottom:14px;
+}
+.ph-title em{
+  font-style:normal;
+  background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.ph-desc{
+  font-size:14px;color:var(--fg2);line-height:1.8;max-width:640px;
+}
+.ph-tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;}
+.ph-tag{
+  font-size:11px;color:var(--fg2);
+  background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.18);
+  border-radius:999px;padding:3px 11px;
+}
+
+/* ── Slide card ── */
+.slide{
+  max-width:900px;margin:0 auto 40px;
+  padding:0 48px;
+}
+.slide-inner{
+  background:var(--bg2);
+  border:1px solid var(--border2);
+  border-radius:20px;
+  overflow:hidden;
+}
+
+/* Slide header bar */
+.sh{
+  padding:28px 36px 24px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:flex-start;gap:20px;
+}
+.sh-num{
+  font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+  border-radius:6px;padding:4px 10px;flex-shrink:0;margin-top:4px;
+}
+.sh-text{flex:1;}
+.sh-label{font-size:10.5px;color:var(--fg3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;}
+.sh-title{font-size:22px;font-weight:900;color:var(--fg);line-height:1.25;margin-bottom:6px;}
+.sh-sub{font-size:13px;color:var(--fg2);}
+
+/* Slide body */
+.sb{padding:28px 36px 32px;}
+
+/* Problem box */
+.problem-box{
+  background:rgba(251,146,60,.05);border:1px solid rgba(251,146,60,.18);
+  border-radius:12px;padding:18px 22px;margin-bottom:22px;
+}
+.pb-label{font-size:9.5px;font-weight:700;color:var(--orange);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;}
+.pb-text{font-size:13.5px;color:var(--fg2);line-height:1.75;}
+.pb-text strong{color:var(--fg);}
+
+/* Three-col findings grid */
+.findings{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px;}
+.finding{
+  background:rgba(15,32,64,.5);border:1px solid var(--border);
+  border-radius:10px;padding:18px 16px;
+}
+.finding-ico{font-size:20px;margin-bottom:10px;}
+.finding-label{font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;}
+.finding-title{font-size:13.5px;font-weight:700;color:var(--fg);margin-bottom:6px;line-height:1.35;}
+.finding-body{font-size:12px;color:var(--fg2);line-height:1.65;}
+.finding-body strong{color:var(--fg);}
+
+/* Data stat row */
+.stat-row{display:flex;gap:14px;margin-bottom:22px;}
+.stat{
+  flex:1;background:rgba(15,32,64,.5);border:1px solid var(--border);
+  border-radius:10px;padding:16px;text-align:center;
+}
+.stat-num{
+  font-size:28px;font-weight:900;
+  background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;
+  line-height:1;margin-bottom:6px;
+}
+.stat-lbl{font-size:11.5px;color:var(--fg2);line-height:1.5;}
+
+/* Flow strip */
+.flow{
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  background:rgba(15,32,64,.4);border:1px solid var(--border);
+  border-radius:10px;padding:16px 18px;margin-bottom:22px;
+}
+.flow-label{font-size:9.5px;font-weight:700;color:var(--fg3);letter-spacing:.08em;text-transform:uppercase;margin-right:4px;white-space:nowrap;}
+.flow-step{
+  font-size:12px;color:var(--fg2);
+  background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.18);
+  border-radius:6px;padding:5px 12px;white-space:nowrap;
+}
+.flow-arr{color:var(--fg3);font-size:14px;flex-shrink:0;}
+
+/* Two-col layout for mixed content */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px;}
+.info-box{
+  background:rgba(15,32,64,.5);border:1px solid var(--border);
+  border-radius:10px;padding:18px 16px;
+}
+.ib-label{font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;}
+ul.dot{list-style:none;padding:0;margin:0;}
+ul.dot li{font-size:12.5px;color:var(--fg2);line-height:1.7;padding:2px 0 2px 14px;position:relative;}
+ul.dot li::before{content:'·';color:var(--accent);position:absolute;left:0;}
+ul.dot li strong{color:var(--fg);}
+
+/* Footer */
+.page-footer{
+  max-width:900px;margin:0 auto;padding:24px 48px 64px;
+  border-top:1px solid rgba(147,197,253,.07);
+  font-size:12px;color:var(--fg3);
+}
+
+@media(max-width:700px){
+  .page-header,.slide{padding-left:20px;padding-right:20px;}
+  .sh,.sb{padding:20px;}
+  .findings{grid-template-columns:1fr;}
+  .stat-row{flex-direction:column;}
+  .two-col{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="ph-eyebrow">自主研究　AI × 金融科技</div>
+  <h1 class="ph-title">前瞻技術研究<em>　三份深度報告</em></h1>
+  <p class="ph-desc">
+    延伸國泰世華 AI 策略規劃與勤業眾信 AML 模型驗證的實戰視角，自主研讀三份國際前沿報告，聚焦 AI Agent、GenAI 防詐、內部詐欺偵測三個交叉領域。
+  </p>
+  <div class="ph-tags">
+    <span class="ph-tag">AI Agent</span>
+    <span class="ph-tag">GenAI × AML</span>
+    <span class="ph-tag">合成資料</span>
+    <span class="ph-tag">聯邦學習</span>
+    <span class="ph-tag">行為金融</span>
+    <span class="ph-tag">金融犯罪偵測</span>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     SLIDE 01 — AI Agent × 智慧投資
+     ════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-inner">
+
+    <div class="sh">
+      <div class="sh-num" style="color:var(--accent);background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.25);">RESEARCH 01</div>
+      <div class="sh-text">
+        <div class="sh-label">AI Agent × 智慧財富管理</div>
+        <div class="sh-title">AI Agent 驅動的個人化持倉健檢<br/>與投資決策導航</div>
+        <div class="sh-sub">Tiger Brokers、富途 Futu Niuniu、Vanguard 案例分析</div>
+      </div>
+    </div>
+
+    <div class="sb">
+
+      <div class="problem-box">
+        <div class="pb-label">核心問題</div>
+        <div class="pb-text">
+          傳統券商停留在<strong>「靜態資料展示」</strong>——投資人看得到持股但看不懂配置，更無法採取有效行動。
+          研究問題：<strong>AI Agent 如何重新定義「看持股 → 理解配置 → 完成行動」的完整旅程？</strong>
+        </div>
+      </div>
+
+      <div class="flow">
+        <span class="flow-label">Agent 四段流程</span>
+        <span class="flow-step">① 持倉診斷</span>
+        <span class="flow-arr">→</span>
+        <span class="flow-step">② 情境解讀</span>
+        <span class="flow-arr">→</span>
+        <span class="flow-step">③ 個人化建議</span>
+        <span class="flow-arr">→</span>
+        <span class="flow-step">④ 一鍵執行</span>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat">
+          <div class="stat-num">43–63%</div>
+          <div class="stat-lbl">零售投資組合回報變異<br/>可由行為偏差解釋</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">608億</div>
+          <div class="stat-lbl">Tiger Brokers AI Agent<br/>推動 AUM 規模（USD）</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">76.9%</div>
+          <div class="stat-lbl">佣金收入同比增長<br/>（AI 決策頻次驅動）</div>
+        </div>
+      </div>
+
+      <div class="findings">
+        <div class="finding">
+          <div class="finding-ico">🧭</div>
+          <div class="finding-label" style="color:var(--accent);">技術路線</div>
+          <div class="finding-title">Multi-step Agent 架構</div>
+          <div class="finding-body">從<strong>持倉數據 + 宏觀數據 + 行為歷史</strong>三層輸入，生成個人化風險評估，最後輸出可執行交易草稿</div>
+        </div>
+        <div class="finding">
+          <div class="finding-ico">🧠</div>
+          <div class="finding-label" style="color:var(--purple);">行為金融整合</div>
+          <div class="finding-title">Vanguard ACE 智慧推力</div>
+          <div class="finding-body">針對損失規避、過度自信等認知偏差，設計<strong>Easy / Intuitive / Effective</strong> 三原則 Nudge，在關鍵決策時刻觸發提示</div>
+        </div>
+        <div class="finding">
+          <div class="finding-ico">💼</div>
+          <div class="finding-label" style="color:var(--green);">商業模式邏輯</div>
+          <div class="finding-title">健檢品質 → AUM 增長</div>
+          <div class="finding-body"><strong>更好的持倉健檢 → 更高交易頻次 → 佣金收入增長</strong>。AI Agent 直接影響 P&amp;L，而非只是功能包裝</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     SLIDE 02 — GenAI × 隱藏詐騙樣態探索
+     ════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-inner">
+
+    <div class="sh">
+      <div class="sh-num" style="color:var(--orange);background:rgba(251,146,60,.1);border:1px solid rgba(251,146,60,.22);">RESEARCH 02</div>
+      <div class="sh-text">
+        <div class="sh-label">GenAI × 金融犯罪偵測</div>
+        <div class="sh-title">生成式 AI 驅動的隱藏詐騙<br/>樣態探索與規則自動化生成</div>
+        <div class="sh-sub">多模態數據推理 · LLM 語義理解 · SAR 敘事生成</div>
+      </div>
+    </div>
+
+    <div class="sb">
+
+      <div class="problem-box">
+        <div class="pb-label">核心問題</div>
+        <div class="pb-text">
+          傳統防詐機制依賴<strong>人工經驗與固定規則</strong>，面對跨平台、高隱蔽詐騙手法時嚴重滯後。更根本的問題：
+          詐騙的「意圖、細微差別和例外」往往藏在<strong>非結構化資料</strong>（案件敘述、行為日誌、客服記錄）中，傳統 ML 完全無法解析。
+        </div>
+      </div>
+
+      <div class="flow">
+        <span class="flow-label">GenAI 轉型方向</span>
+        <span class="flow-step">識別已知詐騙</span>
+        <span class="flow-arr" style="color:var(--orange);">→ 突破 →</span>
+        <span class="flow-step">探索未知詐騙樣態</span>
+        <span class="flow-arr">→</span>
+        <span class="flow-step">自動生成偵測規則</span>
+        <span class="flow-arr">→</span>
+        <span class="flow-step">SAR 敘事生成</span>
+      </div>
+
+      <div class="findings">
+        <div class="finding">
+          <div class="finding-ico">🔍</div>
+          <div class="finding-label" style="color:var(--orange);">多模態資料解析</div>
+          <div class="finding-title">LLM 萃取行騙軌跡</div>
+          <div class="finding-body">透過定制化 Prompt，LLM 從案件描述、行為操作日誌、Email 萃取詐騙的 <strong>Why & How</strong>，還原人工難以察覺的行為組合特徵</div>
+        </div>
+        <div class="finding">
+          <div class="finding-ico">📋</div>
+          <div class="finding-label" style="color:var(--accent);">合規文件自動化</div>
+          <div class="finding-title">SAR 敘事自動生成</div>
+          <div class="finding-body">整合 KYC 檔案、交易數據、AML 歷史，<strong>自動生成完整的可疑活動報告（SAR）</strong>，案件處理時間從數小時壓縮至數分鐘</div>
+        </div>
+        <div class="finding">
+          <div class="finding-ico">⚙️</div>
+          <div class="finding-label" style="color:var(--green);">規則自動生成</div>
+          <div class="finding-title">XAI 可解釋規則輸出</div>
+          <div class="finding-body">GenAI 將複雜推理結果轉化為<strong>可操作的中文規則摘要</strong>，直接供分析師或業管單位使用，解決「黑箱」障礙</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     SLIDE 03 — AI × 內部詐欺（資料稀缺）
+     ════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-inner">
+
+    <div class="sh">
+      <div class="sh-num" style="color:var(--purple);background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.22);">RESEARCH 03</div>
+      <div class="sh-text">
+        <div class="sh-label">AI × 內部詐欺偵測</div>
+        <div class="sh-title">資料稀缺環境下<br/>內部詐欺偵測的進階 AI 策略</div>
+        <div class="sh-sub">合成資料生成 · 聯邦學習 · 遷移學習</div>
+      </div>
+    </div>
+
+    <div class="sb">
+
+      <div class="problem-box">
+        <div class="pb-label">核心問題</div>
+        <div class="pb-text">
+          內部詐欺天生面臨<strong>「資料稀缺」</strong>困境——不頻繁、高度敏感、難以標記，傳統 ML 無法訓練有效模型。
+          調查顯示：<strong>72% 商業領袖預計 2026 年 AI 生成詐欺將成為主要威脅，但僅 37% 已建立應對機制</strong>——這個落差正是研究聚焦的核心。
+        </div>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat">
+          <div class="stat-num">32%</div>
+          <div class="stat-lbl">財務專業人員<br/>無法辨識 AI 生成假收據</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">42%</div>
+          <div class="stat-lbl">懷疑同事<br/>曾提交假收據</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">1553億</div>
+          <div class="stat-lbl">金融機構用於合規運營<br/>的年度成本（USD）</div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="info-box" style="border-color:rgba(96,165,250,.25);">
+          <div class="ib-label" style="color:var(--accent);">解法一　合成資料生成</div>
+          <ul class="dot">
+            <li>AI 生成<strong>統計特性與真實資料一致</strong>但不含敏感個資的合成詐欺樣本</li>
+            <li>創建「無限逼真的稀有詐欺模式模擬」，突破小樣本瓶頸</li>
+            <li>兼顧資料量需求與隱私保護</li>
+          </ul>
+        </div>
+        <div class="info-box" style="border-color:rgba(167,139,250,.25);">
+          <div class="ib-label" style="color:var(--purple);">解法二　聯邦學習</div>
+          <ul class="dot">
+            <li>跨機構在<strong>不共享原始敏感資料</strong>的前提下聯合訓練模型</li>
+            <li>解決「資料孤島」問題，讓各機構的內部詐欺經驗互相強化</li>
+            <li>符合資料隱私法規，具監理可行性</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="findings" style="grid-template-columns:repeat(2,1fr);">
+        <div class="finding">
+          <div class="finding-ico">🔄</div>
+          <div class="finding-label" style="color:var(--green);">解法三</div>
+          <div class="finding-title">遷移學習（Transfer Learning）</div>
+          <div class="finding-body">將外部領域的既有知識遷移至目標機構，<strong>少量標記樣本即可快速適應新詐欺手法</strong>，縮短模型從零到可用的時間</div>
+        </div>
+        <div class="finding">
+          <div class="finding-ico">⚡</div>
+          <div class="finding-label" style="color:var(--orange);">整合策略</div>
+          <div class="finding-title">三技術互補缺口</div>
+          <div class="finding-body">合成資料解決<strong>資料量</strong>問題；聯邦學習解決<strong>資料孤島</strong>問題；遷移學習解決<strong>快速適應</strong>問題——三者缺一不可</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="page-footer">
+  黃品睿 · Ray Huang · AI PM · 2026 Spring
+</div>
+
+<script src="assets/site-nav.js?v=4"></script>
+</body>
+</html>

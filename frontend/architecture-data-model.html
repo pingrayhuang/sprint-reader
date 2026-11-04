@@ -31,7 +31,7 @@
       background: var(--glass-bg); border: 1px solid var(--glass-border);
     }
     .table-box.spec    { border-left: 3px solid #22C55E; }
-    .table-box.new     { border-left: 3px solid var(--kgi); }
+    .table-box.new     { border-left: 3px solid var(--brand); }
     .table-box.support { border-left: 3px solid #A78BFA; }
     .table-box h4 {
       font-size: 13.5px; font-weight: 800; margin-bottom: 8px;
@@ -39,14 +39,14 @@
       display: flex; justify-content: space-between; align-items: baseline;
     }
     .spec h4 { color: #86EFAC; }
-    .new h4 { color: var(--kgi-light); }
+    .new h4 { color: var(--brand-light); }
     .support h4 { color: #C4B5FD; }
     .tag-pill {
       font-size: 9.5px; font-weight: 700; padding: 2px 7px; border-radius: 999px;
       letter-spacing: 0.04em; text-transform: uppercase;
     }
     .tag-pill.spec    { background: rgba(34,197,94,0.15);  color: #86EFAC; }
-    .tag-pill.new     { background: rgba(240,90,40,0.15);  color: var(--kgi-light); }
+    .tag-pill.new     { background: rgba(240,90,40,0.15);  color: var(--brand-light); }
     .tag-pill.support { background: rgba(167,139,250,0.15); color: #C4B5FD; }
     .table-box ul { list-style: none; padding: 0; margin: 0; }
     .table-box li {
@@ -76,10 +76,10 @@
     /* New field (orange) — self-added */
     .table-box li.new-field {
       background: rgba(240, 90, 40, 0.06);
-      border-left: 3px solid var(--kgi);
+      border-left: 3px solid var(--brand);
       padding-left: 6px;
     }
-    .table-box li.new-field .col { color: var(--kgi-light); }
+    .table-box li.new-field .col { color: var(--brand-light); }
     .table-box li.fk .col { color: #93C5FD; }
     .table-box .desc { font-size: 11.5px; color: var(--fg-dim); margin-top: 8px; line-height: 1.55; font-style: italic; }
 
@@ -198,8 +198,8 @@
           並用<b>遺忘曲線演算法</b>自動算出「他下次該什麼時候回來複習這章」。所有紀錄都標好時間戳，未來資料科學家可以拿去做預測模型。」
         </div>
 
-        <div style="padding: 14px 16px; background: rgba(240,90,40,0.06); border-left: 3px solid var(--kgi); border-radius: 8px;">
-          <b style="color: var(--kgi-light);">每張表在做什麼？（用人話）</b>
+        <div style="padding: 14px 16px; background: rgba(240,90,40,0.06); border-left: 3px solid var(--brand); border-radius: 8px;">
+          <b style="color: var(--brand-light);">每張表在做什麼？（用人話）</b>
           <table class="mtx" style="margin-top: 10px;">
             <tr><th style="width: 30%;">表名</th><th>它存的是</th></tr>
             <tr><td><code>Agents</code></td><td>🧑 <b>誰是這個使用者</b>（葉悟員、員工編號、部門）。未來接 SSO 後會有很多人。</td></tr>
@@ -234,13 +234,13 @@
       <div class="sec-sub">這節解釋「葉悟員」是誰、資料會怎麼送到 sibling 的 Secure Data Gateway 做 tokenization。</div>
 
       <div class="wrap-box" style="margin-bottom: 14px;">
-        <b style="color: var(--kgi-light);">目前 Agents 表裡你的資料（seed 值）：</b>
+        <b style="color: var(--brand-light);">目前 Agents 表裡你的資料（seed 值）：</b>
         <table class="mtx" style="margin-top: 10px;">
           <tr><th style="width: 28%;">欄位</th><th>值</th><th>用途</th></tr>
           <tr><td><code>agent_id</code></td><td><code>demo-agent-001</code></td><td>內部 surrogate key，所有 FK 都指這個。不對外暴露。</td></tr>
-          <tr><td><code>employee_code</code></td><td><code>KGI-MA-2026-042</code></td><td>業務面 ID：凱基 - MA 訓練生 - 2026 年第 42 號。<b>這是會送到 Gateway 的欄位</b>，Gateway 會把它 tokenize 成 UUID。</td></tr>
+          <tr><td><code>employee_code</code></td><td><code>AGT-2026-042</code></td><td>業務面 ID：業務員 - 2026 年第 42 號。<b>這是會送到 Gateway 的欄位</b>，Gateway 會把它 tokenize 成 UUID。</td></tr>
           <tr><td><code>display_name</code></td><td>葉悟員</td><td>UI 顯示用（index.html 的 reminder modal 開頭 "回來啦，葉悟員"）。<b>不應該送到 Gateway</b>。</td></tr>
-          <tr><td><code>email</code></td><td>yewuyuan@kgifh.internal</td><td>PII。Gateway 會偵測並剝除。</td></tr>
+          <tr><td><code>email</code></td><td>yewuyuan@company.internal</td><td>PII。Gateway 會偵測並剝除。</td></tr>
           <tr><td><code>team</code></td><td>個人金融事業群 · 數位金融</td><td>部門歸屬。資料科學可用於分群分析（哪個部門通過率較高）。</td></tr>
           <tr><td><code>role</code></td><td>MA 管理培訓生</td><td>職位。可與 team 合用做群組。</td></tr>
         </table>
@@ -258,7 +258,7 @@
             <th>備註</th>
           </tr>
           <tr>
-            <td><code>Agents.employee_code</code><br/>例：KGI-MA-2026-042</td>
+            <td><code>Agents.employee_code</code><br/>例：AGT-2026-042</td>
             <td><code>agent_id</code> (request body)</td>
             <td><code>token_id</code>（UUID）</td>
             <td>Gateway tokenize：同人永遠同 token，可跨時間追蹤但無法反查身份。</td>
@@ -326,8 +326,8 @@
             FlashcardPages · SprintSessions · LearningJourney_Map
           </div>
         </div>
-        <div style="padding: 14px; border-left: 3px solid var(--kgi); background: rgba(240,90,40,0.06); border-radius: 8px;">
-          <b style="color: var(--kgi-light);">🟠 橘色 · NEW（加值表）</b>
+        <div style="padding: 14px; border-left: 3px solid var(--brand); background: rgba(240,90,40,0.06); border-radius: 8px;">
+          <b style="color: var(--brand-light);">🟠 橘色 · NEW（加值表）</b>
           <div style="font-size: 12.5px; color: var(--fg-mute); margin-top: 6px; line-height: 1.6;">
             規格書<b>沒有要求</b>，但為了支援「遺忘曲線分析 + Gateway 串接 + 多使用者」額外新增的表。<br/>
             <b>意義</b>：展現我在規格之外主動補齊了資料科學家會需要的骨架，是 MA 附加價值。
@@ -354,8 +354,8 @@
         <div style="margin-top: 8px; font-size: 12px; color: var(--fg-mute); line-height: 1.7;">
           <span style="display: inline-block; width: 8px; height: 8px; border-radius: 2px; background: #22C55E; margin-right: 6px; vertical-align: middle;"></span>
           <b style="color: #86EFAC;">綠底欄位</b> = 規格書原文列出的欄位（不能改名、不能刪）<br/>
-          <span style="display: inline-block; width: 8px; height: 8px; border-radius: 2px; background: var(--kgi); margin-right: 6px; vertical-align: middle;"></span>
-          <b style="color: var(--kgi-light);">橘底欄位</b> = 我自己補上的欄位（規格沒要求，但為 UI / 分析 / Gateway 串接而加）<br/>
+          <span style="display: inline-block; width: 8px; height: 8px; border-radius: 2px; background: var(--brand); margin-right: 6px; vertical-align: middle;"></span>
+          <b style="color: var(--brand-light);">橘底欄位</b> = 我自己補上的欄位（規格沒要求，但為 UI / 分析 / Gateway 串接而加）<br/>
           <span style="display: inline-block; width: 8px; height: 8px; border-radius: 2px; background: #FDE68A; margin-right: 6px; vertical-align: middle;"></span>
           <b style="color: #FDE68A;">黃底欄位</b> = Primary Key 標記
         </div>
@@ -487,7 +487,7 @@
         <span><span class="dot" style="background:#FDE68A"></span>Primary Key</span>
         <span><span class="dot" style="background:#93C5FD"></span>Foreign Key</span>
         <span><span class="dot" style="background:#22C55E"></span>規格欄位</span>
-        <span><span class="dot" style="background:var(--kgi)"></span>自訂欄位</span>
+        <span><span class="dot" style="background:var(--brand)"></span>自訂欄位</span>
       </div>
     </div>
 
