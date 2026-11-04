@@ -22,6 +22,14 @@ app.include_router(stats.router)
 app.include_router(review.router)
 app.include_router(inspect.router)
 
+@app.middleware("http")
+async def no_stale_pages(request, call_next):
+    # Make browsers re-check pages on every visit, so edits show up without a hard refresh.
+    response = await call_next(request)
+    if request.url.path.startswith("/ui"):
+        response.headers["Cache-Control"] = "no-cache"
+    return response
+
 FRONTEND_DIR = Path(__file__).parent.parent / "frontend"
 app.mount("/ui", StaticFiles(directory=FRONTEND_DIR, html=True), name="ui")
 
