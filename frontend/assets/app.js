@@ -307,23 +307,30 @@ async function initReader() {
     footBtn.addEventListener("click", () => complete("finished_early"));
   }
 
-  document.addEventListener("visibilitychange", async () => {
-    if (completed) return;
-    if (document.hidden) {
-      pausedAt = Date.now();
-      timerEl.classList.add("paused");
-      pauseBanner.classList.add("show");
-      try {
-        const r = await api("POST", "/api/sprint/telemetry", { sprint_id: sprintId, event: "tab_switch" });
-        document.getElementById("tab-switch-count").textContent = `分心 ${r.tab_switch_count} 次`;
-      } catch (e) { /* ignore */ }
-    } else if (pausedAt !== null) {
-      pausedMs += Date.now() - pausedAt;
-      pausedAt = null;
-      timerEl.classList.remove("paused");
-      pauseBanner.classList.remove("show");
-    }
-  });
+  // Count one "distraction" each time the reader leaves the page.
+  // visibilitychange covers switching tabs / apps on phones; blur covers
+  // Cmd+Tab or clicking another window on desktop, where the tab stays visible.
+  // pausedAt doubles as the "currently away" flag so one leave counts once.
+  async function onLeave() {
+    if (completed || pausedAt !== null) return;
+    pausedAt = Date.now();
+    timerEl.classList.add("paused");
+    pauseBanner.classList.add("show");
+    try {
+      const r = await api("POST", "/api/sprint/telemetry", { sprint_id: sprintId, event: "tab_switch" });
+      document.getElementById("tab-switch-count").textContent = `分心 ${r.tab_switch_count} 次`;
+    } catch (e) { /* ignore */ }
+  }
+  function onReturn() {
+    if (pausedAt === null || document.hidden || !document.hasFocus()) return;
+    pausedMs += Date.now() - pausedAt;
+    pausedAt = null;
+    timerEl.classList.remove("paused");
+    pauseBanner.classList.remove("show");
+  }
+  document.addEventListener("visibilitychange", () => (document.hidden ? onLeave() : onReturn()));
+  window.addEventListener("blur", onLeave);
+  window.addEventListener("focus", onReturn);
 
   // Keyboard: keep standard desktop meaning (→ next, ← prev)
   document.addEventListener("keydown", (e) => {
