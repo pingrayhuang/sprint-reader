@@ -7,8 +7,7 @@
 | | 連結 |
 |---|---|
 | **主 Demo** | https://rayhuang.pythonanywhere.com/ui/ |
-| **商業論述** | https://rayhuang.pythonanywhere.com/ui/brief.html |
-| **投影片簡報** | https://rayhuang.pythonanywhere.com/ui/pitch.html |
+| **專案介紹** | https://rayhuang.pythonanywhere.com/ui/about.html |
 
 ---
 
@@ -18,7 +17,7 @@
 
 **左側儀表板**
 - 整體完成度、連續學習天數、累計 Sprint 次數、總答對率
-- **今日推薦**：根據「答錯率 × log(距上次複習天數 + 1)」自動推算最需複習的章節
+- **今日推薦**：根據「答錯率 × 0.6 ＋ 距上次天數（上限 14 天）× 0.4」自動推算最需複習的章節
 - **錯題複習**：匯集所有答錯紀錄，一鍵進入專項練習
 
 **右側章節卡（6 章）**
@@ -80,7 +79,7 @@ FastAPI 自動產出 Swagger 文件：`http://localhost:8000/docs`
 | 5 | 滑完末卡 → 自動進 Quiz | Handoff 狀態機觸發；展示 sprint_id 與 quiz_session_id 橋接 |
 | 6 | 答 3 題（故意錯 1 題）| 即時解釋 + 原文卡片回溯（source_seq 連結）|
 | 7 | Result 頁 | 本次分數、閱讀時間、分心次數、逐題檢討全部匯整 |
-| 8 | 打開 `/ui/brief.html` | 商業論述；快速掌握產品定位與 MA 跨部門價值 |
+| 8 | 打開 `/ui/about.html` | 專案介紹：痛點、解法、商業價值、技術設計 |
 
 ---
 
@@ -92,11 +91,11 @@ FastAPI 自動產出 Swagger 文件：`http://localhost:8000/docs`
 | DB | SQLite | 零外部依賴、一鍵啟動、schema 清晰；企業導入無需額外基礎設施 |
 | Frontend | Vanilla HTML/CSS/JS | 無 build step、無 framework、瀏覽器直接打開即可 demo |
 | Timer | Browser Visibility API + 後端 timestamp | UX 自然（切走暫停）+ 防前端竄改（timestamp 由 server 蓋章）|
-| 推薦算法 | 規則式 `wrong_rate × log(days+1)` | 可解釋性高、易 debug；收集足夠數據後可升級 RL |
+| 推薦算法 | 規則式 `wrong_rate × 0.6 + days × 0.4` | 可解釋性高、易 debug；收集足夠數據後可升級 RL |
 
 ---
 
-## 資料庫設計（9 張表）
+## 資料庫設計（10 張表）
 
 三層職責分離，對應三個不同部門的使用者：
 
@@ -109,6 +108,7 @@ FastAPI 自動產出 Swagger 文件：`http://localhost:8000/docs`
 | 測驗 | `QuizResponses` | 資料部 | 每題作答紀錄，分析個人盲點 |
 | 推薦 | `ChapterMastery` | 資料部 | 每章答對率 + 距上次複習天數，驅動推薦 |
 | 推薦 | `ReviewEvents` | 資料部 | 每次推薦事件觸發紀錄 |
+| 推薦 | `CardConfidenceRatings` | 資料部 | 每張卡片的自評熟悉度，輔助判斷弱點 |
 | 支援 | `MicroModules` | 教育訓練部 | 章節 metadata（標題、卡片數、預估時間） |
 | 支援 | `Agents` | IT | 系統 agent 設定（預留 AI 推薦擴充） |
 
@@ -165,8 +165,7 @@ sprint-reader/
 │   ├── reader.html              ← 滑卡 + 計時器 + Visibility API
 │   ├── quiz.html                ← 即時測驗
 │   ├── result.html              ← 分數 + 逐題檢討
-│   ├── brief.html               ← 商業論述
-│   ├── pitch.html               ← 面試簡報（13 張投影片）
+│   ├── about.html               ← 專案介紹（最新版；brief/pitch/sprint 會自動轉到這裡）
 │   └── assets/
 │       ├── style.css
 │       └── app.js

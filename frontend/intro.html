@@ -287,6 +287,35 @@ ul.act-list li::before{content:'—';color:var(--fg3);position:absolute;left:0;}
 @media(max-width:560px){
   .kpi-row,.decision-grid,.learn-row{grid-template-columns:1fr;}
 }
+
+/* ── Profile ── */
+.pf-grid{display:grid;grid-template-columns:300px 1fr;gap:16px;}
+.pf-exp{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.pf-job{display:flex;flex-direction:column;gap:4px;padding:22px 24px;}
+.pf-job.now{border-color:rgba(96,165,250,.45);background:linear-gradient(160deg,rgba(29,78,216,.22),rgba(15,32,64,.55));}
+.pf-sk-head{margin:36px 0 14px;font-size:13px;color:var(--fg3);letter-spacing:.12em;}
+.pf-skills{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.pf-sk{display:flex;flex-direction:column;gap:6px;padding:24px;}
+.pf-sk-num{font-size:28px;font-weight:900;line-height:1;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:6px;}
+.pf-sk-t{font-size:17px;font-weight:800;color:var(--fg);line-height:1.4;}
+.pf-sk-d{font-size:14.5px;color:var(--accent);}
+.pf-ul{margin-top:10px;}
+.pf-ul li{font-size:14.5px;}
+.pf-id{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:32px 24px;}
+.pf-photo{width:160px;height:160px;border-radius:50%;object-fit:cover;object-position:50% 22%;
+  border:3px solid rgba(96,165,250,.35);box-shadow:0 0 0 6px rgba(96,165,250,.08);margin-bottom:18px;background:#fff;}
+.pf-name{font-size:26px;font-weight:900;color:var(--fg);letter-spacing:.04em;}
+.pf-en{font-size:15px;color:var(--accent);margin-top:2px;font-weight:600;}
+.pf-school{margin-top:18px;padding-top:16px;border-top:1px solid var(--border);width:100%;font-size:15px;color:var(--fg2);line-height:1.7;}
+.pf-tl{margin-top:12px;border-left:2px solid var(--border2);padding-left:18px;display:flex;flex-direction:column;gap:18px;}
+.pf-item{position:relative;}
+.pf-item::before{content:'';position:absolute;left:-24px;top:6px;width:10px;height:10px;border-radius:50%;background:var(--bg);border:2px solid var(--fg3);}
+.pf-item.now::before{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 4px rgba(96,165,250,.2);}
+.pf-co{font-size:16px;font-weight:800;color:var(--fg);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.pf-badge{font-size:11px;font-weight:700;color:var(--accent);background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.3);border-radius:999px;padding:1px 9px;}
+.pf-role{font-size:13.5px;color:var(--accent);margin-top:3px;}
+.pf-do{font-size:14px;color:var(--fg2);margin-top:5px;line-height:1.6;}
+@media(max-width:960px){.pf-grid,.pf-exp,.pf-skills{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
@@ -315,50 +344,86 @@ ul.act-list li::before{content:'—';color:var(--fg3);position:absolute;left:0;}
   <div class="sec-eyebrow">個人簡介</div>
   <div class="sec-title">黃品睿 Ray Huang，<em>財金 × AI 跨域</em></div>
 
-  <div style="display:grid;grid-template-columns:1fr 1.4fr;gap:16px;">
+  <div class="pf-grid">
 
-    <!-- 左欄：學歷 + 技能 -->
-    <div style="display:flex;flex-direction:column;gap:12px;">
-      <div class="card">
-        <div class="card-label">學歷</div>
-        <div class="card-title">國立中山大學</div>
-        <div class="card-sub">財務管理研究所　2022 – 2024</div>
-        <div style="margin-top:10px;display:flex;align-items:baseline;gap:8px;">
-          <div style="font-size:32px;font-weight:900;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1;">4.01</div>
-          <div style="font-size:12px;color:var(--fg3);">GPA（滿分 4.3）</div>
-        </div>
+    <!-- 左欄：照片＋姓名＋學校 -->
+    <div class="card pf-id">
+      <img class="pf-photo" src="assets/profile.jpg" alt="黃品睿 Ray Huang"/>
+      <div class="pf-name">黃品睿</div>
+      <div class="pf-en">Ray Huang</div>
+      <div class="pf-school">國立中山大學<br/>財務管理研究所</div>
+    </div>
+
+    <!-- 右欄：經歷 -->
+    <div class="pf-exp">
+      <div class="card pf-job now">
+        <div class="pf-co">凱基人壽<span class="pf-badge">現職</span></div>
+        <div class="pf-role">儲備幹部（MA）· 2026 – 現在</div>
+        <ul class="dot pf-ul">
+          <li>理賠 AI 初審平台：從需求訪談到 Demo 實作</li>
+          <li>在 Agentic AI Platform 建置人機協作流程</li>
+          <li>延伸至投資研究報告、業務員語音質檢等場景</li>
+        </ul>
       </div>
-      <div class="card">
-        <div class="card-label">技能</div>
-        <ul class="dot" style="margin-top:8px;">
-          <li><strong>分析</strong>　Python、SQL、R</li>
-          <li><strong>金融</strong>　Bloomberg、TEJ 資料庫</li>
-          <li><strong>視覺化</strong>　Tableau、PowerBI</li>
-          <li><strong>AI</strong>　LLM、AI Agent</li>
-          <li><strong>管理</strong>　專案管理、跨部門溝通</li>
+      <div class="card pf-job">
+        <div class="pf-co">國泰世華銀行</div>
+        <div class="pf-role">儲備幹部（MA）· 2025.07 – 2026.01</div>
+        <ul class="dot pf-ul">
+          <li>AI 年度策略提案，納入 2026 策略</li>
+          <li>會議自動化 AI Agent，獲部長支持</li>
+          <li>AI 能力清單與治理</li>
+        </ul>
+      </div>
+      <div class="card pf-job">
+        <div class="pf-co">勤業眾信管理顧問</div>
+        <div class="pf-role">數據分析實習 · 2024.02 – 2024.06</div>
+        <ul class="dot pf-ul">
+          <li>KYC 洗錢防制資料分析</li>
+          <li>SQL Server 資料整理與查核</li>
+        </ul>
+      </div>
+      <div class="card pf-job">
+        <div class="pf-co">台新銀行</div>
+        <div class="pf-role">數位金融實習 · 2023.07 – 2024.12</div>
+        <ul class="dot pf-ul">
+          <li>業績分析報表</li>
+          <li>顧客旅程圖</li>
+          <li>LINE 服務優化</li>
         </ul>
       </div>
     </div>
 
-    <!-- 右欄：定位開場 -->
-    <div class="card" style="display:flex;flex-direction:column;justify-content:center;padding:32px 28px;">
-      <div style="font-size:10px;color:var(--fg3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:16px;">AI PM 定位</div>
-      <div style="font-size:22px;font-weight:900;line-height:1.4;margin-bottom:20px;">
-        <span style="background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;">理解業務端痛點、</span><br/>
-        <span style="background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;">技術端限制，</span><br/>
-        <span style="color:var(--fg);">整合雙方需求。</span>
-      </div>
-      <div style="font-size:13px;color:var(--fg2);line-height:1.8;margin-bottom:20px;">
-        財金背景出身，歷經國泰世華 MA 的 AI 策略統籌、勤業眾信的模型驗證現場、台新銀行的數位金融分析，在業務與技術之間反覆轉換視角，形成能橋接兩端的 PM 思維。
-      </div>
-      <div style="display:flex;flex-wrap:wrap;gap:6px;">
-        <span style="font-size:11px;color:var(--accent);background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.2);border-radius:999px;padding:3px 11px;">業務需求轉譯</span>
-        <span style="font-size:11px;color:var(--accent);background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.2);border-radius:999px;padding:3px 11px;">技術可行性評估</span>
-        <span style="font-size:11px;color:var(--accent);background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.2);border-radius:999px;padding:3px 11px;">跨部門協調</span>
-        <span style="font-size:11px;color:var(--accent);background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.2);border-radius:999px;padding:3px 11px;">AI 落地推進</span>
-      </div>
-    </div>
+  </div>
 
+  <div class="pf-sk-head">三項主要能力</div>
+  <div class="pf-skills">
+    <div class="card pf-sk">
+      <div class="pf-sk-num">01</div>
+      <div class="pf-sk-t">把業務場景轉成 AI 能解決的問題</div>
+      <div class="pf-sk-d">先到現場聽，再決定 AI 做什麼。</div>
+      <ul class="dot pf-ul">
+        <li><strong>凱基</strong>　實地訪談理賠人員，拆解「受理 → 分流 → 審核 → 簽結」流程，盤點 4 個痛點並各自對應解法（例：條款查找耗時 → 自動比對條款）</li>
+        <li><strong>國泰</strong>　把分析師日常工作拆解成 AI 可介入的環節，提案納入 2026 年度策略</li>
+      </ul>
+    </div>
+    <div class="card pf-sk">
+      <div class="pf-sk-num">02</div>
+      <div class="pf-sk-t">設計可控管、可覆核的人機分工</div>
+      <div class="pf-sk-d">AI 負責讀和寫，程式負責算，人負責判斷。</div>
+      <ul class="dot pf-ul">
+        <li><strong>凱基</strong>　訂出四項控管：看不清的欄位留空、數字由程式計算、流程照固定步驟、每項結論附條款依據</li>
+        <li><strong>成果</strong>　理賠員從「翻條款、人工比對」轉為「覆核 AI 初核意見」，產出加閱讀約 5 分鐘（個人估計）</li>
+      </ul>
+    </div>
+    <div class="card pf-sk">
+      <div class="pf-sk-num">03</div>
+      <div class="pf-sk-t">用 Demo 推進專案，再複製到新場景</div>
+      <div class="pf-sk-d">先做出來給人看，討論才會聚焦。</div>
+      <ul class="dot pf-ul">
+        <li><strong>凱基</strong>　以 Demo 和理賠部對焦需求，小步快跑持續交付；同一套方法擴展到投資研究報告、語音質檢、法說會逐字稿</li>
+        <li><strong>Side Project</strong>　本次 3 個作品都能實際操作，從需求、設計到上線一人完成</li>
+      </ul>
+    </div>
   </div>
 </section>
 
@@ -854,6 +919,6 @@ links.forEach(a => a.addEventListener('click', e => {
   document.querySelector(a.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
 }));
 </script>
-<script src="assets/site-nav.js?v=4"></script>
+<script src="assets/site-nav.js?v=5"></script>
 </body>
 </html>

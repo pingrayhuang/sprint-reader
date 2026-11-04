@@ -12,7 +12,7 @@
   --fg:#E6EEFA;--fg2:#9FB0CC;--fg3:#4B6180;
   --border:rgba(147,197,253,.12);--border2:rgba(147,197,253,.22);
   --grad:linear-gradient(135deg,#1D4ED8,#60A5FA);
-  --sidebar:220px;--topbar:50px;
+  --sidebar:240px;--topbar:50px;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
@@ -28,69 +28,69 @@ body{background:var(--bg);color:var(--fg);
 .sidebar::-webkit-scrollbar{width:3px;}
 .sidebar::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
 .sb-brand{padding:0 20px 18px;border-bottom:1px solid rgba(147,197,253,.08);margin-bottom:10px;}
-.sb-name{font-size:14px;font-weight:800;color:var(--fg);}
-.sb-role{font-size:11px;color:var(--fg3);margin-top:3px;}
-.nav-cat{font-size:10px;color:var(--fg3);letter-spacing:.1em;text-transform:uppercase;
+.sb-name{font-size:16.5px;font-weight:800;color:var(--fg);}
+.sb-role{font-size:13px;color:var(--fg3);margin-top:3px;}
+.nav-cat{font-size:12px;color:var(--fg3);letter-spacing:.1em;text-transform:uppercase;
   padding:12px 20px 4px;}
 .sidebar a{display:flex;align-items:center;gap:9px;
-  padding:8px 20px;font-size:13px;color:var(--fg2);
+  padding:8px 20px;font-size:15.5px;color:var(--fg2);
   text-decoration:none;transition:.15s;border-left:2px solid transparent;}
 .sidebar a:hover{color:var(--accent);background:rgba(96,165,250,.06);}
 .sidebar a.active{color:var(--accent);border-left-color:var(--accent);
   background:rgba(96,165,250,.08);font-weight:600;}
-.nav-num{font-size:10px;color:var(--fg3);min-width:18px;}
+.nav-num{font-size:12px;color:var(--fg3);min-width:18px;}
 .sidebar a.active .nav-num{color:var(--accent);}
 
 /* ── Main ── */
 .main{margin-left:var(--sidebar);}
 section{padding:64px 56px 80px;border-bottom:1px solid rgba(147,197,253,.05);}
-.sec-eyebrow{font-size:11px;color:var(--fg3);letter-spacing:.12em;
+.sec-eyebrow{font-size:13px;color:var(--fg3);letter-spacing:.12em;
   text-transform:uppercase;margin-bottom:8px;}
-.sec-title{font-size:26px;font-weight:800;color:var(--fg);margin-bottom:8px;line-height:1.3;}
+.sec-title{font-size:30px;font-weight:800;color:var(--fg);margin-bottom:8px;line-height:1.3;}
 .sec-title em{font-style:normal;background:var(--grad);
   -webkit-background-clip:text;background-clip:text;color:transparent;}
-.sec-sub{font-size:13.5px;color:var(--fg2);line-height:1.6;margin-bottom:28px;}
+.sec-sub{font-size:16px;color:var(--fg2);line-height:1.6;margin-bottom:28px;}
 
 /* ── Base card ── */
 .card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:22px;}
-.card-label{font-size:10px;color:var(--fg3);letter-spacing:.08em;
+.card-label{font-size:12px;color:var(--fg3);letter-spacing:.08em;
   text-transform:uppercase;margin-bottom:4px;}
-.card-title{font-size:15px;font-weight:800;color:var(--fg);margin-bottom:4px;}
-.card-sub{font-size:12px;color:var(--accent);margin-bottom:14px;}
+.card-title{font-size:17.5px;font-weight:800;color:var(--fg);margin-bottom:4px;}
+.card-sub{font-size:14px;color:var(--accent);margin-bottom:14px;}
 hr.dim{border:none;border-top:1px solid rgba(147,197,253,.08);margin:16px 0;}
 ul.dot{list-style:none;padding:0;margin:0;}
-ul.dot li{font-size:13px;color:var(--fg2);line-height:1.7;padding:2px 0 2px 14px;position:relative;}
+ul.dot li{font-size:15.5px;color:var(--fg2);line-height:1.7;padding:2px 0 2px 14px;position:relative;}
 ul.dot li::before{content:'·';color:var(--accent);position:absolute;left:0;}
 ul.dot li strong{color:var(--fg);}
 .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;}
-.tag{font-size:11.5px;color:var(--fg2);background:rgba(96,165,250,.08);
+.tag{font-size:13.5px;color:var(--fg2);background:rgba(96,165,250,.08);
   border:1px solid rgba(96,165,250,.18);border-radius:999px;padding:3px 10px;}
 ul.bullet{list-style:none;padding:0;margin:0;}
-ul.bullet li{font-size:12.5px;color:var(--fg2);line-height:1.65;
+ul.bullet li{font-size:15px;color:var(--fg2);line-height:1.65;
   padding:2px 0 2px 14px;position:relative;}
-ul.bullet li::before{content:'●';font-size:5px;color:var(--blue);position:absolute;left:0;top:7px;}
+ul.bullet li::before{content:'●';font-size:6px;color:var(--blue);position:absolute;left:0;top:7px;}
 ul.bullet li strong{color:var(--fg);}
-code.c{font-size:11.5px;background:rgba(96,165,250,.1);color:var(--accent);
+code.c{font-size:13.5px;background:rgba(96,165,250,.1);color:var(--accent);
   border-radius:3px;padding:1px 5px;}
 
 /* ── Callout ── */
 .callout{border-left:3px solid var(--accent);background:rgba(96,165,250,.06);
   border-radius:0 10px 10px 0;padding:14px 18px;
-  font-size:13.5px;color:var(--fg2);line-height:1.65;}
+  font-size:16px;color:var(--fg2);line-height:1.65;}
 .callout strong{color:var(--fg);}
 .callout.ma{border-left-color:var(--gold);background:rgba(252,211,77,.06);}
 .callout.ma strong{color:var(--gold);}
 
 /* ── Section 01 intro ── */
 .intro-grid{display:grid;grid-template-columns:1fr 1.3fr 1fr;gap:18px;}
-.work-co{font-size:14px;font-weight:700;color:var(--fg);margin-bottom:2px;}
-.work-role{font-size:11.5px;color:var(--accent);margin-bottom:10px;}
+.work-co{font-size:16.5px;font-weight:700;color:var(--fg);margin-bottom:2px;}
+.work-role{font-size:13.5px;color:var(--accent);margin-bottom:10px;}
 .ext-card{background:rgba(15,32,64,.4);border:1px solid var(--border);
   border-radius:8px;padding:14px 16px;margin-bottom:12px;}
-.ec-eyebrow{font-size:10px;color:var(--fg3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;}
-.ec-title{font-size:13px;font-weight:700;color:var(--fg);margin-bottom:3px;}
-.ec-sub{font-size:11.5px;color:var(--accent);margin-bottom:8px;}
-.ec-body{font-size:12.5px;color:var(--fg2);line-height:1.6;}
+.ec-eyebrow{font-size:12px;color:var(--fg3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;}
+.ec-title{font-size:15.5px;font-weight:700;color:var(--fg);margin-bottom:3px;}
+.ec-sub{font-size:13.5px;color:var(--accent);margin-bottom:8px;}
+.ec-body{font-size:15px;color:var(--fg2);line-height:1.6;}
 
 /* ── Section 02 stats ── */
 .stat-grid{display:flex;gap:14px;margin-bottom:20px;}
@@ -100,7 +100,7 @@ code.c{font-size:11.5px;background:rgba(96,165,250,.1);color:var(--accent);
   padding:28px 20px;text-align:center;gap:12px;}
 .stat-card .big{font-size:52px;font-weight:900;background:var(--grad);
   -webkit-background-clip:text;background-clip:text;color:transparent;line-height:1;}
-.stat-card .lbl{font-size:13.5px;color:var(--fg2);line-height:1.65;}
+.stat-card .lbl{font-size:16px;color:var(--fg2);line-height:1.65;}
 .stat-card .lbl strong{color:var(--fg);display:block;margin-bottom:3px;}
 .icon-grid{display:flex;gap:14px;}
 .icard{flex:1;border-radius:16px;padding:24px 20px;
@@ -111,10 +111,10 @@ code.c{font-size:11.5px;background:rgba(96,165,250,.1);color:var(--accent);
 .icard.orange::before{background:var(--orange);}
 .icard.purple::before{background:var(--purple);}
 .icard.green::before{background:var(--green);}
-.ic{font-size:32px;}
-.icard h4{font-size:15px;font-weight:800;color:var(--fg);}
-.icard p{font-size:13px;color:var(--fg2);line-height:1.7;flex:1;}
-.icard .itag{margin-top:auto;display:inline-block;font-size:10.5px;font-weight:700;
+.ic{font-size:36px;}
+.icard h4{font-size:17.5px;font-weight:800;color:var(--fg);}
+.icard p{font-size:15.5px;color:var(--fg2);line-height:1.7;flex:1;}
+.icard .itag{margin-top:auto;display:inline-block;font-size:12.5px;font-weight:700;
   padding:3px 10px;border-radius:999px;background:rgba(96,165,250,.12);color:var(--accent);}
 
 /* ── Section 03 comparison ── */
@@ -122,15 +122,15 @@ code.c{font-size:11.5px;background:rgba(96,165,250,.1);color:var(--accent);
 .cmp-col{flex:1;border-radius:14px;padding:20px 24px;display:flex;flex-direction:column;}
 .cmp-col.bad{background:rgba(251,146,60,.05);border:1px solid rgba(251,146,60,.2);}
 .cmp-col.good{background:rgba(52,211,153,.05);border:1px solid rgba(52,211,153,.2);}
-.cmp-head{font-size:14px;font-weight:800;color:var(--fg);
+.cmp-head{font-size:16.5px;font-weight:800;color:var(--fg);
   padding-bottom:10px;border-bottom:1px solid var(--border);
   flex-shrink:0;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
-.ch-badge{font-size:10.5px;font-weight:700;padding:2px 10px;border-radius:999px;}
+.ch-badge{font-size:12.5px;font-weight:700;padding:2px 10px;border-radius:999px;}
 .bad .ch-badge{background:rgba(251,146,60,.15);color:var(--orange);}
 .good .ch-badge{background:rgba(52,211,153,.15);color:var(--green);}
 .cmp-list{list-style:none;display:flex;flex-direction:column;gap:9px;}
-.cmp-list li{font-size:13.5px;color:var(--fg2);line-height:1.55;padding-left:22px;position:relative;}
-.cmp-list li::before{position:absolute;left:0;font-size:13px;font-weight:800;top:1px;}
+.cmp-list li{font-size:16px;color:var(--fg2);line-height:1.55;padding-left:22px;position:relative;}
+.cmp-list li::before{position:absolute;left:0;font-size:15.5px;font-weight:800;top:1px;}
 .bad .cmp-list li::before{content:'✗';color:var(--orange);}
 .good .cmp-list li::before{content:'✓';color:var(--green);}
 .cmp-list li strong{color:var(--fg);}
@@ -140,49 +140,49 @@ code.c{font-size:11.5px;background:rgba(96,165,250,.1);color:var(--accent);
 .fcard{background:rgba(255,255,255,.04);border:1px solid var(--border2);
   border-radius:14px;display:flex;flex-direction:column;align-items:center;
   padding:18px 12px;text-align:center;gap:7px;}
-.fcard .fi{font-size:28px;}
-.fcard .fstep{font-size:10px;color:var(--accent);font-weight:700;letter-spacing:.1em;text-transform:uppercase;}
-.fcard .ft{font-size:13.5px;font-weight:800;color:var(--fg);}
-.fcard .furl{font-size:9.5px;color:var(--fg3);font-family:monospace;margin-top:-4px;}
-.fcard .fd{font-size:12px;color:var(--fg2);line-height:1.6;}
+.fcard .fi{font-size:32px;}
+.fcard .fstep{font-size:12px;color:var(--accent);font-weight:700;letter-spacing:.1em;text-transform:uppercase;}
+.fcard .ft{font-size:16px;font-weight:800;color:var(--fg);}
+.fcard .furl{font-size:11px;color:var(--fg3);font-family:monospace;margin-top:-4px;}
+.fcard .fd{font-size:14px;color:var(--fg2);line-height:1.6;}
 .fdetail{width:100%;margin-top:auto;background:rgba(96,165,250,.08);border-radius:8px;padding:7px 9px;}
-.fdetail li{font-size:11px;color:var(--fg2);text-align:left;padding:2px 0;
+.fdetail li{font-size:13px;color:var(--fg2);text-align:left;padding:2px 0;
   list-style:none;padding-left:11px;position:relative;}
 .fdetail li::before{content:'·';position:absolute;left:0;color:var(--accent);}
 
 /* ── Section 06 arch ── */
 .arch{display:flex;flex-direction:column;gap:0;}
-.arch-arr{text-align:center;font-size:11px;color:var(--fg3);
+.arch-arr{text-align:center;font-size:13px;color:var(--fg3);
   padding:5px 0;letter-spacing:.06em;}
 .layer{background:rgba(255,255,255,.03);border:1px solid var(--border2);
   border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;}
-.layer-title{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;}
+.layer-title{font-size:12.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;}
 .layer-comps{display:flex;gap:8px;}
 .comp{flex:1;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;}
 .comp-bar{height:3px;}
 .comp-body{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);
   flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
   padding:10px 8px;border-radius:0 0 8px 8px;text-align:center;}
-.comp-name{font-size:13px;font-weight:700;color:var(--fg);}
-.comp-sub{font-size:10.5px;color:var(--fg2);margin-top:3px;line-height:1.4;}
+.comp-name{font-size:15.5px;font-weight:700;color:var(--fg);}
+.comp-sub{font-size:12.5px;color:var(--fg2);margin-top:3px;line-height:1.4;}
 .db-row{display:flex;gap:8px;}
 .db-box{flex:1;background:rgba(255,255,255,.03);border:1px solid var(--border);
   border-radius:10px;display:flex;overflow:hidden;}
 .db-stripe{width:4px;flex-shrink:0;}
 .db-inner{padding:10px 13px;flex:1;}
-.db-name{font-size:13px;font-weight:700;margin-bottom:3px;}
-.db-tables{font-size:11.5px;color:var(--fg2);line-height:1.5;}
+.db-name{font-size:15.5px;font-weight:700;margin-bottom:3px;}
+.db-tables{font-size:13.5px;color:var(--fg2);line-height:1.5;}
 
 /* ── DB why-grid (3-point framework) ── */
 .dbi-why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px;}
 .dbi-why-card{background:rgba(255,255,255,.025);border:1px solid var(--border);
   border-radius:12px;padding:16px 18px;}
-.dbi-why-num{font-size:28px;font-weight:900;
+.dbi-why-num{font-size:32px;font-weight:900;
   background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;
   line-height:1;margin-bottom:8px;}
-.dbi-why-title{font-size:14px;font-weight:800;color:var(--fg);margin-bottom:6px;}
-.dbi-why-body{font-size:12.5px;color:var(--fg2);line-height:1.65;}
-.dbi-insight{font-size:11.5px;color:var(--fg2);line-height:1.65;
+.dbi-why-title{font-size:16.5px;font-weight:800;color:var(--fg);margin-bottom:6px;}
+.dbi-why-body{font-size:15px;color:var(--fg2);line-height:1.65;}
+.dbi-insight{font-size:13.5px;color:var(--fg2);line-height:1.65;
   padding:9px 12px;background:rgba(96,165,250,.05);border-left:2px solid rgba(96,165,250,.3);
   border-radius:0 6px 6px 0;margin-top:0;}
 .dbi-insight strong{color:var(--accent);}
@@ -192,13 +192,13 @@ code.c{font-size:11.5px;background:rgba(96,165,250,.1);color:var(--accent);
   border-radius:12px;overflow:hidden;display:flex;flex-direction:column;}
 .dbi-card-head{padding:10px 13px;border-bottom:1px solid var(--border);
   display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.02);}
-.dbi-tname{font-size:12px;font-weight:800;color:var(--fg);flex:1;}
-.dbi-tag-pk{font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;
+.dbi-tname{font-size:14px;font-weight:800;color:var(--fg);flex:1;}
+.dbi-tag-pk{font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:4px;
   background:rgba(96,165,250,.14);color:var(--accent);border:1px solid rgba(96,165,250,.28);}
-.dbi-tag-fk{font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;
+.dbi-tag-fk{font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:4px;
   background:rgba(251,146,60,.12);color:var(--orange);border:1px solid rgba(251,146,60,.28);}
-.dbi-table{width:100%;border-collapse:collapse;font-size:10.5px;}
-.dbi-table th{padding:5px 10px;color:var(--fg3);font-weight:600;font-size:9.5px;
+.dbi-table{width:100%;border-collapse:collapse;font-size:12.5px;}
+.dbi-table th{padding:5px 10px;color:var(--fg3);font-weight:600;font-size:11px;
   letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid var(--border);
   text-align:left;background:rgba(255,255,255,.015);}
 .dbi-table td{padding:5px 10px;color:var(--fg2);border-bottom:1px solid rgba(147,197,253,.06);
@@ -206,88 +206,88 @@ code.c{font-size:11.5px;background:rgba(96,165,250,.1);color:var(--accent);
 .dbi-table tr:last-child td{border-bottom:none;}
 .dbi-pk{color:var(--accent) !important;font-weight:700;}
 .dbi-fk{color:var(--orange) !important;font-weight:700;}
-.dbi-ex-label{font-size:9px;font-weight:700;color:var(--fg3);letter-spacing:.1em;
+.dbi-ex-label{font-size:10.5px;font-weight:700;color:var(--fg3);letter-spacing:.1em;
   text-transform:uppercase;padding:7px 10px 4px;
   border-top:1px solid var(--border);background:rgba(255,255,255,.015);}
-.dbi-table.dbi-ex{font-size:10px;}
+.dbi-table.dbi-ex{font-size:12px;}
 .dbi-table.dbi-ex td,.dbi-table.dbi-ex th{padding:4px 8px;}
 .dbi-norm{background:rgba(96,165,250,.04);border:1px solid rgba(96,165,250,.15);
   border-radius:14px;padding:20px 22px;margin-bottom:16px;}
-.dbi-norm-title{font-size:13px;font-weight:800;color:var(--fg);margin-bottom:14px;}
+.dbi-norm-title{font-size:15.5px;font-weight:800;color:var(--fg);margin-bottom:14px;}
 .dbi-norm-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
 .dbi-norm-bad,.dbi-norm-good{border-radius:10px;padding:13px 15px;}
 .dbi-norm-bad{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);}
 .dbi-norm-good{background:rgba(52,211,153,.05);border:1px solid rgba(52,211,153,.18);}
-.dbi-norm-bad-label{font-size:10px;font-weight:700;color:#F87171;margin-bottom:7px;}
-.dbi-norm-good-label{font-size:10px;font-weight:700;color:var(--green);margin-bottom:8px;}
-.dbi-code{display:block;font-size:10px;color:var(--fg3);font-family:monospace;
+.dbi-norm-bad-label{font-size:12px;font-weight:700;color:#F87171;margin-bottom:7px;}
+.dbi-norm-good-label{font-size:12px;font-weight:700;color:var(--green);margin-bottom:8px;}
+.dbi-code{display:block;font-size:12px;color:var(--fg3);font-family:monospace;
   background:rgba(0,0,0,.25);padding:6px 8px;border-radius:6px;margin-bottom:7px;word-break:break-all;}
-.dbi-norm-bad-why{font-size:10.5px;color:var(--fg3);line-height:1.55;}
-.dbi-norm-row{font-size:11.5px;color:var(--fg2);line-height:1.7;
+.dbi-norm-bad-why{font-size:12.5px;color:var(--fg3);line-height:1.55;}
+.dbi-norm-row{font-size:13.5px;color:var(--fg2);line-height:1.7;
   display:flex;align-items:flex-start;gap:8px;margin-bottom:4px;}
-.dbi-norm-tag{font-size:9.5px;font-weight:700;padding:2px 8px;border-radius:999px;
+.dbi-norm-tag{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;
   flex-shrink:0;margin-top:2px;}
-.dbi-norm-principle{font-size:12.5px;font-weight:800;color:var(--fg);text-align:center;
+.dbi-norm-principle{font-size:15px;font-weight:800;color:var(--fg);text-align:center;
   padding-top:12px;border-top:1px solid rgba(147,197,253,.1);letter-spacing:.04em;}
 .dbi-quote{border-left:3px solid var(--accent);padding:13px 18px;
   background:rgba(96,165,250,.06);border-radius:0 10px 10px 0;
   display:flex;flex-direction:column;gap:5px;}
-.dbi-quote-label{font-size:9.5px;font-weight:700;color:var(--accent);
+.dbi-quote-label{font-size:11px;font-weight:700;color:var(--accent);
   letter-spacing:.12em;text-transform:uppercase;}
-.dbi-quote-body{font-size:13.5px;color:var(--fg2);line-height:1.75;}
+.dbi-quote-body{font-size:16px;color:var(--fg2);line-height:1.75;}
 .dbi-quote-body strong{color:var(--fg);}
 
 /* ── Section 08 tech highlights ── */
 .feat{display:flex;gap:24px;margin-bottom:0;}
 .feat-l,.feat-r{flex:1;display:flex;flex-direction:column;gap:12px;}
-.feat-head{font-size:16px;font-weight:800;color:var(--fg);}
-.feat-body{font-size:13.5px;color:var(--fg2);line-height:1.7;}
+.feat-head{font-size:19px;font-weight:800;color:var(--fg);}
+.feat-body{font-size:16px;color:var(--fg2);line-height:1.7;}
 .insight{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.22);
   border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:8px;}
 .insight.gold{background:rgba(252,211,77,.07);border-color:rgba(252,211,77,.25);}
-.ins-label{font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;}
+.ins-label{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;}
 .insight .ins-label{color:var(--accent);}
 .insight.gold .ins-label{color:var(--gold);}
-.ins-body{font-size:13px;color:var(--fg2);line-height:1.7;}
+.ins-body{font-size:15.5px;color:var(--fg2);line-height:1.7;}
 .ins-body strong{color:var(--fg);}
 .flow-diag{display:flex;flex-direction:column;gap:0;}
 .fd-row{display:flex;}
 .fd-box{flex:1;background:rgba(255,255,255,.05);border:1px solid var(--border2);
   border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:12px;}
-.fd-ico{font-size:22px;flex-shrink:0;}
-.fd-txt{font-size:13px;color:var(--fg);line-height:1.35;flex:1;}
-.fd-txt span{display:block;font-size:11px;color:var(--fg2);margin-top:2px;}
-.fd-badge{font-size:10px;font-weight:700;padding:3px 10px;border-radius:999px;margin-left:auto;flex-shrink:0;}
-.fd-arr{text-align:center;font-size:11px;color:var(--fg3);padding:3px 0;}
+.fd-ico{font-size:26px;flex-shrink:0;}
+.fd-txt{font-size:15.5px;color:var(--fg);line-height:1.35;flex:1;}
+.fd-txt span{display:block;font-size:13px;color:var(--fg2);margin-top:2px;}
+.fd-badge{font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;margin-left:auto;flex-shrink:0;}
+.fd-arr{text-align:center;font-size:13px;color:var(--fg3);padding:3px 0;}
 .sm-wrap{display:flex;align-items:center;justify-content:center;
   background:rgba(255,255,255,.03);border:1px solid var(--border);
   border-radius:12px;padding:24px;gap:10px;}
 .sm-node{background:rgba(96,165,250,.12);border:2px solid rgba(96,165,250,.3);
   border-radius:12px;padding:16px 20px;text-align:center;min-width:140px;}
-.sn-state{font-size:14px;font-weight:800;color:var(--accent);}
-.sn-action{font-size:11.5px;color:var(--fg2);margin-top:6px;line-height:1.5;}
+.sn-state{font-size:16.5px;font-weight:800;color:var(--accent);}
+.sn-action{font-size:13.5px;color:var(--fg2);margin-top:6px;line-height:1.5;}
 .sm-edge{display:flex;flex-direction:column;align-items:center;padding:0 8px;}
 .se-line{width:28px;height:2px;background:var(--fg3);}
-.se-lbl{font-size:9.5px;color:var(--fg3);margin-top:4px;white-space:nowrap;}
+.se-lbl{font-size:11px;color:var(--fg3);margin-top:4px;white-space:nowrap;}
 .formula-card{background:rgba(252,211,77,.07);border:1px solid rgba(252,211,77,.22);
   border-radius:12px;padding:18px 22px;text-align:center;}
-.formula-lbl{font-size:10px;color:var(--fg3);letter-spacing:.1em;
+.formula-lbl{font-size:12px;color:var(--fg3);letter-spacing:.1em;
   text-transform:uppercase;margin-bottom:8px;}
-.formula{font-size:18px;font-weight:900;color:var(--gold);}
+.formula{font-size:21px;font-weight:900;color:var(--gold);}
 .factors{display:flex;gap:10px;margin-top:14px;}
 .factor{flex:1;background:rgba(255,255,255,.04);border:1px solid var(--border);
   border-radius:10px;padding:12px 10px;text-align:center;}
-.f-val{font-size:14px;font-weight:700;color:var(--gold);}
-.f-lbl{font-size:11.5px;color:var(--fg2);margin-top:4px;line-height:1.4;}
+.f-val{font-size:16.5px;font-weight:700;color:var(--gold);}
+.f-lbl{font-size:13.5px;color:var(--fg2);margin-top:4px;line-height:1.4;}
 .tech-divider{height:1px;background:rgba(147,197,253,.08);margin:40px 0;}
-.tech-sub-eyebrow{font-size:10px;color:var(--fg3);letter-spacing:.12em;
+.tech-sub-eyebrow{font-size:12px;color:var(--fg3);letter-spacing:.12em;
   text-transform:uppercase;margin-bottom:6px;}
-.tech-sub-title{font-size:18px;font-weight:800;color:var(--fg);margin-bottom:6px;}
-.tech-sub-desc{font-size:13px;color:var(--fg2);margin-bottom:18px;line-height:1.6;}
+.tech-sub-title{font-size:21px;font-weight:800;color:var(--fg);margin-bottom:6px;}
+.tech-sub-desc{font-size:15.5px;color:var(--fg2);margin-bottom:18px;line-height:1.6;}
 
 /* ── Section 09 value table ── */
-.vt{width:100%;border-collapse:collapse;font-size:14px;}
-.vt th{padding:10px 16px;text-align:left;color:var(--fg3);font-size:10.5px;
+.vt{width:100%;border-collapse:collapse;font-size:16.5px;}
+.vt th{padding:10px 16px;text-align:left;color:var(--fg3);font-size:12.5px;
   text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid var(--border);}
 .vt td{padding:14px 16px;border-bottom:1px solid rgba(147,197,253,.05);
   color:var(--fg2);line-height:1.5;vertical-align:middle;}
@@ -297,12 +297,18 @@ code.c{font-size:11.5px;background:rgba(96,165,250,.1);color:var(--accent);
 /* ── Section 10 demo ── */
 .demo-steps{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px;}
 .demo-step{background:var(--panel);border:1px solid var(--border);border-radius:8px;
-  padding:10px 14px;font-size:12.5px;color:var(--fg2);}
+  padding:10px 14px;font-size:15px;color:var(--fg2);}
 .demo-step strong{color:var(--accent);}
-.demo-cta-wrap{display:flex;justify-content:center;padding:40px 0;}
+.demo-cta-wrap{display:flex;justify-content:center;align-items:center;gap:40px;flex-wrap:wrap;padding:32px 0;}
+.demo-qr{display:flex;flex-direction:column;align-items:center;gap:14px;
+  background:var(--panel);border:1px solid var(--border2);border-radius:20px;padding:24px 28px;}
+.demo-qr img{display:block;width:200px;height:200px;border-radius:10px;background:#fff;padding:8px;image-rendering:pixelated;}
+.demo-qr-txt{text-align:center;font-size:14px;color:var(--fg3);font-family:monospace;}
+.demo-qr-txt strong{display:block;font-size:17px;color:var(--fg);font-family:inherit;margin-bottom:4px;}
+.demo-or{font-size:15px;color:var(--fg3);}
 .demo-cta{display:inline-flex;align-items:center;gap:10px;
   background:linear-gradient(135deg,#1D4ED8,#2563EB);
-  color:#fff;font-size:17px;font-weight:700;
+  color:#fff;font-size:20px;font-weight:700;
   padding:18px 52px;border-radius:999px;
   text-decoration:none;letter-spacing:.02em;
   box-shadow:0 8px 32px rgba(37,99,235,.35);
@@ -312,29 +318,29 @@ code.c{font-size:11.5px;background:rgba(96,165,250,.1);color:var(--accent);
 
 /* ── Section 11 api ── */
 .api-table{width:100%;border-collapse:collapse;}
-.api-table th{font-size:10px;color:var(--fg3);letter-spacing:.08em;text-transform:uppercase;
+.api-table th{font-size:12px;color:var(--fg3);letter-spacing:.08em;text-transform:uppercase;
   padding:10px 12px;text-align:left;border-bottom:1px solid var(--border2);background:rgba(5,12,26,.5);}
-.api-table td{padding:11px 12px;font-size:13px;color:var(--fg2);
+.api-table td{padding:11px 12px;font-size:15.5px;color:var(--fg2);
   border-bottom:1px solid rgba(147,197,253,.05);vertical-align:top;}
 .api-table tr:hover td{background:rgba(96,165,250,.04);}
-.method{font-size:11px;font-weight:700;border-radius:4px;padding:2px 7px;white-space:nowrap;}
+.method{font-size:13px;font-weight:700;border-radius:4px;padding:2px 7px;white-space:nowrap;}
 .get{background:rgba(52,211,153,.15);color:#34D399;}
 .post{background:rgba(96,165,250,.15);color:#60A5FA;}
-.ep{font-size:12px;color:var(--accent);font-family:monospace;white-space:nowrap;}
+.ep{font-size:14px;color:var(--accent);font-family:monospace;white-space:nowrap;}
 .code-block{background:rgba(4,10,20,.9);border:1px solid var(--border);border-radius:8px;
-  padding:18px 20px;margin-top:24px;font-size:12px;color:var(--fg2);
+  padding:18px 20px;margin-top:24px;font-size:14px;color:var(--fg2);
   font-family:monospace;overflow-x:auto;line-height:1.8;white-space:pre;}
 .code-block .cmd{color:var(--green);}
 .code-block .cmt{color:var(--fg3);}
 
 /* ── Section 12 extension ── */
-.ai-t{width:100%;border-collapse:collapse;font-size:13px;}
-.ai-t th{padding:8px 14px;text-align:left;color:var(--fg3);font-size:10.5px;
+.ai-t{width:100%;border-collapse:collapse;font-size:15.5px;}
+.ai-t th{padding:8px 14px;text-align:left;color:var(--fg3);font-size:12.5px;
   text-transform:uppercase;letter-spacing:.08em;
   border-bottom:1px solid var(--border2);background:rgba(255,255,255,.02);}
 .ai-t td{padding:11px 14px;border-bottom:1px solid rgba(147,197,253,.05);
   color:var(--fg2);line-height:1.45;vertical-align:top;}
-.ai-t td:first-child{font-weight:700;white-space:nowrap;font-size:13.5px;}
+.ai-t td:first-child{font-weight:700;white-space:nowrap;font-size:16px;}
 .ai-t tr:nth-child(1) td:first-child{color:var(--accent);}
 .ai-t tr:nth-child(2) td:first-child{color:var(--green);}
 .ai-t tr:nth-child(3) td:first-child{color:var(--purple);}
@@ -342,16 +348,16 @@ code.c{font-size:11.5px;background:rgba(96,165,250,.1);color:var(--accent);
 .orch{display:flex;align-items:center;gap:6px;flex-wrap:wrap;
   background:rgba(96,165,250,.06);border:1px solid rgba(96,165,250,.15);
   border-radius:10px;padding:12px 16px;margin-top:12px;}
-.orch-lbl{font-size:9.5px;color:var(--fg3);letter-spacing:.12em;
+.orch-lbl{font-size:11px;color:var(--fg3);letter-spacing:.12em;
   text-transform:uppercase;flex-shrink:0;margin-right:6px;}
-.orch-step{font-size:11.5px;color:var(--fg2);padding:4px 11px;
+.orch-step{font-size:13.5px;color:var(--fg2);padding:4px 11px;
   background:rgba(255,255,255,.05);border:1px solid var(--border);
   border-radius:6px;white-space:nowrap;}
-.orch-arr{color:var(--fg3);font-size:13px;flex-shrink:0;}
+.orch-arr{color:var(--fg3);font-size:15.5px;flex-shrink:0;}
 .rm-rows{display:flex;flex-direction:column;gap:10px;margin-top:32px;}
 .rm-row{display:flex;gap:14px;align-items:stretch;}
 .rm-badge-wrap{width:90px;flex-shrink:0;display:flex;align-items:center;justify-content:flex-end;}
-.rm-badge{padding:6px 14px;border-radius:999px;font-size:11px;
+.rm-badge{padding:6px 14px;border-radius:999px;font-size:13px;
   font-weight:700;text-align:center;letter-spacing:.04em;}
 .rm-badge.done{background:rgba(52,211,153,.15);color:var(--green);}
 .rm-badge.p2{background:rgba(96,165,250,.15);color:var(--accent);}
@@ -359,11 +365,11 @@ code.c{font-size:11.5px;background:rgba(96,165,250,.1);color:var(--accent);
 .rm-badge.p4{background:rgba(251,146,60,.15);color:var(--orange);}
 .rm-card{flex:1;background:rgba(255,255,255,.03);border:1px solid var(--border);
   border-radius:12px;padding:16px 20px;display:flex;flex-direction:column;gap:5px;}
-.rm-card h4{font-size:15px;font-weight:800;color:var(--fg);}
-.rm-card p{font-size:13px;color:var(--fg2);line-height:1.6;}
+.rm-card h4{font-size:17.5px;font-weight:800;color:var(--fg);}
+.rm-card p{font-size:15.5px;color:var(--fg2);line-height:1.6;}
 
 .footer-line{margin-top:56px;padding-top:24px;border-top:1px solid rgba(147,197,253,.07);
-  font-size:12px;color:var(--fg3);}
+  font-size:14px;color:var(--fg3);}
 
 /* Responsive */
 @media(max-width:960px){
@@ -384,246 +390,324 @@ code.c{font-size:11.5px;background:rgba(96,165,250,.1);color:var(--accent);
 <!-- ── Sidebar ── -->
 <nav class="sidebar">
   <div class="nav-cat">問題</div>
-  <a href="#pain"><span class="nav-num">02</span>背景 × 痛點</a>
+  <a href="#pain"><span class="nav-num">01</span>背景 × 痛點</a>
 
   <div class="nav-cat">Demo</div>
-  <a href="#demo"><span class="nav-num">03</span>Live Demo</a>
+  <a href="#demo"><span class="nav-num">02</span>Live Demo</a>
 
   <div class="nav-cat">解法</div>
-  <a href="#contrast"><span class="nav-num">04</span>核心矛盾</a>
-  <a href="#design"><span class="nav-num">05</span>三個設計原則</a>
-  <a href="#flow"><span class="nav-num">06</span>產品使用流程</a>
-
-  <div class="nav-cat">技術</div>
-  <a href="#arch"><span class="nav-num">07</span>系統架構</a>
-  <a href="#db"><span class="nav-num">08</span>資料庫設計</a>
-  <a href="#tech"><span class="nav-num">09</span>技術亮點</a>
+  <a href="#contrast"><span class="nav-num">03</span>核心矛盾</a>
+  <a href="#design"><span class="nav-num">04</span>三個設計原則</a>
 
   <div class="nav-cat">商業 &amp; 延伸</div>
-  <a href="#value"><span class="nav-num">10</span>商業價值</a>
-  <a href="#extension"><span class="nav-num">11</span>延伸思考</a>
+  <a href="#value"><span class="nav-num">05</span>商業價值</a>
+  <a href="#extension"><span class="nav-num">06</span>延伸思考</a>
+
+  <div class="nav-cat">技術</div>
+  <a href="#deploy"><span class="nav-num">07</span>導入公司內部</a>
+  <a href="#arch"><span class="nav-num">08</span>系統架構</a>
+  <a href="#db"><span class="nav-num">09</span>資料庫設計</a>
+  <a href="#tech"><span class="nav-num">10</span>技術亮點</a>
 </nav>
 
 <!-- ── Main ── -->
 <div class="main">
 
-<!-- 01 自我介紹 -->
-<!-- 02 背景 × 痛點 -->
+<!-- 01 背景 × 痛點 -->
 <section id="pain">
   <div class="sec-eyebrow">01 · 背景</div>
-  <div class="sec-title">人類大腦天生會遺忘</div>
-  <div class="sec-sub">傳統訓練失效的根本原因，不在學習量不足，在於「回饋迴圈斷掉了」</div>
+  <div class="sec-title">人天生會遺忘</div>
+  <div class="sec-sub">訓練沒效果，不是因為學得不夠多，而是學完沒有被檢驗</div>
   <div class="stat-grid">
     <div class="stat-card">
       <div class="big">80%</div>
-      <div class="lbl"><strong>Ebbinghaus 遺忘曲線</strong>週一學的知識，若未主動提取，週五就忘掉 80%。這不是懶惰，是大腦的生理機制。</div>
+      <div class="lbl"><strong>遺忘曲線</strong>週一學的東西，沒有複習的話，週五就忘了 80%。</div>
     </div>
     <div class="stat-card">
       <div class="big">&lt;30%</div>
-      <div class="lbl"><strong>傳統 e-learning 有效吸收率</strong>完訓率雖高，點完就算數，但知識留存率極低。</div>
+      <div class="lbl"><strong>傳統線上課程的吸收率</strong>點完就算完成，真正記住的不到三成。</div>
     </div>
     <div class="stat-card">
       <div class="big">6 成</div>
-      <div class="lbl"><strong>金管會 2025 Q4 裁罰案</strong>逾六成肇因於「業務員未確實閱讀商品說明或法規更新」。</div>
+      <div class="lbl"><strong>金管會 2025 Q4 裁罰案</strong>超過六成是因為業務員沒有認真讀商品說明或法規。</div>
     </div>
   </div>
   <div class="callout" style="margin:20px 0;">
-    <strong>核心洞察：</strong>問題不在培訓預算不足。學完沒有立即測驗、沒有間隔推播、沒有弱點追蹤 — 傳統 e-learning 只要點完就算數，記憶自然消退。監管機關開罰，根源在此。
+    <strong>一句話：</strong>問題不在預算。學完沒有測驗、沒有複習提醒、沒有追蹤弱點，記憶自然就消失了。
   </div>
-  <div class="sec-eyebrow" style="margin-top:32px;margin-bottom:16px;">02 · 場景 — 一位新進業務員的三重困境</div>
+  <div class="sec-eyebrow" style="margin-top:32px;margin-bottom:16px;">場景 — 新進業務員的三個難處</div>
   <div class="icon-grid">
     <div class="icard blue">
       <div class="ic">📋</div>
-      <h4>考照壓力</h4>
-      <p>人身保險業務員資格考：150 題、140 分及格、1 個月備考期。考不過無法執業，但公司提供的複習材料只有一份 110 頁 PDF。</p>
-      <span class="itag">合規門檻</span>
+      <h4>要考照</h4>
+      <p>150 題、140 分才及格，只有 1 個月準備。手上的教材是一份 110 頁的 PDF。</p>
+      <span class="itag">考不過就不能執業</span>
     </div>
     <div class="icard orange">
       <div class="ic">📱</div>
-      <h4>注意力碎片化</h4>
-      <p>每天被客戶電話、Line 訊息打斷，根本無法空出連續 2 小時讀完 110 頁筆記。通勤 15 分鐘、等候 10 分鐘是唯一能利用的時間。</p>
+      <h4>時間零碎</h4>
+      <p>整天被客戶電話和 Line 打斷，擠不出 2 小時讀書，只有通勤、等人的 10 幾分鐘。</p>
       <span class="itag">零碎時間</span>
     </div>
     <div class="icard purple">
       <div class="ic">😶</div>
-      <h4>被動學習沒有回饋</h4>
-      <p>傳統 e-learning 只要點完就算完訓。沒有即時測驗、沒有弱點分析，讀完等於沒讀，下次仍然考同樣的題目失分。</p>
-      <span class="itag">回饋迴圈斷裂</span>
+      <h4>讀了不知道有沒有懂</h4>
+      <p>讀完沒有測驗、沒有回饋，同樣的題目下次還是會錯。</p>
+      <span class="itag">沒有回饋</span>
     </div>
   </div>
 </section>
 
-<!-- 03 Live Demo -->
+<!-- 02 Live Demo -->
 <section id="demo">
-  <div class="sec-eyebrow">03 · Live Demo</div>
-  <div class="sec-title"><em>互動 Demo</em> — 直接在這裡操作</div>
+  <div class="sec-eyebrow">02 · Live Demo</div>
+  <div class="sec-title"><em>實際操作</em>看看</div>
   <div class="demo-steps">
-    <div class="demo-step"><strong>01</strong> 點任一章節進入 Splash</div>
-    <div class="demo-step"><strong>02</strong> 點「開始衝刺」進入滑卡閱讀</div>
-    <div class="demo-step"><strong>03</strong> 切換到別的 tab 5 秒，觀察 timer 暫停</div>
-    <div class="demo-step"><strong>04</strong> 滑到末卡，自動進入 Quiz</div>
-    <div class="demo-step"><strong>05</strong> 答完 3 題，查看 Result 分析</div>
+    <div class="demo-step"><strong>01</strong> 選一個章節</div>
+    <div class="demo-step"><strong>02</strong> 按「開始衝刺」，滑卡閱讀</div>
+    <div class="demo-step"><strong>03</strong> 切到別的分頁 5 秒，計時器會暫停</div>
+    <div class="demo-step"><strong>04</strong> 讀完最後一張，自動進入測驗</div>
+    <div class="demo-step"><strong>05</strong> 答完 3 題，看成績分析</div>
   </div>
   <div class="demo-cta-wrap">
-    <a class="demo-cta" href="index.html" target="_blank" rel="noopener">進入 Demo →</a>
+    <div class="demo-qr">
+      <img src="assets/demo-qr.png" alt="Live Demo QR code" width="200" height="200"/>
+      <div class="demo-qr-txt"><strong>📱 用手機掃描，直接操作</strong>rayhuang.pythonanywhere.com/ui/</div>
+    </div>
+    <div class="demo-or">或</div>
+    <a class="demo-cta" href="index.html" target="_blank" rel="noopener">在電腦開啟 Demo →</a>
   </div>
 </section>
 
-<!-- 04 核心矛盾 -->
+<!-- 03 核心矛盾 -->
 <section id="contrast">
-  <div class="sec-eyebrow">04 · 核心矛盾</div>
-  <div class="sec-title">傳統訓練量「出席率」，我們量<em>「記憶效果」</em></div>
-  <div class="sec-sub">這不只是功能差異，是衡量標準的根本轉移 — 改變了整個訓練 ROI 的計算方式</div>
+  <div class="sec-eyebrow">03 · 核心矛盾</div>
+  <div class="sec-title">傳統訓練看「有沒有上課」，我們看<em>「有沒有記住」</em></div>
+  <div class="sec-sub">換一個衡量標準，訓練的價值就看得見了</div>
   <div class="cmp">
     <div class="cmp-col bad">
-      <div class="cmp-head">傳統 e-learning <span class="ch-badge">現狀</span></div>
+      <div class="cmp-head">傳統線上課程 <span class="ch-badge">現況</span></div>
       <ul class="cmp-list">
-        <li><strong>出席率 100%</strong> = 目標達成，點完課程即算合規</li>
-        <li>沒有即時測驗，閱讀等於瀏覽，無法確認是否理解</li>
-        <li>所有人看同一套內容，個人弱點被平均值掩蓋</li>
-        <li>72 小時後知識消退，沒有任何補強或提醒機制</li>
-        <li>法遵稽核只能查「有無點開」，無法驗證真實吸收</li>
+        <li>點完課程就算完成</li>
+        <li>沒有測驗，不知道到底懂了沒</li>
+        <li>每個人讀一樣的內容，看不出誰弱在哪</li>
+        <li>學完幾天就忘，沒有複習機制</li>
+        <li>稽核只能查「有沒有點開」</li>
       </ul>
     </div>
     <div class="cmp-col good">
-      <div class="cmp-head">Sprint Reader <span class="ch-badge">新邏輯</span></div>
+      <div class="cmp-head">Sprint Reader <span class="ch-badge">新做法</span></div>
       <ul class="cmp-list">
-        <li>閱讀後<strong>立即接 3 題測驗</strong>，強制主動記憶提取</li>
-        <li>每題作答全記錄進 DB，合規稽核具備可信憑據</li>
-        <li>個人<strong>答錯率建立弱點圖譜</strong>，差異化複習</li>
-        <li>間隔重複推薦，在遺忘曲線觸底前主動介入</li>
-        <li><strong>分心次數</strong>偵測行為異常，早期識別高風險學習者</li>
+        <li>讀完<strong>馬上考 3 題</strong></li>
+        <li>每題作答都有紀錄，稽核有憑據</li>
+        <li>從錯題找出<strong>每個人的弱點</strong></li>
+        <li>快忘記之前，系統主動提醒複習</li>
+        <li>記錄<strong>分心次數</strong>，提早發現需要幫忙的人</li>
       </ul>
     </div>
   </div>
   <div class="callout ma">
-    <strong>MA 洞察：</strong>合規訓練的問題，不在預算，在衡量指標。完訓率量的是「行為」，答對率量的是「效果」。把指標從前者換成後者，才能讓 CEO 看到真正的訓練 ROI，也讓法遵部門的工作從成本中心，變成可量化的風險管理資產。
+    <strong>重點：</strong>完訓率只能證明「有上課」，答對率才能證明「有學會」。換成後者，訓練就從成本變成看得見效果的投資。
   </div>
 </section>
 
-<!-- 05 三個設計原則 -->
+<!-- 04 三個設計原則 -->
 <section id="design">
-  <div class="sec-eyebrow">05 · 解法</div>
-  <div class="sec-title">三個設計，對應<em>三個學習科學原則</em></div>
-  <div class="sec-sub">每一個功能決策都有明確的心理學依據，同時對應業務員的真實使用情境</div>
+  <div class="sec-eyebrow">04 · 解法</div>
+  <div class="sec-title">三個設計，各有<em>學習科學</em>根據</div>
+  <div class="sec-sub">每個功能都對應一個業務員的實際情境</div>
   <div class="icon-grid">
     <div class="icard blue">
       <div class="ic">⏱</div>
-      <h4>7 分鐘限時衝刺</h4>
-      <p>110 頁考照筆記切成 6 章 × 5 張卡，每章 7 分鐘。「認知負荷理論」指出工作記憶容量有限，7 分鐘恰好是一個不超載的學習單元，填滿通勤空檔。</p>
-      <span class="itag">↗ 完訓率 × 降低阻力</span>
+      <h4>7 分鐘讀一章</h4>
+      <p>110 頁切成 6 章、每章 5 張卡。7 分鐘剛好不會讀到疲乏，一趟通勤就能讀完。</p>
+      <span class="itag">降低開始的門檻</span>
     </div>
     <div class="icard green">
       <div class="ic">🎯</div>
-      <h4>即時測驗 — Active Recall</h4>
-      <p>讀完立即接 3 題 quiz。「主動提取效應」顯示：考試本身就是最有效的記憶鞏固方式。搭配詳細解釋與原文卡片回溯，讓錯誤成為學習機會。</p>
-      <span class="itag">↗ 記憶留存率 3×</span>
+      <h4>讀完馬上考</h4>
+      <p>每章讀完接 3 題測驗。研究顯示「考試」本身就是最好的記憶方法。答錯會告訴你正解，並指回原文。</p>
+      <span class="itag">記得更久</span>
     </div>
     <div class="icard purple">
       <div class="ic">🔁</div>
-      <h4>間隔重複推薦</h4>
-      <p>根據「答錯率 × log（距上次複習天數 + 1）」自動推薦章節。系統決定「今天讀哪章」，不靠意志力，在遺忘曲線觸底前主動介入。</p>
-      <span class="itag">↗ 長期留存率</span>
+      <h4>系統幫你排複習</h4>
+      <p>錯越多、越久沒讀的章節，越優先推薦。不用自己決定今天讀什麼。</p>
+      <span class="itag">在忘記之前複習</span>
     </div>
   </div>
 </section>
 
-<!-- 06 產品使用流程 -->
-<section id="flow">
-  <div class="sec-eyebrow">06 · 產品 Demo</div>
-  <div class="sec-title">完整使用者旅程：<em>5 步驟學習閉環</em></div>
-  <div class="sec-sub">每次使用都產生行為數據，累積個人弱點圖譜，驅動下一次的智慧推薦</div>
-  <div class="flow-grid">
-    <div class="fcard">
-      <span class="fstep">STEP 01</span>
-      <div class="fi">🏠</div>
-      <div class="ft">選擇章節</div>
-      <div class="furl">/ui/index.html</div>
-      <div class="fd">今日推薦算法自動計算最需複習的章節，也可自由選 6 章任一。</div>
-      <ul class="fdetail"><li>整體完成度儀表板</li><li>今日推薦 + 錯題複習</li><li>連續學習天數追蹤</li></ul>
-    </div>
-    <div class="fcard">
-      <span class="fstep">STEP 02</span>
-      <div class="fi">📖</div>
-      <div class="ft">7 分鐘閱讀</div>
-      <div class="furl">/ui/reader.html</div>
-      <div class="fd">5 張滑卡倒數計時，切換 app 自動暫停，切回後無縫接續。</div>
-      <ul class="fdetail"><li>左右滑動翻頁</li><li>Server-side 計時戳記</li><li>分心次數自動記錄</li></ul>
-    </div>
-    <div class="fcard">
-      <span class="fstep">STEP 03</span>
-      <div class="fi">✅</div>
-      <div class="ft">3 題測驗</div>
-      <div class="furl">/ui/quiz.html</div>
-      <div class="fd">4 選 1 考古題，作答後公布正解 + 詳細解釋 + 原文卡片回溯。</div>
-      <ul class="fdetail"><li>題目來自真實考古題庫</li><li>解釋 + source_seq 回溯</li><li>每題對錯即時入 DB</li></ul>
-    </div>
-    <div class="fcard">
-      <span class="fstep">STEP 04</span>
-      <div class="fi">📊</div>
-      <div class="ft">成績檢討</div>
-      <div class="furl">/ui/result.html</div>
-      <div class="fd">本次答對率、閱讀時間、分心次數，逐題回顧正解與說明。</div>
-      <ul class="fdetail"><li>本次 Sprint 完整數據</li><li>逐題詳細檢討</li><li>卡片回溯連結</li></ul>
-    </div>
-    <div class="fcard">
-      <span class="fstep">STEP 05</span>
-      <div class="fi">🔁</div>
-      <div class="ft">弱點更新</div>
-      <div class="furl">POST /api/quiz/finalize</div>
-      <div class="fd">系統更新 ChapterMastery，重排推薦優先序，下次首頁即顯示最需複習章節。</div>
-      <ul class="fdetail"><li>答錯率寫入 DB</li><li>推薦算法重新排序</li><li>行為數據持續累積</li></ul>
-    </div>
+<!-- 05 商業價值 -->
+<section id="value">
+  <div class="sec-eyebrow">05 · 商業價值</div>
+  <div class="sec-title">同一個產品，<em>回答四個部門的問題</em></div>
+  <div class="sec-sub">每個部門關心的事不一樣，這個產品都有對應的答案</div>
+  <table class="vt">
+    <thead><tr><th>部門</th><th>他們在意的問題</th><th>Sprint Reader 的答案</th></tr></thead>
+    <tbody>
+      <tr><td class="dept">人資 / 教育訓練</td><td class="q">「怎麼提高新人考照通過率？」</td><td>6 章結構化複習＋個人弱點追蹤，備考從亂刷題變成針對弱點補強</td></tr>
+      <tr><td class="dept">業務管理</td><td class="q">「哪些新人需要額外輔導？」</td><td>用分心次數和答錯率，提早找出需要幫忙的人</td></tr>
+      <tr><td class="dept">資料 / AI</td><td class="q">「這些數據能做什麼？」</td><td>閱讀和測驗紀錄串在一起，可以做個人化推薦、自動出題</td></tr>
+      <tr><td class="dept">數金 / IT</td><td class="q">「上線麻煩嗎？」</td><td>不需要額外的伺服器或資料庫，<code class="c">bash run.sh</code> 一行指令就能跑起來</td></tr>
+    </tbody>
+  </table>
+  <div class="callout ma" style="margin-top:20px;">
+    <strong>延伸用途：</strong>考完照之後，同一套系統可以變成在職訓練工具。新法規一出，切成 7 分鐘的內容推給所有業務員。
   </div>
 </section>
 
-<!-- 07 系統架構 -->
+<!-- 06 延伸思考 -->
+<section id="extension">
+  <div class="sec-eyebrow">06 · 延伸思考 · 業務規劃部 競獎活動科</div>
+  <div class="sec-title">新商品上市競賽：<em>先學會，再衝業績</em></div>
+  <div class="sec-sub">用 Sprint Reader 的學習數據，設計一套「懂商品才有獎」的競賽辦法（以下數字為示意，可依預算調整）</div>
+
+  <!-- 時程 -->
+  <div class="tech-sub-eyebrow">一 · 競賽期間（共 8 週）</div>
+  <div class="orch" style="margin:6px 0 32px;">
+    <span class="orch-lbl">時程</span>
+    <span class="orch-step">第 1–2 週｜學習期：完成商品 3 章＋測驗</span><span class="orch-arr">→</span>
+    <span class="orch-step">第 3–8 週｜業績期：計算競賽積分</span><span class="orch-arr">→</span>
+    <span class="orch-step">賽後 3 個月｜觀察期：確認無契撤、客訴才發獎</span>
+  </div>
+
+  <!-- 資格 + 計分 -->
+  <div class="feat" style="margin-bottom:32px;">
+    <div class="feat-l">
+      <div class="tech-sub-eyebrow">二 · 參賽資格（學習門檻）</div>
+      <div class="card">
+        <ul class="dot">
+          <li>上市 <strong>14 天內</strong>讀完商品 3 章：商品特色、適合客群、銷售注意事項</li>
+          <li>每章測驗 <strong>3 題答對 2 題以上</strong>，答錯可複習後重考</li>
+          <li>沒達門檻：保單照賣、業績照算，但<strong>不具得獎資格</strong></li>
+          <li>閱讀時間由後端記錄，<strong>少於 2 分鐘滑完不算</strong>，避免亂滑</li>
+        </ul>
+      </div>
+    </div>
+    <div class="feat-r">
+      <div class="tech-sub-eyebrow">三 · 計分方式</div>
+      <div class="formula-card">
+        <div class="formula-lbl">競賽積分</div>
+        <div class="formula">業績分 × 品質係數 ＋ 學習加分</div>
+        <div class="factors">
+          <div class="factor"><div class="f-val">業績分</div><div class="f-lbl">每 1 萬元<br/>初年度保費 = 10 分</div></div>
+          <div class="factor"><div class="f-val">品質係數</div><div class="f-lbl">無契撤、客訴 1.0<br/>有則 0.8</div></div>
+          <div class="factor"><div class="f-val">學習加分</div><div class="f-lbl">首次全對 +20<br/>上限 50 分</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 獎項 -->
+  <div class="tech-sub-eyebrow">四 · 獎項設計</div>
+  <table class="vt" style="margin-bottom:32px;">
+    <thead><tr><th>獎項</th><th>條件</th><th>獎勵（示意）</th><th>設計用意</th></tr></thead>
+    <tbody>
+      <tr><td class="dept">個人 金／銀／銅</td><td>積分達 500／300／150 分</td><td>獎金 2 萬／1 萬／5 千</td><td>用「門檻制」不用排名制：預算可預估，人人有機會</td></tr>
+      <tr><td class="dept">早鳥獎</td><td>上市 7 天內通過學習門檻</td><td>抽獎或小禮</td><td>讓業務員在上市第一週就把商品讀熟</td></tr>
+      <tr><td class="dept">單位獎</td><td>單位資格達成率 ≥ 90%</td><td>單位主管獎勵</td><td>讓主管有動機帶著整個團隊學</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 防弊 -->
+  <div class="tech-sub-eyebrow">五 · 防弊與合規</div>
+  <table class="vt" style="margin-bottom:32px;">
+    <thead><tr><th>風險</th><th>規則</th></tr></thead>
+    <tbody>
+      <tr><td class="dept">為衝獎勵亂賣</td><td>學習門檻＋品質係數；獎金在 3 個月觀察期後才發，期間有契撤或客訴成立就追回</td></tr>
+      <tr><td class="dept">測驗作弊</td><td>題目隨機出；閱讀時間和作答紀錄都由後端記錄，前端改不了</td></tr>
+      <tr><td class="dept">學習分灌水</td><td>學習加分設上限 50 分，業績還是主體</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 賽後檢討 -->
+  <div class="tech-sub-eyebrow">六 · 賽後檢討（Sprint Reader 自動產出）</div>
+  <table class="vt">
+    <thead><tr><th>指標</th><th>看什麼</th><th>拿來做什麼</th></tr></thead>
+    <tbody>
+      <tr><td class="dept">資格達成率</td><td>各單位有多少人通過學習門檻</td><td>找出需要主管加強輔導的單位</td></tr>
+      <tr><td class="dept">最常答錯的題</td><td>哪個商品觀念最多人搞錯</td><td>就是最容易錯誤銷售的地方，下一期加強說明</td></tr>
+      <tr><td class="dept">學習 × 業績</td><td>通過門檻的人，業績和契撤率有沒有比較好</td><td>驗證這套辦法有沒有用，決定下一期要不要沿用</td></tr>
+      <tr><td class="dept">辦法詢問件數</td><td>和上一期比，業務員來問規則的次數</td><td>確認辦法有沒有講清楚</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout ma" style="margin-top:20px;">
+    <strong>一句話：</strong>獎勵制度決定業務員往哪裡衝。把「懂商品」放進得獎條件，再用數據檢討每一期辦法，業績衝得快，也衝得對。
+  </div>
+</section>
+
+<!-- 07 導入公司內部 -->
+<section id="deploy">
+  <div class="sec-eyebrow">07 · 導入公司內部</div>
+  <div class="sec-title">要串公司資料，<em>怎麼搬進公司？</em></div>
+  <div class="sec-sub">程式本身很好搬，主要工作在「身分、資料、資安」三件事</div>
+  <table class="vt">
+    <thead><tr><th>項目</th><th>現在（Demo）</th><th>搬進公司後</th></tr></thead>
+    <tbody>
+      <tr><td class="dept">部署位置</td><td>外部雲端</td><td>公司內網伺服器或私有雲，包成 Docker 容器，資料不出內網</td></tr>
+      <tr><td class="dept">資料庫</td><td>SQLite（一個檔案）</td><td>換成公司現有資料庫（MS SQL／Oracle 等），只有 10 張表，搬遷容易</td></tr>
+      <tr><td class="dept">登入身分</td><td>固定的示範帳號</td><td>接公司 SSO／AD，用員工帳號登入，員編從人資系統帶入</td></tr>
+      <tr><td class="dept">教材內容</td><td>人工整理後寫進程式</td><td>做一個後台，讓教育訓練部上傳、維護章節和題目</td></tr>
+      <tr><td class="dept">串接系統</td><td>無</td><td>用「唯讀、每天批次同步」讀取人資和業績資料，不直接寫入對方系統</td></tr>
+    </tbody>
+  </table>
+  <div class="rm-rows">
+    <div class="rm-row"><div class="rm-badge-wrap"><div class="rm-badge done">Step 1</div></div><div class="rm-card"><h4>資安審查</h4><p>先過 IT 和資安審查：個資保護、權限、存取紀錄。</p></div></div>
+    <div class="rm-row"><div class="rm-badge-wrap"><div class="rm-badge p2">Step 2</div></div><div class="rm-card"><h4>一個單位試辦一個月</h4><p>挑一個業務單位，先放考照內容，實際收集使用數據。</p></div></div>
+    <div class="rm-row"><div class="rm-badge-wrap"><div class="rm-badge p3">Step 3</div></div><div class="rm-card"><h4>看數據再擴大</h4><p>比較試辦單位和其他單位的考照通過率，再決定是否推到全公司。</p></div></div>
+  </div>
+  <div class="callout ma" style="margin-top:20px;">
+    <strong>一句話：</strong>架構刻意做得很輕，前端不用編譯、後端只有一個服務。真正需要公司資源的是 SSO、資料串接和資安審查，技術本身不是門檻。
+  </div>
+</section>
+
+<!-- 08 系統架構 -->
 <section id="arch">
-  <div class="sec-eyebrow">07 · 系統架構</div>
-  <div class="sec-title">Browser → FastAPI → SQLite <em>三層設計</em></div>
-  <div class="sec-sub">零框架、零依賴、全端自製 — 技術選型服務商業目標：最低成本讓 IT 部門一鍵接入</div>
+  <div class="sec-eyebrow">08 · 系統架構</div>
+  <div class="sec-title">Browser → FastAPI → SQLite <em>三層架構</em></div>
+  <div class="sec-sub">刻意選最簡單的技術，讓 IT 部門最容易接手</div>
   <div class="arch">
     <div class="layer" style="border-color:rgba(96,165,250,.3);">
-      <div class="layer-title" style="color:var(--accent);">🖥 Frontend · Vanilla HTML / CSS / JS（無 build step，無 framework）</div>
+      <div class="layer-title" style="color:var(--accent);">🖥 前端 · 純 HTML / CSS / JS</div>
       <div class="layer-comps">
-        <div class="comp"><div class="comp-bar" style="background:#3B82F6;"></div><div class="comp-body"><div class="comp-name">index.html</div><div class="comp-sub">章節 TOC<br/>今日推薦儀表板</div></div></div>
-        <div class="comp"><div class="comp-bar" style="background:#60A5FA;"></div><div class="comp-body"><div class="comp-name">reader.html</div><div class="comp-sub">7 分鐘閱讀<br/>Visibility API</div></div></div>
+        <div class="comp"><div class="comp-bar" style="background:#3B82F6;"></div><div class="comp-body"><div class="comp-name">index.html</div><div class="comp-sub">章節列表<br/>今日推薦</div></div></div>
+        <div class="comp"><div class="comp-bar" style="background:#60A5FA;"></div><div class="comp-body"><div class="comp-name">reader.html</div><div class="comp-sub">7 分鐘閱讀<br/>偵測切換分頁</div></div></div>
         <div class="comp"><div class="comp-bar" style="background:#34D399;"></div><div class="comp-body"><div class="comp-name">quiz.html</div><div class="comp-sub">3 題測驗<br/>即時解釋</div></div></div>
-        <div class="comp"><div class="comp-bar" style="background:#A78BFA;"></div><div class="comp-body"><div class="comp-name">result.html</div><div class="comp-sub">分數檢討<br/>卡片回溯</div></div></div>
+        <div class="comp"><div class="comp-bar" style="background:#A78BFA;"></div><div class="comp-body"><div class="comp-name">result.html</div><div class="comp-sub">成績檢討<br/>回到原文</div></div></div>
       </div>
     </div>
-    <div class="arch-arr">↕ REST API（GET /api/module · POST /api/sprint/start|telemetry|complete · POST /api/quiz/submit|finalize）</div>
+    <div class="arch-arr">↕ REST API</div>
     <div class="layer" style="border-color:rgba(167,139,250,.3);">
-      <div class="layer-title" style="color:var(--purple);">⚡ Backend · FastAPI + Uvicorn · session_manager 嚴格狀態機</div>
+      <div class="layer-title" style="color:var(--purple);">⚡ 後端 · FastAPI</div>
       <div class="layer-comps">
-        <div class="comp"><div class="comp-bar" style="background:#3B82F6;"></div><div class="comp-body"><div class="comp-name">module.py</div><div class="comp-sub">章節讀取</div></div></div>
-        <div class="comp"><div class="comp-bar" style="background:#A78BFA;"></div><div class="comp-body"><div class="comp-name">sprint.py</div><div class="comp-sub">狀態機 / 遙測</div></div></div>
-        <div class="comp"><div class="comp-bar" style="background:#34D399;"></div><div class="comp-body"><div class="comp-name">quiz.py</div><div class="comp-sub">測驗引擎</div></div></div>
-        <div class="comp"><div class="comp-bar" style="background:#FB923C;"></div><div class="comp-body"><div class="comp-name">mastery.py</div><div class="comp-sub">推薦邏輯</div></div></div>
+        <div class="comp"><div class="comp-bar" style="background:#3B82F6;"></div><div class="comp-body"><div class="comp-name">module.py</div><div class="comp-sub">讀取章節</div></div></div>
+        <div class="comp"><div class="comp-bar" style="background:#A78BFA;"></div><div class="comp-body"><div class="comp-name">sprint.py</div><div class="comp-sub">閱讀流程 / 計時</div></div></div>
+        <div class="comp"><div class="comp-bar" style="background:#34D399;"></div><div class="comp-body"><div class="comp-name">quiz.py</div><div class="comp-sub">測驗</div></div></div>
+        <div class="comp"><div class="comp-bar" style="background:#FB923C;"></div><div class="comp-body"><div class="comp-name">mastery.py</div><div class="comp-sub">複習推薦</div></div></div>
       </div>
     </div>
-    <div class="arch-arr">↕ SQLite · data/sprint.db · 9 張表，三層職責分離，對應三個部門使用者</div>
+    <div class="arch-arr">↕ SQLite · 10 張表</div>
     <div class="db-row">
       <div class="db-box"><div class="db-stripe" style="background:#3B82F6;"></div><div class="db-inner"><div class="db-name" style="color:var(--accent);">核心 · 3 張</div><div class="db-tables">FlashcardPages<br/>SprintSessions<br/>LearningJourney_Map</div></div></div>
       <div class="db-box"><div class="db-stripe" style="background:#34D399;"></div><div class="db-inner"><div class="db-name" style="color:var(--green);">測驗 · 2 張</div><div class="db-tables">QuizQuestions<br/>QuizResponses</div></div></div>
-      <div class="db-box"><div class="db-stripe" style="background:#A78BFA;"></div><div class="db-inner"><div class="db-name" style="color:var(--purple);">推薦 · 2 張</div><div class="db-tables">ChapterMastery<br/>ReviewEvents</div></div></div>
+      <div class="db-box"><div class="db-stripe" style="background:#A78BFA;"></div><div class="db-inner"><div class="db-name" style="color:var(--purple);">推薦 · 3 張</div><div class="db-tables">ChapterMastery<br/>ReviewEvents<br/>CardConfidenceRatings</div></div></div>
       <div class="db-box"><div class="db-stripe" style="background:var(--fg3);"></div><div class="db-inner"><div class="db-name" style="color:var(--fg2);">支援 · 2 張</div><div class="db-tables">MicroModules<br/>Agents</div></div></div>
     </div>
   </div>
   <div class="callout ma" style="margin-top:20px;">
-    <strong>技術選型原則：零外部依賴是刻意的決策。</strong>FastAPI + SQLite 不需要 GCP 帳號、不需要 PostgreSQL server — 企業 IT 部門 <code class="c">bash run.sh</code> 30 秒內完成環境建立。降低接入成本，才能讓好產品真正被用上。
+    <strong>為什麼選這麼簡單的技術？</strong>不用雲端帳號、不用架資料庫伺服器，<code class="c">bash run.sh</code> 30 秒就能跑起來。越容易上線，越容易真的被用。
   </div>
 </section>
 
-<!-- 08 資料庫設計 -->
+<!-- 09 資料庫設計 -->
 <section id="db">
-  <div class="sec-eyebrow">08 · 資料庫設計</div>
-  <div class="sec-title">主鍵 × 外鍵 × <em>正規化思考</em></div>
-  <div class="sec-sub">設計資料庫時，我從三個考量出發 — 不只是「表長什麼樣」，而是「這個設計帶來什麼價值」</div>
+  <div class="sec-eyebrow">09 · 資料庫設計</div>
+  <div class="sec-title">內容、行為、成績<em>分開存</em></div>
+  <div class="sec-sub">用主鍵和外鍵把三張核心表拆開，又能串起來</div>
 
-  <!-- PK / FK breakdown: 3 core tables -->
   <div class="dbi-grid">
-    <!-- FlashcardPages -->
     <div class="dbi-card">
       <div class="dbi-card-head">
         <span class="dbi-tname">FlashcardPages</span>
@@ -633,10 +717,10 @@ code.c{font-size:11.5px;background:rgba(96,165,250,.1);color:var(--accent);
       <table class="dbi-table">
         <thead><tr><th>欄位</th><th>類型</th><th>說明</th></tr></thead>
         <tbody>
-          <tr><td class="dbi-pk">page_id</td><td>主鍵</td><td>每張卡片的唯一識別碼</td></tr>
-          <tr><td class="dbi-fk">module_id</td><td>外鍵</td><td>→ MicroModules，標示卡片所屬章節</td></tr>
-          <tr><td>sequence_number</td><td>欄位</td><td>章節內順序（第 1–5 張）</td></tr>
-          <tr><td>page_content_json</td><td>欄位</td><td>卡片文字內容（JSON）</td></tr>
+          <tr><td class="dbi-pk">page_id</td><td>主鍵</td><td>卡片編號</td></tr>
+          <tr><td class="dbi-fk">module_id</td><td>外鍵</td><td>屬於哪一章</td></tr>
+          <tr><td>sequence_number</td><td>欄位</td><td>第幾張（1–5）</td></tr>
+          <tr><td>page_content_json</td><td>欄位</td><td>卡片內容</td></tr>
         </tbody>
       </table>
       <div class="dbi-ex-label">範例資料</div>
@@ -647,10 +731,9 @@ code.c{font-size:11.5px;background:rgba(96,165,250,.1);color:var(--accent);
           <tr><td>P002</td><td>M001</td><td>2</td><td>"可保利益原則..."</td></tr>
         </tbody>
       </table>
-      <div class="dbi-insight">P001 和 P002 共用同一個 <strong>module_id M001</strong>，代表它們同屬一個章節。教育訓練部若只改卡片文字，只需更新這張表 — 不會動到任何一筆 SprintSession 行為紀錄，這是「資料一致性」的直接體現。</div>
+      <div class="dbi-insight">兩張卡都屬於 <strong>M001</strong> 這章。改卡片內容只要改這張表，不會動到任何閱讀紀錄。</div>
     </div>
 
-    <!-- SprintSessions -->
     <div class="dbi-card">
       <div class="dbi-card-head">
         <span class="dbi-tname">SprintSessions</span>
@@ -660,11 +743,11 @@ code.c{font-size:11.5px;background:rgba(96,165,250,.1);color:var(--accent);
       <table class="dbi-table">
         <thead><tr><th>欄位</th><th>類型</th><th>說明</th></tr></thead>
         <tbody>
-          <tr><td class="dbi-pk">sprint_id</td><td>主鍵</td><td>每次閱讀 session 的唯一 UUID</td></tr>
-          <tr><td class="dbi-fk">agent_id</td><td>外鍵</td><td>→ Agents，哪位業務員</td></tr>
-          <tr><td class="dbi-fk">module_id</td><td>外鍵</td><td>→ MicroModules，讀了哪章</td></tr>
-          <tr><td>tab_switch_count</td><td>欄位</td><td>分心次數（行為遙測）</td></tr>
-          <tr><td>completion_status</td><td>欄位</td><td>finished_early / timed_out / abandoned</td></tr>
+          <tr><td class="dbi-pk">sprint_id</td><td>主鍵</td><td>每次閱讀的編號</td></tr>
+          <tr><td class="dbi-fk">agent_id</td><td>外鍵</td><td>哪位業務員</td></tr>
+          <tr><td class="dbi-fk">module_id</td><td>外鍵</td><td>讀哪一章</td></tr>
+          <tr><td>tab_switch_count</td><td>欄位</td><td>分心次數</td></tr>
+          <tr><td>completion_status</td><td>欄位</td><td>讀完 / 超時 / 放棄</td></tr>
         </tbody>
       </table>
       <div class="dbi-ex-label">範例資料</div>
@@ -675,10 +758,9 @@ code.c{font-size:11.5px;background:rgba(96,165,250,.1);color:var(--accent);
           <tr><td>S002</td><td>A001</td><td>M002</td><td>3</td><td>timed_out</td></tr>
         </tbody>
       </table>
-      <div class="dbi-insight">這代表：<strong>A001 同一位業務員</strong>讀了兩次，第一次完成，第二次超時結束。兩次行為各自獨立記錄，不會互相干擾。</div>
+      <div class="dbi-insight">同一位業務員 <strong>A001</strong> 讀了兩次：第一次讀完，第二次分心 3 次、超時。</div>
     </div>
 
-    <!-- LearningJourney_Map -->
     <div class="dbi-card">
       <div class="dbi-card-head">
         <span class="dbi-tname">LearningJourney_Map</span>
@@ -688,10 +770,10 @@ code.c{font-size:11.5px;background:rgba(96,165,250,.1);color:var(--accent);
       <table class="dbi-table">
         <thead><tr><th>欄位</th><th>類型</th><th>說明</th></tr></thead>
         <tbody>
-          <tr><td class="dbi-pk">journey_id</td><td>主鍵</td><td>每筆閱讀↔測驗連結的唯一識別</td></tr>
-          <tr><td class="dbi-fk">sprint_id</td><td>外鍵</td><td>→ SprintSessions（閱讀行為）</td></tr>
-          <tr><td class="dbi-fk">quiz_session_id</td><td>外鍵</td><td>→ Quiz Engine P2（測驗結果）</td></tr>
-          <tr><td>score</td><td>欄位</td><td>最終得分 %（0–100）</td></tr>
+          <tr><td class="dbi-pk">journey_id</td><td>主鍵</td><td>連結編號</td></tr>
+          <tr><td class="dbi-fk">sprint_id</td><td>外鍵</td><td>哪一次閱讀</td></tr>
+          <tr><td class="dbi-fk">quiz_session_id</td><td>外鍵</td><td>哪一次測驗</td></tr>
+          <tr><td>score</td><td>欄位</td><td>分數（0–100）</td></tr>
         </tbody>
       </table>
       <div class="dbi-ex-label">範例資料</div>
@@ -702,206 +784,149 @@ code.c{font-size:11.5px;background:rgba(96,165,250,.1);color:var(--accent);
           <tr><td>J002</td><td>S002</td><td>Q002</td><td>33</td></tr>
         </tbody>
       </table>
-      <div class="dbi-insight">這代表：<strong>S001 這次閱讀</strong>，對應到 <strong>Q001 這次測驗</strong>。<br/><br/>所以未來系統可以分析：<br/>・讀得快的人，測驗是否比較高分？<br/>・切換分頁次數多的人，測驗是否比較差？<br/>・提前完成的人，是真的懂，還是亂滑？<br/>・哪些模組讀完後最容易答錯？</div>
+      <div class="dbi-insight">把<strong>閱讀</strong>和<strong>測驗</strong>串起來，就能回答：<br/>・分心多的人，分數是不是比較低？<br/>・讀很快的人，是真的懂還是亂滑？<br/>・哪一章最容易答錯？</div>
     </div>
   </div>
 
-  <!-- Normalization callout -->
   <div class="dbi-norm">
-    <div class="dbi-norm-title">為什麼不把全部欄位塞進一張大表？</div>
+    <div class="dbi-norm-title">為什麼不全部放在一張大表？</div>
     <div class="dbi-norm-grid">
       <div class="dbi-norm-bad">
-        <div class="dbi-norm-bad-label">❌ 反正規化（胖表）</div>
+        <div class="dbi-norm-bad-label">❌ 一張大表</div>
         <code class="dbi-code">sprint_id | agent_name | module_title | card_content | tab_switches | quiz_score ...</code>
-        <div class="dbi-norm-bad-why">卡片內容改一個字，所有 session 紀錄都要同步更新；不同部門查詢互相干擾；資料異常只能靠應用層自己管，沒有外鍵保護</div>
+        <div class="dbi-norm-bad-why">卡片改一個字，所有紀錄都要跟著改；資料容易重複、出錯。</div>
       </div>
       <div class="dbi-norm-good">
-        <div class="dbi-norm-good-label">✅ 正規化設計（三層職責分離）</div>
-        <div class="dbi-norm-row"><span class="dbi-norm-tag" style="background:rgba(96,165,250,.12);color:var(--accent);">學習內容</span>FlashcardPages — 教育訓練部維護，版本獨立</div>
-        <div class="dbi-norm-row"><span class="dbi-norm-tag" style="background:rgba(251,146,60,.12);color:var(--orange);">閱讀行為</span>SprintSessions — 法遵部稽核，不可竄改</div>
-        <div class="dbi-norm-row"><span class="dbi-norm-tag" style="background:rgba(52,211,153,.12);color:var(--green);">閱讀↔測驗</span>LearningJourney_Map — 資料部 AI 訓練介面</div>
+        <div class="dbi-norm-good-label">✅ 分開存</div>
+        <div class="dbi-norm-row"><span class="dbi-norm-tag" style="background:rgba(96,165,250,.12);color:var(--accent);">內容</span>FlashcardPages — 教育訓練部維護</div>
+        <div class="dbi-norm-row"><span class="dbi-norm-tag" style="background:rgba(251,146,60,.12);color:var(--orange);">行為</span>SprintSessions — 法遵稽核用</div>
+        <div class="dbi-norm-row"><span class="dbi-norm-tag" style="background:rgba(52,211,153,.12);color:var(--green);">關聯</span>LearningJourney_Map — 資料分析用</div>
       </div>
     </div>
     <div class="dbi-norm-principle">內容歸內容、行為歸行為、關聯歸關聯</div>
   </div>
 
-  <!-- 3-point normalization framework -->
   <div class="dbi-why-grid">
     <div class="dbi-why-card">
       <div class="dbi-why-num">01</div>
-      <div class="dbi-why-title">資料一致性</div>
-      <div class="dbi-why-body">同一份資料只有一個「正確版本」。卡片內容只存在 FlashcardPages，教育訓練部更新卡片文字時，所有歷史 SprintSession 紀錄完全不需要動。</div>
+      <div class="dbi-why-title">資料一致</div>
+      <div class="dbi-why-body">每份資料只存一個地方。改卡片內容，歷史紀錄不受影響。</div>
     </div>
     <div class="dbi-why-card">
       <div class="dbi-why-num">02</div>
-      <div class="dbi-why-title">系統擴展性</div>
-      <div class="dbi-why-body">未來要加功能，不用重構整個系統。新增語音卡片只改 FlashcardPages；開發新的測驗模式只動 QuizQuestions — SprintSessions 完全隔離不受影響。</div>
+      <div class="dbi-why-title">容易擴充</div>
+      <div class="dbi-why-body">加新功能只動相關的表，不用重做整個系統。</div>
     </div>
     <div class="dbi-why-card">
       <div class="dbi-why-num">03</div>
-      <div class="dbi-why-title">後續分析價值</div>
-      <div class="dbi-why-body">三張表可以 JOIN 在一起，直接用來訓練 AI。因為每張表只放「自己的事」，合併後不會有重複或矛盾的欄位。</div>
+      <div class="dbi-why-title">方便分析</div>
+      <div class="dbi-why-body">資料乾淨、不重複，串起來就能直接拿去做 AI 分析。</div>
     </div>
   </div>
 
-  <!-- Interview talking point -->
   <div class="dbi-quote">
-    <div class="dbi-quote-label">面試一句話</div>
-    <div class="dbi-quote-body">「我做資料正規化，主要是基於三個考量：<strong>資料一致性</strong>（同一份資料只有一個正確版本）、<strong>系統擴展性</strong>（加功能不用重構整個 schema）、以及<strong>後續分析價值</strong>（資料乾淨才能餵給 AI）。透過主鍵和外鍵，把學習內容、閱讀行為和測驗結果拆開但又串起來，每張表各自對應一個部門的 KPI。」</div>
+    <div class="dbi-quote-label">一句話總結</div>
+    <div class="dbi-quote-body">「我把<strong>學習內容</strong>、<strong>閱讀行為</strong>、<strong>測驗結果</strong>分開存，再用外鍵串起來。這樣資料一致、容易擴充，也方便之後做分析。」</div>
   </div>
-
 </section>
 
-<!-- 09 技術亮點 -->
+<!-- 10 技術亮點 -->
 <section id="tech">
-  <div class="sec-eyebrow">09 · 技術亮點</div>
-  <div class="sec-title">三個工程決策，<em>各有三層商業意義</em></div>
+  <div class="sec-eyebrow">10 · 技術亮點</div>
+  <div class="sec-title">三個<em>工程設計</em></div>
 
-  <!-- 亮點 1 -->
-  <div class="tech-sub-eyebrow">亮點 01 / 03 · Browser Visibility API</div>
-  <div class="tech-sub-title">一個 UX 設計，蘊含三層商業意義</div>
-  <div class="tech-sub-desc">把「業務員切到 Line」這個動作，轉化成可分析、可預警的學習行為數據</div>
+  <div class="tech-sub-eyebrow">亮點 01 / 03 · 偵測切換分頁</div>
+  <div class="tech-sub-title">切到 Line，計時器會暫停</div>
+  <div class="tech-sub-desc">把「分心」變成可以分析的數據</div>
   <div class="feat">
     <div class="feat-l">
-      <div class="feat-head">怎麼做到的</div>
-      <div class="feat-body">監聽 <code class="c">document.visibilityState</code>，切換分頁時計時器自動暫停；切回後接續，體驗流暢不中斷。每次切換事件 POST 到後端 <code class="c">tab_switch_count++</code>。</div>
+      <div class="feat-head">怎麼做</div>
+      <div class="feat-body">用瀏覽器的 <code class="c">Visibility API</code> 偵測使用者離開頁面：計時暫停，同時通知後端把分心次數 +1。切回來後接著計時。</div>
       <div class="insight">
-        <div class="ins-label">為什麼這個數據有商業價值</div>
+        <div class="ins-label">這個數據的用處</div>
         <div class="ins-body">
-          <strong>第一層：UX</strong> — 暫停計時保護使用者體驗，不懲罰被打斷的業務員。<br/>
-          <strong>第二層：行為分析</strong> — 分心次數高的學習者，測驗答錯率顯著偏高，可作為「需個別輔導」的早期預警訊號。<br/>
-          <strong>第三層：AI 特徵</strong> — tab_switch_count 成為 RL 推薦引擎的輸入特徵，讓系統識別「高風險」學習模式。
+          <strong>體驗：</strong>被打斷不會被扣時間。<br/>
+          <strong>管理：</strong>分心多又答錯多的人，可能需要輔導。<br/>
+          <strong>AI：</strong>之後可以拿來訓練推薦模型。
         </div>
       </div>
     </div>
     <div class="feat-r">
-      <div class="feat-head">行為數據流</div>
+      <div class="feat-head">流程</div>
       <div class="flow-diag">
-        <div class="fd-row"><div class="fd-box" style="border-color:rgba(96,165,250,.3);"><div class="fd-ico">📖</div><div class="fd-txt">正在閱讀中<span>計時器倒數、數據持續記錄</span></div></div></div>
-        <div class="fd-arr">↓ 切換分頁 / 打開其他 app</div>
-        <div class="fd-row"><div class="fd-box" style="border-color:rgba(251,146,60,.3);"><div class="fd-ico">💬</div><div class="fd-txt">切到 Line / 其他 app<span>計時器暫停，tab_switch_count +1 即時寫入後端</span></div><div class="fd-badge" style="background:rgba(251,146,60,.15);color:var(--orange);">行為記錄</div></div></div>
-        <div class="fd-arr">↓ 切回頁面</div>
-        <div class="fd-row"><div class="fd-box" style="border-color:rgba(52,211,153,.3);"><div class="fd-ico">▶️</div><div class="fd-txt">繼續閱讀<span>計時器從原處接續，使用者感受流暢不中斷</span></div></div></div>
+        <div class="fd-row"><div class="fd-box" style="border-color:rgba(96,165,250,.3);"><div class="fd-ico">📖</div><div class="fd-txt">閱讀中<span>倒數計時</span></div></div></div>
+        <div class="fd-arr">↓ 切到別的 app</div>
+        <div class="fd-row"><div class="fd-box" style="border-color:rgba(251,146,60,.3);"><div class="fd-ico">💬</div><div class="fd-txt">看 Line<span>計時暫停，分心次數 +1</span></div><div class="fd-badge" style="background:rgba(251,146,60,.15);color:var(--orange);">記錄</div></div></div>
+        <div class="fd-arr">↓ 切回來</div>
+        <div class="fd-row"><div class="fd-box" style="border-color:rgba(52,211,153,.3);"><div class="fd-ico">▶️</div><div class="fd-txt">繼續閱讀<span>從剛剛的時間接著算</span></div></div></div>
       </div>
     </div>
   </div>
 
   <div class="tech-divider"></div>
 
-  <!-- 亮點 2 -->
-  <div class="tech-sub-eyebrow">亮點 02 / 03 · Server-Authoritative Timing</div>
-  <div class="tech-sub-title">計時器由後端蓋章，前端改 JS 也沒用</div>
-  <div class="tech-sub-desc">保障閱讀紀錄真實性，讓學習完訓具備法遵稽核效力</div>
+  <div class="tech-sub-eyebrow">亮點 02 / 03 · 時間由伺服器記錄</div>
+  <div class="tech-sub-title">前端改程式也作弊不了</div>
+  <div class="tech-sub-desc">閱讀紀錄可信，才能拿來做稽核</div>
   <div class="feat">
     <div class="feat-l">
-      <div class="feat-head">設計邏輯</div>
-      <div class="feat-body">所有時間戳由後端 session_manager.py 記錄與驗證。即使使用者修改瀏覽器時間、或用開發者工具竄改 JS，後端的閱讀時長仍正確。前端只負責顯示倒數畫面。</div>
+      <div class="feat-head">怎麼做</div>
+      <div class="feat-body">開始和結束時間都由後端記錄。就算有人改電腦時間或改網頁程式，後端的時間還是正確的。前端只負責顯示倒數。</div>
       <div class="insight gold">
-        <div class="ins-label">三表分離 = 三個部門使用者（MA 跨部門思維直接體現在 schema）</div>
+        <div class="ins-label">每張表對應一個部門</div>
         <div class="ins-body">
-          <strong>SprintSessions</strong> → 法遵部：完訓稽核憑據，時間戳可信<br/>
-          <strong>QuizResponses</strong> → 資料部：個人答題序列，餵 AI 推薦<br/>
-          <strong>LearningJourney_Map</strong> → 教育訓練部：閱讀與測驗橋接，追蹤學習旅程
+          <strong>SprintSessions</strong> → 法遵：可信的完訓紀錄<br/>
+          <strong>QuizResponses</strong> → 資料：每題作答紀錄<br/>
+          <strong>LearningJourney_Map</strong> → 教育訓練：閱讀和測驗的關聯
         </div>
       </div>
     </div>
     <div class="feat-r">
-      <div class="feat-head">三狀態機流程</div>
+      <div class="feat-head">三個狀態</div>
       <div class="sm-wrap">
-        <div class="sm-node"><div class="sn-state">pre_sprint</div><div class="sn-action">建立唯一 sprint_id<br/>記錄 start_timestamp</div></div>
-        <div class="sm-edge"><div class="se-line"></div><div class="se-lbl">開始閱讀</div></div>
-        <div class="sm-node"><div class="sn-state">reading</div><div class="sn-action">累計 tab_switch<br/>前端顯示倒數畫面</div></div>
-        <div class="sm-edge"><div class="se-line"></div><div class="se-lbl">滑完 / 時間到</div></div>
-        <div class="sm-node"><div class="sn-state">handoff</div><div class="sn-action">記錄 end_timestamp<br/>銜接 Quiz 流程</div></div>
+        <div class="sm-node"><div class="sn-state">pre_sprint</div><div class="sn-action">建立編號<br/>記錄開始時間</div></div>
+        <div class="sm-edge"><div class="se-line"></div><div class="se-lbl">開始</div></div>
+        <div class="sm-node"><div class="sn-state">reading</div><div class="sn-action">累計分心次數</div></div>
+        <div class="sm-edge"><div class="se-line"></div><div class="se-lbl">讀完 / 時間到</div></div>
+        <div class="sm-node"><div class="sn-state">handoff</div><div class="sn-action">記錄結束時間<br/>進入測驗</div></div>
       </div>
     </div>
   </div>
 
   <div class="tech-divider"></div>
 
-  <!-- 亮點 3 -->
-  <div class="tech-sub-eyebrow">亮點 03 / 03 · 智慧推薦演算法</div>
-  <div class="tech-sub-title">系統自動決定「今天要讀哪章」</div>
-  <div class="tech-sub-desc">間隔重複推薦演算法 — 把 Ebbinghaus 學習科學，落實為工程實作</div>
+  <div class="tech-sub-eyebrow">亮點 03 / 03 · 複習推薦</div>
+  <div class="tech-sub-title">系統決定「今天讀哪章」</div>
+  <div class="tech-sub-desc">把遺忘曲線變成一條公式</div>
   <div class="feat">
     <div class="feat-l">
-      <div class="feat-head">運作邏輯</div>
-      <div class="feat-body">每次完成 quiz 後，後端更新各章節掌握度，根據兩個維度計算推薦分數，自動在首頁顯示「今日推薦」章節，讓業務員不需要自己決定讀什麼。</div>
+      <div class="feat-head">怎麼做</div>
+      <div class="feat-body">每次考完，系統更新各章的熟悉度，算出推薦分數，首頁就顯示分數最高的章節。</div>
       <div class="formula-card">
-        <div class="formula-lbl">推薦優先度公式</div>
-        <div class="formula">Priority = 答錯率 × log（距上次天數 + 1）</div>
+        <div class="formula-lbl">推薦分數</div>
+        <div class="formula">答錯率 × 0.6 ＋ 距上次天數 × 0.4</div>
         <div class="factors">
-          <div class="factor"><div class="f-val">答錯率 ↑</div><div class="f-lbl">這章還不熟<br/>需要優先複習</div></div>
-          <div class="factor"><div class="f-val">天數 ↑</div><div class="f-lbl">越久沒讀<br/>越快被推薦</div></div>
+          <div class="factor"><div class="f-val">答錯率 ↑</div><div class="f-lbl">越不熟<br/>越優先</div></div>
+          <div class="factor"><div class="f-val">天數 ↑</div><div class="f-lbl">越久沒讀越優先<br/>最多算 14 天</div></div>
         </div>
       </div>
       <div class="insight">
-        <div class="ins-label">Phase 3 升級路徑</div>
-        <div class="ins-body">當前為規則式算法（可解釋性高、易 debug）。收集足夠行為序列後，可升級為<strong>強化學習（RL）</strong>，動態預測每位員工的遺忘時點。</div>
+        <div class="ins-label">沒讀過的章節最優先 · 之後可以升級</div>
+        <div class="ins-body">現在是固定公式，好理解、好除錯。資料夠多之後，可以換成 AI 模型預測每個人什麼時候會忘。</div>
       </div>
     </div>
     <div class="feat-r">
-      <div class="feat-head">推薦觸發流程</div>
+      <div class="feat-head">流程</div>
       <div class="flow-diag">
-        <div class="fd-row"><div class="fd-box"><div class="fd-ico">✅</div><div class="fd-txt">完成 Quiz<span>系統記錄每題作答對錯與作答時間</span></div></div></div>
+        <div class="fd-row"><div class="fd-box"><div class="fd-ico">✅</div><div class="fd-txt">考完測驗<span>記錄每題對錯</span></div></div></div>
         <div class="fd-arr">↓</div>
-        <div class="fd-row"><div class="fd-box"><div class="fd-ico">📊</div><div class="fd-txt">更新 ChapterMastery<span>重新計算該章答錯率與最後複習時間</span></div></div></div>
+        <div class="fd-row"><div class="fd-box"><div class="fd-ico">📊</div><div class="fd-txt">更新熟悉度<span>重算該章答錯率和複習時間</span></div></div></div>
         <div class="fd-arr">↓</div>
-        <div class="fd-row"><div class="fd-box"><div class="fd-ico">🧮</div><div class="fd-txt">套用優先度公式<span>6 個章節各自計算推薦分數，取最高</span></div></div></div>
+        <div class="fd-row"><div class="fd-box"><div class="fd-ico">🧮</div><div class="fd-txt">算推薦分數<span>6 章各算一次</span></div></div></div>
         <div class="fd-arr">↓</div>
-        <div class="fd-row"><div class="fd-box" style="border-color:rgba(96,165,250,.3);"><div class="fd-ico">🎯</div><div class="fd-txt">推薦最高分章節<span>下次進入 App 首頁即顯示「今日推薦」</span></div></div></div>
+        <div class="fd-row"><div class="fd-box" style="border-color:rgba(96,165,250,.3);"><div class="fd-ico">🎯</div><div class="fd-txt">首頁推薦<span>顯示分數最高的章節</span></div></div></div>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- 10 商業價值 -->
-<section id="value">
-  <div class="sec-eyebrow">10 · 商業價值</div>
-  <div class="sec-title">同一個產品，<em>對四個部門各有一個答案</em></div>
-  <div class="sec-sub">MA 輪調會接觸的四個 function，這份簡報可以在同一個 demo 裡，對每個部門說出對方在意的 KPI</div>
-  <table class="vt">
-    <thead><tr><th>部門</th><th>他們在意的問題</th><th>Sprint Reader 的答案</th></tr></thead>
-    <tbody>
-      <tr><td class="dept">人資 / 教育訓練</td><td class="q">「新人考照通過率要怎麼拉高？」</td><td>6 章結構化複習 + 個人弱點圖譜 + 錯題複習入口，讓備考從隨機刷題變成有系統的弱點強化</td></tr>
-      <tr><td class="dept">業務管理</td><td class="q">「哪些新人需要額外輔導？」</td><td>分心次數 + 答錯率 → 自動生成風險分級，提前識別需要介入的高風險個案，主動預警</td></tr>
-      <tr><td class="dept">資料 / AI</td><td class="q">「行為數據能用來做什麼？」</td><td>LearningJourney_Map 串接閱讀與測驗行為，形成行為序列 → 個人化推薦、自動出題、RL 訓練數據</td></tr>
-      <tr><td class="dept">數金 / IT</td><td class="q">「上線複雜度多高？」</td><td>FastAPI + SQLite，無需額外基礎設施，<code class="c">bash run.sh</code> 一鍵啟動，30 秒內可 demo</td></tr>
-    </tbody>
-  </table>
-  <div class="callout ma" style="margin-top:20px;">
-    <strong>核心定位：</strong>考完照後，這套系統可以直接轉型為「在職續訓工具」— 金管會新法規一出，立刻切成 7 分鐘包推播給所有業務員。合規訓練從成本中心，變成可量化、可預警、可擴充的風險管理資產。
-  </div>
-</section>
-
-<!-- 11 延伸思考 -->
-<section id="extension">
-  <div class="sec-eyebrow">11 · 延伸思考</div>
-  <div class="sec-title">Sprint Reader 升級為 <em>AI 學習引擎</em>的路徑</div>
-  <div class="sec-sub">現有的行為數據基礎與 9 張表 schema，已具備支撐以下 4 個 AI 模組的設計條件</div>
-  <table class="ai-t">
-    <thead><tr><th>模組</th><th>功能</th><th>輸入 / 輸出</th><th>底層技術</th></tr></thead>
-    <tbody>
-      <tr><td>Content Agent</td><td>讀新法規 PDF，自動拆解成 7 分鐘 sprint 卡片，教育訓練部門無需人工編輯</td><td>In: 法規 PDF<br/>Out: FlashcardPages（結構化 JSON）</td><td>LLM + RAG + 分塊策略 + schema 輸出驗證</td></tr>
-      <tr><td>Quiz Generator</td><td>根據卡片內容自動生成 4 選 1 考題 + 詳細解釋，保留 source_seq 連結原文</td><td>In: FlashcardPages<br/>Out: QuizQuestions + 解釋文字</td><td>LLM few-shot + 難度分層 + 考古題對比驗證</td></tr>
-      <tr><td>RL Recommender</td><td>取代規則式公式，動態預測每位員工「即將遺忘」的時點，主動推播通知</td><td>In: 行為序列（tab_switch、wrong_rate、天數）<br/>Out: 推薦分數向量</td><td>強化學習（DQN / PPO）+ 遺忘曲線特徵工程</td></tr>
-      <tr><td>Risk Scorer</td><td>學習行為轉化為合規風險分級，主動預警高風險個案給業務管理部門</td><td>In: tab_switch × wrong_rate × 完訓率<br/>Out: 個人風險等級</td><td>監督式分類器 + 業務員歷史違規標記訓練</td></tr>
-    </tbody>
-  </table>
-  <div class="orch">
-    <span class="orch-lbl">AI Orchestrator</span>
-    <span class="orch-step">新法規上線</span><span class="orch-arr">→</span>
-    <span class="orch-step">Content Agent 產出卡片</span><span class="orch-arr">→</span>
-    <span class="orch-step">Quiz Generator 自動出題</span><span class="orch-arr">→</span>
-    <span class="orch-step">RL Recommender 排程推播</span><span class="orch-arr">→</span>
-    <span class="orch-step">Risk Scorer 更新風險分級</span><span class="orch-arr">→</span>
-    <span class="orch-step">HR Dashboard 預警</span>
-  </div>
-  <div class="rm-rows">
-    <div class="rm-row"><div class="rm-badge-wrap"><div class="rm-badge done">已完成</div></div><div class="rm-card"><h4>Phase 1 · MVP — 學習閉環已驗證</h4><p>7 分鐘滑卡閱讀 + 3 題即時測驗 + 逐題解釋 + 規則式間隔重複推薦 + 完整行為遙測。End-to-end 可 demo，DB 紀錄可稽核。</p></div></div>
-    <div class="rm-row"><div class="rm-badge-wrap"><div class="rm-badge p2">3 個月</div></div><div class="rm-card"><h4>Phase 2 · 內容自動化 — 降低 80% 人工編輯成本</h4><p>接入企業真實合規文件，用 LLM 自動把長文切成 7 分鐘 sprint 包。教育訓練部門從「手工編輯 5 天」到「上傳 PDF，1 小時產出課程」。</p></div></div>
-    <div class="rm-row"><div class="rm-badge-wrap"><div class="rm-badge p3">6 個月</div></div><div class="rm-card"><h4>Phase 3 · RL 推薦引擎 — 個人化學習體驗</h4><p>把規則式算法升級為強化學習，動態預測每位員工「即將遺忘」的精確時點，在最佳時機主動推播通知。</p></div></div>
-    <div class="rm-row"><div class="rm-badge-wrap"><div class="rm-badge p4">12 個月</div></div><div class="rm-card"><h4>Phase 4 · 風險預警 — 合規訓練成為風險管理資產</h4><p>學習行為訊號接入 Risk Scorer，提早預警違規高風險個案。合規訓練從被動的「每年一次義務課程」，升級為主動的「持續風險監控系統」。</p></div></div>
   </div>
   <p class="footer-line">黃品睿 · Ray Huang · 2026 Spring</p>
 </section>
@@ -925,6 +950,6 @@ links.forEach(a => a.addEventListener('click', e => {
   document.querySelector(a.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
 }));
 </script>
-<script src="assets/site-nav.js?v=4"></script>
+<script src="assets/site-nav.js?v=5"></script>
 </body>
 </html>
