@@ -9,13 +9,21 @@
 
   const isResearch = cur === 'research.html';
 
-  const links = [
+  // Standalone SP1 site (/sp1/): only the 閱讀加速器 tab, no portfolio pages.
+  const standalone = location.pathname.startsWith('/sp1/');
+  if (standalone && (isIntro || isResearch)) {
+    location.replace('about.html');
+    return;
+  }
+
+  const allLinks = [
     { href: 'intro.html',            label: '自我介紹',   tag: null,      active: isIntro },
     { href: 'about.html',            label: '閱讀加速器', tag: 'SP 1',    active: isAbout },
     { href: ADVISOR + 'brief.html',  label: '業務員助手', tag: 'SP 2',    active: false },
     { href: INVEST  + 'brief.html',  label: '投資 Agent', tag: 'SP 3',    active: false },
     { href: 'research.html',         label: 'AI 研究',    tag: 'RESEARCH',active: isResearch },
   ];
+  const links = standalone ? allLinks.filter(l => l.href === 'about.html') : allLinks;
 
   const css = `
 .snav{position:fixed;top:0;left:0;right:0;z-index:9999;height:50px;
@@ -125,9 +133,9 @@
   const nav = document.createElement('nav');
   nav.className = 'snav';
   nav.innerHTML = `
-    <a class="snav-brand" href="intro.html">
-      <span class="sn-title">Ray Huang</span>
-      <span class="sn-sub">Portfolio · 2026</span>
+    <a class="snav-brand" href="${standalone ? 'about.html' : 'intro.html'}">
+      <span class="sn-title">${standalone ? 'Sprint Reader' : 'Ray Huang'}</span>
+      <span class="sn-sub">${standalone ? '7 分鐘考照微學習' : 'Portfolio · 2026'}</span>
     </a>
     <div class="snav-divider"></div>
     <div class="snav-links">
